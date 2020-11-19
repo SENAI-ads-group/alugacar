@@ -1,5 +1,7 @@
 package entidades;
 
+import java.util.Objects;
+
 /**
  *
  * @author usuario
@@ -18,6 +20,11 @@ public class Marca {
         this.descricao = descricao;
     }
 
+    public Marca(String[] csv) {
+        id = Integer.parseInt(csv[0]);
+        descricao = csv[1];
+    }
+
     public Integer getId() {
         return id;
     }
@@ -34,5 +41,27 @@ public class Marca {
         return "" + id + ";"
                 + descricao;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Marca other = (Marca) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
+    
 
 }

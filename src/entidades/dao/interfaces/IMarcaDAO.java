@@ -13,7 +13,7 @@ public interface IMarcaDAO {
 
     void atualizar(Marca marca);
     
-    void buscar(Integer id);
+    Marca buscar(Integer id);
     
     List<Marca> listar();
 }

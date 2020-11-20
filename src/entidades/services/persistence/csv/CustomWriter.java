@@ -1,6 +1,6 @@
-package entidades.services.persistence.csv.Connectors;
+package entidades.services.persistence.csv;
 
-import entidades.services.persistence.exceptions.DatabaseConnectionException;
+import entidades.services.persistence.exceptions.DBConnectionException;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ public class CustomWriter extends BufferedWriter {
         try {
             super.write(text);
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
 
@@ -28,7 +28,7 @@ public class CustomWriter extends BufferedWriter {
         try {
             super.newLine();
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
 
@@ -37,7 +37,7 @@ public class CustomWriter extends BufferedWriter {
         try {
             super.flush();
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
 

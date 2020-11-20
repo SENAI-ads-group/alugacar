@@ -1,4 +1,4 @@
-package entidades.services.persistence.csv.Connectors;
+package application;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,10 +16,11 @@ public class Configurations {
             Properties properties = new Properties();
 
             String caminhoPastaRaiz = new File("").getCanonicalPath();
-            System.out.println("caminho raiz do programa " + caminhoPastaRaiz);
             FileInputStream fileInput = new FileInputStream(caminhoPastaRaiz + "\\config.properties");
             properties.load(fileInput);
 
+            String canonicalPath = new File("").getCanonicalPath();
+            properties.put("canonicalPath", canonicalPath);
             return properties;
         } catch (IOException ex) {
             return null;

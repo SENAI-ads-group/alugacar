@@ -1,16 +1,12 @@
 package entidades.services.persistence.csv;
 
+import application.Configurations;
 import entidades.Marca;
-import entidades.services.persistence.csv.Connectors.CSVConnection;
-import entidades.services.persistence.csv.Connectors.Configurations;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import entidades.services.persistence.MarcaPersistenceService;
-import entidades.services.persistence.csv.Connectors.CustomWriter;
-import entidades.services.persistence.exceptions.DatabaseConnectionException;
-import java.io.FileWriter;
+import entidades.services.persistence.exceptions.PersistenceException;
 
 /**
  *
@@ -19,22 +15,22 @@ import java.io.FileWriter;
 public class MarcaPersistenceServiceCSV implements MarcaPersistenceService {
 
     private File arquivoDB;
-    private File arquivoDBTemp;
+    private String canonicalPath;
     private CSVConnection connection;
 
     public MarcaPersistenceServiceCSV() {
-        String caminhoDB = Configurations.getProperties().getProperty("arquivo.marca");
-        String caminhoTempDB = Configurations.getProperties().getProperty("arquivo.marca.temp");
-        try {
-            arquivoDB = new File(new File("").getCanonicalPath() + caminhoDB);
-            arquivoDBTemp = new File(new File("").getCanonicalPath() + caminhoTempDB);
-        } catch (IOException ex) {
-        }
+        String caminhoDB = Configurations.getProperties().getProperty("db.marca");
+        canonicalPath = Configurations.getProperties().getProperty("canonicalPath");
+
+        arquivoDB = new File(canonicalPath + caminhoDB);
         connection = new CSVConnection();
     }
 
     @Override
-    public void inserir(Marca marca) throws DatabaseConnectionException {
+    public void inserir(Marca marca) throws PersistenceException {
+        if (buscar(marca.getId()) != null) {
+            throw new PersistenceException("A marca já existe");
+        }
         connection.open(arquivoDB);
 
         connection.writer().write(marca.toCSV());
@@ -45,6 +41,7 @@ public class MarcaPersistenceServiceCSV implements MarcaPersistenceService {
 
     @Override
     public void atualizar(Marca marca) {
+        File arquivoDBTemp = new File(canonicalPath + "\\temp\\marcas-temp.txt");
         CSVConnection connectionTemp = new CSVConnection();
 
         connection.open(arquivoDB);
@@ -67,14 +64,16 @@ public class MarcaPersistenceServiceCSV implements MarcaPersistenceService {
         connectionTemp.close();
         connection.close();
         arquivoDB.delete();
-        boolean success = arquivoDBTemp.renameTo(arquivoDB);
-        System.out.println(success);
+        arquivoDBTemp.renameTo(arquivoDB);
     }
 
     @Override
     public Marca buscar(Integer id) {
+        if (id == null) {
+            throw new IllegalStateException("id está nulo");
+        }
         connection.open(arquivoDB);
-
+        System.out.println(arquivoDB.toString());
         String linha = connection.reader().readLine();
         while (linha != null) {
             String[] csv = linha.split(";");
@@ -95,7 +94,6 @@ public class MarcaPersistenceServiceCSV implements MarcaPersistenceService {
         connection.open(arquivoDB);
 
         List<Marca> marcasEncontradas = new ArrayList<>();
-
         String linha = connection.reader().readLine();
         while (linha != null) {
             String[] csv = linha.split(";");

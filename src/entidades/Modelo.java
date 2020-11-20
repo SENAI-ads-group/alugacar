@@ -1,7 +1,6 @@
 package entidades;
 
 import entidades.services.persistence.PersistenceFactory;
-import entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
 
 /**
  *

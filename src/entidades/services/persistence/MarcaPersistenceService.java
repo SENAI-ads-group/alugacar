@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.Marca;
+import entidades.services.persistence.exceptions.PersistenceException;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface MarcaPersistenceService {
 
-    void inserir(Marca marca);
+    void inserir(Marca marca) throws PersistenceException;
 
     void atualizar(Marca marca);
 

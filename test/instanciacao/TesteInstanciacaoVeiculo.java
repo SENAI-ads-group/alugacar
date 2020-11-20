@@ -1,3 +1,5 @@
+package instanciacao;
+
 
 import entidades.Categoria;
 import entidades.Marca;

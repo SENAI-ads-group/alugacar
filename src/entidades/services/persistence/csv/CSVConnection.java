@@ -1,6 +1,6 @@
-package entidades.services.persistence.csv.Connectors;
+package entidades.services.persistence.csv;
 
-import entidades.services.persistence.exceptions.DatabaseConnectionException;
+import entidades.services.persistence.exceptions.DBConnectionException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -34,7 +34,7 @@ public class CSVConnection {
             writer = new CustomWriter(new FileWriter(caminho, true));
             reader = new CustomReader(new FileReader(caminho));
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
 
@@ -43,7 +43,7 @@ public class CSVConnection {
             writer = new CustomWriter(new FileWriter(file, true));
             reader = new CustomReader(new FileReader(file));
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class CSVConnection {
                 writer.close();
             }
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
 

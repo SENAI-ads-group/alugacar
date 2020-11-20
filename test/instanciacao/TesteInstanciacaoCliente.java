@@ -1,3 +1,5 @@
+package instanciacao;
+
 
 import entidades.Cliente;
 import entidades.Endereco;

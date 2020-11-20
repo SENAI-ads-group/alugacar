@@ -1,7 +1,5 @@
 package entidades;
 
-import entidades.PessoaFisica;
-import java.awt.Image;
 import java.io.File;
 
 /**

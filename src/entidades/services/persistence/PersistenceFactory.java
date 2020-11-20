@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
+import entidades.services.persistence.csv.ModeloPersistenceServiceCSV;
 
 /**
  *
@@ -10,5 +11,9 @@ public class PersistenceFactory {
 
     public static MarcaPersistenceService createMarcaService() {
         return new MarcaPersistenceServiceCSV();
+    }
+
+    public static ModeloPersistenceService createModeloService() {
+        return new ModeloPersistenceServiceCSV();
     }
 }

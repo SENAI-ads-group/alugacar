@@ -1,6 +1,6 @@
-package entidades.services.persistence.csv.Connectors;
+package entidades.services.persistence.csv;
 
-import entidades.services.persistence.exceptions.DatabaseConnectionException;
+import entidades.services.persistence.exceptions.DBConnectionException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -20,7 +20,7 @@ public class CustomReader extends BufferedReader {
         try {
             return super.readLine();
         } catch (IOException ex) {
-            throw new DatabaseConnectionException(ex.getMessage());
+            throw new DBConnectionException(ex.getMessage());
         }
     }
     

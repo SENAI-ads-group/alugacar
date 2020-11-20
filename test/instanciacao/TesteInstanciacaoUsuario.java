@@ -1,3 +1,5 @@
+package instanciacao;
+
 
 import entidades.Endereco;
 import entidades.PessoaFisica;

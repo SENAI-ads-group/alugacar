@@ -1,3 +1,5 @@
+package instanciacao;
+
 
 import entidades.CNH;
 import entidades.Endereco;

@@ -1,4 +1,4 @@
-package entidades.dao.utils;
+package entidades.services.persistence.csv.Connectors;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +9,7 @@ import java.util.Properties;
  *
  * @author patrick-ribeiro
  */
-public class Manipulador {
+public class Configurations {
 
     public static Properties getProperties() {
         try {

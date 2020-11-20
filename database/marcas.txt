@@ -1,2 +1,1 @@
-1;marca teste
-1;marca teste
+1;descrição atualizada

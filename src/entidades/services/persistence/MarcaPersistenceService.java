@@ -12,8 +12,8 @@ public interface MarcaPersistenceService {
     void inserir(Marca marca);
 
     void atualizar(Marca marca);
-    
+
     Marca buscar(Integer id);
-    
-    List<Marca> listar();
+
+    List<Marca> buscarTodos();
 }

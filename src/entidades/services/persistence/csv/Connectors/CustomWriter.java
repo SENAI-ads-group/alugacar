@@ -32,4 +32,13 @@ public class CustomWriter extends BufferedWriter {
         }
     }
 
+    @Override
+    public void flush() {
+        try {
+            super.flush();
+        } catch (IOException ex) {
+            throw new DatabaseConnectionException(ex.getMessage());
+        }
+    }
+
 }

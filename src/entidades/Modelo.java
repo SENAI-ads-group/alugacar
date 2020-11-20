@@ -1,5 +1,8 @@
 package entidades;
 
+import entidades.services.persistence.PersistenceFactory;
+import entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
+
 /**
  *
  * @author usuario
@@ -27,6 +30,12 @@ public class Modelo {
     public Modelo(Marca marca, String descricao) {
         this.marca = marca;
         this.descricao = descricao;
+    }
+
+    public Modelo(String[] csv) {
+        id = Integer.parseInt(csv[0]);
+        Integer idMarca = Integer.parseInt(csv[1]);
+        marca = PersistenceFactory.createMarcaService().buscar(idMarca);
     }
 
     public Integer getId() {

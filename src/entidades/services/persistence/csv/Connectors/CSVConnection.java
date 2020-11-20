@@ -1,6 +1,7 @@
 package entidades.services.persistence.csv.Connectors;
 
 import entidades.services.persistence.exceptions.DatabaseConnectionException;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.io.IOException;
  *
  * @author patrick-ribeiro
  */
-public class Connection {
+public class CSVConnection {
 
     CustomWriter writer;
     CustomReader reader;
@@ -32,6 +33,15 @@ public class Connection {
         try {
             writer = new CustomWriter(new FileWriter(caminho, true));
             reader = new CustomReader(new FileReader(caminho));
+        } catch (IOException ex) {
+            throw new DatabaseConnectionException(ex.getMessage());
+        }
+    }
+
+    public void open(File file) {
+        try {
+            writer = new CustomWriter(new FileWriter(file, true));
+            reader = new CustomReader(new FileReader(file));
         } catch (IOException ex) {
             throw new DatabaseConnectionException(ex.getMessage());
         }

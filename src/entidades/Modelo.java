@@ -1,6 +1,7 @@
 package entidades;
 
 import entidades.services.persistence.PersistenceFactory;
+import util.Utilities;
 
 /**
  *
@@ -9,9 +10,9 @@ import entidades.services.persistence.PersistenceFactory;
 public class Modelo {
 
     private Integer id;
-    private Marca marca;
     private String codigoFipe;
     private String descricao;
+    private Marca marca;
 
     public Modelo(Integer id, Marca marca, String codigoFipe, String descricao) {
         this.id = id;
@@ -32,8 +33,10 @@ public class Modelo {
     }
 
     public Modelo(String[] csv) {
-        id = Integer.parseInt(csv[0]);
-        Integer idMarca = Integer.parseInt(csv[1]);
+        id = Utilities.tryParseToInteger(csv[0]);
+        codigoFipe = csv[1];
+        descricao = csv[2];
+        Integer idMarca = Utilities.tryParseToInteger(csv[3]);
         marca = PersistenceFactory.createMarcaService().buscar(idMarca);
     }
 
@@ -67,9 +70,9 @@ public class Modelo {
 
     public String toCSV() {
         return "" + id + ";"
-                + marca.getId() + ";"
                 + codigoFipe + ";"
-                + descricao;
+                + descricao + ";"
+                + marca.getId();
     }
 
 }

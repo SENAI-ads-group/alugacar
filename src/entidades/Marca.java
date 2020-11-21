@@ -1,6 +1,7 @@
 package entidades;
 
 import java.util.Objects;
+import util.Utilities;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Marca {
     }
 
     public Marca(String[] csv) {
-        id = Integer.parseInt(csv[0]);
+        id = Utilities.tryParseToInteger(csv[0]);
         descricao = csv[1];
     }
 
@@ -60,8 +61,11 @@ public class Marca {
         return true;
     }
 
-    
-    
-    
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
 
 }

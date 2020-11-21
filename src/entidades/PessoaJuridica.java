@@ -1,7 +1,5 @@
 package entidades;
 
-import entidades.abstracts.Pessoa;
-
 /**
  *
  * @author usuario
@@ -68,6 +66,7 @@ public class PessoaJuridica extends Pessoa {
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
+    @Override
     public String toCSV() {
         return super.toCSV() + ";"
                 + cnpj + ";"

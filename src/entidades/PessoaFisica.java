@@ -1,6 +1,5 @@
 package entidades;
 
-import entidades.abstracts.Pessoa;
 import java.util.Date;
 import util.DateUtilities;
 

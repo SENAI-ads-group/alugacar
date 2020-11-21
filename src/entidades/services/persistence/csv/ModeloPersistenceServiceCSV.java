@@ -6,59 +6,55 @@ import entidades.Modelo;
 import entidades.services.persistence.ModeloPersistenceService;
 import entidades.services.persistence.exceptions.PersistenceException;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author patrick-ribeiro
  */
 public class ModeloPersistenceServiceCSV implements ModeloPersistenceService {
-    
+
     private File arquivoDB;
     private String canonicalPath;
     private CSVConnection connection;
-    
+
     public ModeloPersistenceServiceCSV() {
         String caminhoDB = Configurations.getProperties().getProperty("db.modelo");
         canonicalPath = Configurations.getProperties().getProperty("canonicalPath");
-        
+
         arquivoDB = new File(canonicalPath + caminhoDB);
         connection = new CSVConnection();
     }
-    
+
     @Override
     public void inserir(Modelo modelo) throws PersistenceException {
         if (modelo.getId() == null) {
-            
+
         }
         if (buscar(modelo.getId()) != null) {
             throw new PersistenceException("O modelo já existe");
         }
         connection.open(arquivoDB);
-        
+
         connection.writer().write(modelo.toCSV());
         connection.writer().newLine();
-        
+
         connection.close();
     }
-    
+
     @Override
     public void atualizar(Modelo modelo) {
         File arquivoDBTemp = new File(canonicalPath + "\\temp\\marcas-temp.txt");
         CSVConnection connectionTemp = new CSVConnection();
-        
+
         connection.open(arquivoDB);
         connectionTemp.open(arquivoDBTemp);
-        
+
         String linha = connection.reader().readLine();
         while (linha != null) {
             Modelo modeloEncontrado = new Modelo(linha.split(";"));
-            
+
             if (modeloEncontrado.equals(modelo)) {
                 connectionTemp.writer().write(modelo.toCSV());
             } else {
@@ -68,20 +64,20 @@ public class ModeloPersistenceServiceCSV implements ModeloPersistenceService {
             connectionTemp.writer().newLine();
             linha = connection.reader().readLine();
         }
-        
+
         connectionTemp.close();
         connection.close();
         arquivoDB.delete();
         arquivoDBTemp.renameTo(arquivoDB);
     }
-    
+
     @Override
     public Modelo buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
         connection.open(arquivoDB);
-        
+
         String linha = connection.reader().readLine();
         while (linha != null) {
             Modelo modeloEcontrado = new Modelo(linha.split(";"));
@@ -94,12 +90,12 @@ public class ModeloPersistenceServiceCSV implements ModeloPersistenceService {
         connection.close();
         return null;
     }
-    
+
     @Override
     public List<Modelo> buscar(Marca marca) {
         connection.open(arquivoDB);
         List<Modelo> modelos = new ArrayList<>();
-        
+
         String linha = connection.reader().readLine();
         while (linha != null) {
             Modelo modelo = new Modelo(linha.split(";"));
@@ -108,39 +104,39 @@ public class ModeloPersistenceServiceCSV implements ModeloPersistenceService {
             }
             linha = connection.reader().readLine();
         }
-        
+
         connection.close();
         return modelos;
     }
-    
+
     @Override
     public List<Modelo> buscarTodos() {
         connection.open(arquivoDB);
         List<Modelo> modelos = new ArrayList<>();
-        
+
         String linha = connection.reader().readLine();
         while (linha != null) {
             Modelo modelo = new Modelo(linha.split(";"));
             modelos.add(modelo);
             linha = connection.reader().readLine();
         }
-        
+
         connection.close();
         return modelos;
     }
-    
+
     public Modelo getUltimoRegistro() {
         connection.open(arquivoDB);
-        
+
         String linhaAnterior = null;
         String linha = connection.reader().readLine();
         while (linha != null) {
             linhaAnterior = linha;
             linha = connection.reader().readLine();
         }
-        
+
         connection.close();
         return new Modelo(linhaAnterior.split(";"));
     }
-    
+
 }

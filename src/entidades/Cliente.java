@@ -1,6 +1,6 @@
 package entidades;
 
-import entidades.abstracts.Pessoa;
+import util.Utilities;
 
 /**
  *
@@ -19,6 +19,12 @@ public class Cliente {
         this.id = id;
         this.pessoa = pessoa;
         this.ativo = ativo;
+    }
+
+    public Cliente(String[] csv, Pessoa pessoa) {
+        id = Utilities.tryParseToInteger(csv[0]);
+        ativo = Boolean.parseBoolean(csv[1]);
+        this.pessoa = pessoa;
     }
 
     public Integer getId() {
@@ -47,7 +53,7 @@ public class Cliente {
 
     public String toCSV() {
         return "" + id + ";"
-                + pessoa.toCSV() + ";"
-                + ativo;
+                + ativo + ";"
+                + pessoa.toCSV();
     }
 }

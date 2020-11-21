@@ -17,6 +17,12 @@ public class CNH {
     public CNH() {
     }
 
+    public CNH(String[] csv) {
+        numeroRegistro = Integer.parseInt(csv[0]);
+        categoria = CategoriaCNH.valueOf(csv[1]);
+        dataValidade = DateUtilities.tryParseToDate(csv[2]);
+    }
+
     public CNH(Integer numeroRegistro, CategoriaCNH categoria, Date dataValidade) {
         this.numeroRegistro = numeroRegistro;
         this.categoria = categoria;

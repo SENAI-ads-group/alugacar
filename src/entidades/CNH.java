@@ -2,6 +2,7 @@ package entidades;
 
 import entidades.enums.CategoriaCNH;
 import java.util.Date;
+import java.util.Objects;
 import util.DateUtilities;
 
 /**
@@ -58,4 +59,30 @@ public class CNH {
                 + categoria.toString() + ";"
                 + DateUtilities.formatData(dataValidade);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.numeroRegistro);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CNH other = (CNH) obj;
+        if (!Objects.equals(this.numeroRegistro, other.numeroRegistro)) {
+            return false;
+        }
+        return true;
+    }
+
 }

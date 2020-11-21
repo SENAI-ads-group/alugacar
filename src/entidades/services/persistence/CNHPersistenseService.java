@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.CNH;
+import entidades.services.persistence.exceptions.PersistenceException;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface CNHPersistenseService {
 
-    void inserir(CNH cnh);
+    void inserir(CNH cnh) throws PersistenceException;
 
     void atualizar(CNH cnh);
 

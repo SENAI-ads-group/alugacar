@@ -1,3 +1,4 @@
+package instanciacao;
 
 import entidades.CNH;
 import entidades.Endereco;
@@ -21,8 +22,11 @@ public class TesteInstanciacaoMotorista {
         CNH cnh = new CNH(1, CategoriaCNH.AB, new Date());
         PessoaFisica pessoa = new PessoaFisica("Carlos", "(62)9.92245404", "carlos@carlos", endereco);
         Motorista motorista = new Motorista(1, pessoa, cnh, true);
-        motorista.setFoto(new File("/home/usuario/Imagens/SENAI-logo.png"));
-
+        File foto = new File("/home/usuario/Imagens/SENAI-logo.png");
+        motorista.setFoto(foto);
         System.out.println(motorista.toCSV());
+
+        Motorista motorista1 = new Motorista(motorista.toCSV().split(";"), pessoa);
+        System.out.println(motorista1.toCSV());
     }
 }

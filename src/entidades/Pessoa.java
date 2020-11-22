@@ -1,10 +1,10 @@
-package entidades.abstracts;
+package entidades;
 
 import entidades.Endereco;
 
 /**
  *
- * @author usuario
+ * @author Patrick-Ribeiro
  */
 public abstract class Pessoa {
 
@@ -12,6 +12,9 @@ public abstract class Pessoa {
     private String telefone;
     private String email;
     private Endereco endereco;
+
+    public Pessoa() {
+    }
 
     public Pessoa(String nome) {
         this.nome = nome;

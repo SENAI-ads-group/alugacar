@@ -1,5 +1,7 @@
 package entidades;
 
+import util.Utilities;
+
 /**
  *
  * @author usuario
@@ -16,6 +18,12 @@ public class Categoria {
         this.valorMinimoLocacao = valorMinimoLocacao;
     }
 
+    public Categoria(String[] csv) {
+        id = Utilities.tryParseToInteger(csv[0]);
+        descricao = csv[1];
+        valorMinimoLocacao = Utilities.tryParseToDouble(csv[2]);
+    }
+
     public Categoria(String descricao, Double valorMinimoLocacao) {
         this.descricao = descricao;
         this.valorMinimoLocacao = valorMinimoLocacao;
@@ -23,6 +31,10 @@ public class Categoria {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDescricao() {

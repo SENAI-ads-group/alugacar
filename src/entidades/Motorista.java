@@ -1,8 +1,8 @@
 package entidades;
 
-import entidades.PessoaFisica;
-import java.awt.Image;
+import entidades.services.persistence.PersistenceFactory;
 import java.io.File;
+import util.Utilities;
 
 /**
  *
@@ -11,10 +11,10 @@ import java.io.File;
 public class Motorista {
 
     private Integer id;
+    private boolean ativo;
     private PessoaFisica pessoa;
     private File foto;
     private CNH cnh;
-    private boolean ativo;
 
     public Motorista() {
     }
@@ -24,6 +24,15 @@ public class Motorista {
         this.pessoa = pessoa;
         this.cnh = cnh;
         this.ativo = ativo;
+    }
+
+    public Motorista(String[] csv, PessoaFisica pessoa) {
+        id = Utilities.tryParseToInteger(csv[0]);
+        ativo = Boolean.parseBoolean(csv[1]);
+        foto = new File(csv[2]);
+        Integer numeroRegistroCNH = Utilities.tryParseToInteger(csv[3]);
+        cnh = PersistenceFactory.createCNHService().buscar(numeroRegistroCNH);
+        this.pessoa = pessoa;
     }
 
     public Integer getId() {
@@ -68,9 +77,9 @@ public class Motorista {
 
     public String toCSV() {
         return "" + id + ";"
-                + pessoa.toCSV() + ";"
+                + ativo + ";"
                 + foto.getAbsolutePath() + ";"
-                + cnh.toCSV() + ";"
-                + ativo;
+                + cnh.getNumeroRegistro() + ";"
+                + pessoa.toCSV();
     }
 }

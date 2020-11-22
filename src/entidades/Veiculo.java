@@ -1,8 +1,10 @@
 package entidades;
 
 import entidades.enums.StatusVeiculo;
+import entidades.services.persistence.PersistenceFactory;
 import java.util.Date;
 import util.DateUtilities;
+import util.Utilities;
 
 /**
  *
@@ -13,8 +15,6 @@ public class Veiculo {
     private Integer id;
     private String placa;
     private String renavam;
-    private Categoria categoria;
-    private Modelo modelo;
     private Double precoCompra;
     private Double precoVenda;
     private Integer qtdeMaximaPessoas;
@@ -22,6 +22,8 @@ public class Veiculo {
     private Date anoModelo;
     private Double quilometragemRodada;
     private StatusVeiculo statusVeiculo;
+    private Categoria categoria;
+    private Modelo modelo;
 
     public Veiculo(String placa, String renavam, Categoria categoria, Modelo modelo, Date anoFabricacao, Date anoModelo, Double quilometragemRodada) {
         this.placa = placa;
@@ -46,6 +48,24 @@ public class Veiculo {
         this.quilometragemRodada = quilometragemRodada;
 
         statusVeiculo = StatusVeiculo.INDISPONIVEL;
+    }
+
+    public Veiculo(String[] csv) {
+        id = Integer.parseInt(csv[0]);
+        placa = csv[1];
+        renavam = csv[2];
+        precoCompra = Utilities.tryParseToDouble(csv[3]);
+        precoVenda = Utilities.tryParseToDouble(csv[4]);
+        qtdeMaximaPessoas = Utilities.tryParseToInteger(csv[5]);
+        anoFabricacao = DateUtilities.tryParseToDate(csv[6]);
+        anoModelo = DateUtilities.tryParseToDate(csv[7]);
+        quilometragemRodada = Utilities.tryParseToDouble(csv[8]);
+        statusVeiculo = StatusVeiculo.valueOf(csv[9]);
+
+        Integer idCategoria = Utilities.tryParseToInteger(csv[10]);
+        categoria = PersistenceFactory.createCategoriaService().buscar(idCategoria);
+        Integer idModelo = Utilities.tryParseToInteger(csv[11]);
+        modelo = PersistenceFactory.createModeloService().buscar(idModelo);
     }
 
     public Integer getId() {
@@ -144,15 +164,15 @@ public class Veiculo {
         return "" + id + ";"
                 + placa + ";"
                 + renavam + ";"
-                + categoria.getId() + ";"
-                + modelo.getId() + ";"
                 + precoCompra + ";"
                 + precoVenda + ";"
                 + qtdeMaximaPessoas + ";"
                 + DateUtilities.formatData(anoFabricacao) + ";"
                 + DateUtilities.formatData(anoModelo) + ";"
                 + quilometragemRodada + ";"
-                + statusVeiculo.toString();
+                + statusVeiculo.toString() + ";"
+                + categoria.getId() + ";"
+                + modelo.getId();
     }
 
 }

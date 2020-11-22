@@ -1,33 +1,33 @@
-package entidades.dao;
+package entidades.services.persistence.csv;
 
-import entidades.Marca;
-import entidades.dao.interfaces.IMarcaDAO;
+import entidades.Cliente;
+import entidades.services.persistence.ClientePersistenceService;
 import java.util.List;
 
 /**
  *
- * @author Patrick-Ribeiro
+ * @author Alexsander
  */
-public class MarcaDAO implements IMarcaDAO{
+public class ClientePersistenceServiceCSV implements ClientePersistenceService {
 
     @Override
-    public void inserir(Marca marca) {
+    public void inserir(Cliente cliente) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void atualizar(Marca marca) {
+    public void atualizar(Cliente cliente) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void buscar(Integer id) {
+    public Cliente buscar(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Marca> listar() {
+    public List<Cliente> buscarTodos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

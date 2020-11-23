@@ -5,6 +5,8 @@ import entidades.services.persistence.MotoristaPersistenceService;
 import entidades.services.persistence.PersistenceFactory;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import ui.FrameLoader;
+import ui.dialogs.DialogMotoristaForm;
 
 /**
  *
@@ -43,7 +45,8 @@ public class PanelMotoristasList extends javax.swing.JPanel {
     }
 
     public void createMotoristaForm(Motorista motorista) {
-
+        DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
+        dialogForm.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -51,7 +54,7 @@ public class PanelMotoristasList extends javax.swing.JPanel {
     private void initComponents() {
 
         panelHeader = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        buttonNovo = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -66,13 +69,18 @@ public class PanelMotoristasList extends javax.swing.JPanel {
         panelHeader.setBackground(new java.awt.Color(255, 255, 255));
         panelHeader.setPreferredSize(new java.awt.Dimension(1216, 80));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-novo-24x24.png"))); // NOI18N
-        jButton1.setText("Novo");
-        jButton1.setBorderPainted(false);
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
-        jButton1.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonNovo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-novo-24x24.png"))); // NOI18N
+        buttonNovo.setText("Novo");
+        buttonNovo.setBorderPainted(false);
+        buttonNovo.setFocusPainted(false);
+        buttonNovo.setFocusable(false);
+        buttonNovo.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNovoActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-editar-24x24.png"))); // NOI18N
@@ -110,7 +118,7 @@ public class PanelMotoristasList extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelHeaderLayout.setVerticalGroup(
@@ -118,7 +126,7 @@ public class PanelMotoristasList extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -166,9 +174,13 @@ public class PanelMotoristasList extends javax.swing.JPanel {
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
+        createMotoristaForm(new Motorista());
+    }//GEN-LAST:event_buttonNovoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton buttonNovo;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.Categoria;
+import entidades.services.persistence.exceptions.PersistenceException;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface CategoriaPersistenceService {
 
-    void inserir(Categoria categoria);
+    void inserir(Categoria categoria) throws PersistenceException;
 
     void atualizar(Categoria categoria);
 

@@ -12,8 +12,8 @@ import java.io.IOException;
  */
 public class CSVConnection {
 
-    CustomWriter writer;
-    CustomReader reader;
+    private CustomWriter writer;
+    private CustomReader reader;
 
     public CustomWriter writer() {
         if (writer == null) {

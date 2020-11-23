@@ -21,7 +21,9 @@ public class FrameLoader {
             CoreManagers.initialize();
 
             JFrame.setDefaultLookAndFeelDecorated(true);
-            new FrameMain().setVisible(true);
+            FrameMain frame = new FrameMain();
+            frame.setExtendedState(frame.MAXIMIZED_BOTH);
+            frame.setVisible(true);
         });
     }
 }

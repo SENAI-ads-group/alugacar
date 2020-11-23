@@ -18,12 +18,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
 
-    /**
-     * Creates new form DialogMotoristaForm
-     *
-     * @param parent
-     * @param modal
-     */
     public DialogMotoristaForm(java.awt.Frame parent, boolean modal, Motorista motorista) {
         super(parent, modal);
         this.motorista = motorista;
@@ -52,18 +46,18 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         labelCPF = new javax.swing.JLabel();
         labelDataNascimento = new javax.swing.JLabel();
         textFieldRG = new javax.swing.JTextField();
-        dateChooserNascimento = new com.toedter.calendar.JDateChooser();
         labelRG = new javax.swing.JLabel();
+        dateChooserNascimento = new com.toedter.calendar.JDateChooser();
         panelCNH = new javax.swing.JPanel();
         textFieldNumeroRegistro = new javax.swing.JTextField();
         labelNome1 = new javax.swing.JLabel();
         labelCPF1 = new javax.swing.JLabel();
-        dateChooserValidadeCNH = new com.toedter.calendar.JDateChooser();
         comboBoxCategoriaCNH = new javax.swing.JComboBox<>();
         labelUF1 = new javax.swing.JLabel();
         textFieldFoto = new javax.swing.JTextField();
         labelFoto = new javax.swing.JLabel();
         buttonBuscarFoto = new javax.swing.JButton();
+        dateChooserValidadeCNH = new com.toedter.calendar.JDateChooser();
         labelShowFoto = new javax.swing.JLabel();
         panelEndereco = new javax.swing.JPanel();
         textFieldLogradouro = new javax.swing.JTextField();
@@ -149,16 +143,12 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         textFieldRG.setPreferredSize(new java.awt.Dimension(170, 25));
         panelInfoPessoais.add(textFieldRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, -1, -1));
 
-        dateChooserNascimento.setBackground(new java.awt.Color(255, 255, 255));
-        dateChooserNascimento.setMaximumSize(new java.awt.Dimension(170, 25));
-        dateChooserNascimento.setMinimumSize(new java.awt.Dimension(170, 25));
-        dateChooserNascimento.setName(""); // NOI18N
-        dateChooserNascimento.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(dateChooserNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, -1, -1));
-
         labelRG.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelRG.setText("RG");
         panelInfoPessoais.add(labelRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, -1, -1));
+
+        dateChooserNascimento.setPreferredSize(new java.awt.Dimension(170, 25));
+        panelInfoPessoais.add(dateChooserNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, -1, -1));
 
         tabbedPane.addTab("Informações Pessoais", panelInfoPessoais);
 
@@ -180,13 +170,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         labelCPF1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelCPF1.setText("Data validade");
         panelCNH.add(labelCPF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
-
-        dateChooserValidadeCNH.setBackground(new java.awt.Color(255, 255, 255));
-        dateChooserValidadeCNH.setMaximumSize(new java.awt.Dimension(170, 25));
-        dateChooserValidadeCNH.setMinimumSize(new java.awt.Dimension(170, 25));
-        dateChooserValidadeCNH.setName(""); // NOI18N
-        dateChooserValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         comboBoxCategoriaCNH.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 25));
@@ -217,6 +200,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             }
         });
         panelCNH.add(buttonBuscarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, -1, -1));
+
+        dateChooserValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 25));
+        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
         labelShowFoto.setMaximumSize(new java.awt.Dimension(360, 50));
         labelShowFoto.setMinimumSize(new java.awt.Dimension(360, 50));

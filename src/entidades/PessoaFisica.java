@@ -13,6 +13,9 @@ public class PessoaFisica extends Pessoa {
     private Integer registroGeral;
     private Date dataNascimento;
 
+    public PessoaFisica() {
+    }
+
     public PessoaFisica(String nome) {
         super(nome);
     }

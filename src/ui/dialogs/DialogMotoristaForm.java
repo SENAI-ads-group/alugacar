@@ -1,5 +1,6 @@
 package ui.dialogs;
 
+import entidades.Endereco;
 import entidades.Motorista;
 import entidades.enums.CategoriaCNH;
 import entidades.enums.UF;
@@ -8,7 +9,10 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import ui.panels.PanelFormEndereco;
+import ui.panels.PanelFormPessoaFisica;
 
 /**
  *
@@ -23,11 +27,31 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         this.motorista = motorista;
         initComponents();
         initCombobox();
+        loadPanels();
+
+    }
+
+    private void loadPanels() {
+        panelEndereco.removeAll();
+        panelEndereco.revalidate();
+        panelEndereco.repaint();
+        panelInfoPessoais.removeAll();
+        panelInfoPessoais.revalidate();
+        panelInfoPessoais.repaint();
+
+        PanelFormEndereco panelFormEndereco = new PanelFormEndereco(motorista.getPessoa().getEndereco());
+        PanelFormPessoaFisica panelFormPessoaFisica = new PanelFormPessoaFisica(motorista.getPessoa());
+
+        panelEndereco.add(panelFormEndereco);
+        panelEndereco.revalidate();
+        panelEndereco.repaint();
+        panelInfoPessoais.add(panelFormPessoaFisica);
+        panelInfoPessoais.revalidate();
+        panelInfoPessoais.repaint();
     }
 
     private void initCombobox() {
         comboBoxCategoriaCNH.setModel(new DefaultComboBoxModel(CategoriaCNH.values()));
-        comboBoxUF.setModel(new DefaultComboBoxModel(UF.values()));
     }
 
     @SuppressWarnings("unchecked")
@@ -36,18 +60,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         tabbedPane = new javax.swing.JTabbedPane();
         panelInfoPessoais = new javax.swing.JPanel();
-        textFieldNome = new javax.swing.JTextField();
-        labelNome = new javax.swing.JLabel();
-        textFieldTelefone = new javax.swing.JTextField();
-        labelTelefone = new javax.swing.JLabel();
-        textFieldEmail = new javax.swing.JTextField();
-        labelEmail = new javax.swing.JLabel();
-        textFieldCPF = new javax.swing.JTextField();
-        labelCPF = new javax.swing.JLabel();
-        labelDataNascimento = new javax.swing.JLabel();
-        textFieldRG = new javax.swing.JTextField();
-        labelRG = new javax.swing.JLabel();
-        dateChooserNascimento = new com.toedter.calendar.JDateChooser();
         panelCNH = new javax.swing.JPanel();
         textFieldNumeroRegistro = new javax.swing.JTextField();
         labelNome1 = new javax.swing.JLabel();
@@ -60,20 +72,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         dateChooserValidadeCNH = new com.toedter.calendar.JDateChooser();
         labelShowFoto = new javax.swing.JLabel();
         panelEndereco = new javax.swing.JPanel();
-        textFieldLogradouro = new javax.swing.JTextField();
-        labelLogradouro = new javax.swing.JLabel();
-        textFieldNumero = new javax.swing.JTextField();
-        labelNumero = new javax.swing.JLabel();
-        textFieldBairro = new javax.swing.JTextField();
-        labelUF = new javax.swing.JLabel();
-        textFieldComplemento = new javax.swing.JTextField();
-        labelComplemento = new javax.swing.JLabel();
-        labelCidade = new javax.swing.JLabel();
-        textFieldCidade = new javax.swing.JTextField();
-        labelCEP = new javax.swing.JLabel();
-        textFieldCEP = new javax.swing.JTextField();
-        comboBoxUF = new javax.swing.JComboBox<>();
-        labelBairro = new javax.swing.JLabel();
         panelButtoons = new javax.swing.JPanel();
         buttonConfirmar = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
@@ -94,62 +92,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         panelInfoPessoais.setMaximumSize(new java.awt.Dimension(400, 240));
         panelInfoPessoais.setMinimumSize(new java.awt.Dimension(400, 240));
         panelInfoPessoais.setPreferredSize(new java.awt.Dimension(400, 240));
-        panelInfoPessoais.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        textFieldNome.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldNome.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldNome.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(textFieldNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
-
-        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelNome.setText("Nome");
-        panelInfoPessoais.add(labelNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        textFieldTelefone.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldTelefone.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldTelefone.setName(""); // NOI18N
-        textFieldTelefone.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(textFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
-
-        labelTelefone.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelTelefone.setText("Telefone");
-        panelInfoPessoais.add(labelTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
-
-        textFieldEmail.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldEmail.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldEmail.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(textFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
-
-        labelEmail.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelEmail.setText("Email");
-        panelInfoPessoais.add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
-
-        textFieldCPF.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldCPF.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldCPF.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(textFieldCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
-
-        labelCPF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelCPF.setText("CPF");
-        panelInfoPessoais.add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
-
-        labelDataNascimento.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelDataNascimento.setText("Data de nascimento");
-        panelInfoPessoais.add(labelDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
-
-        textFieldRG.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldRG.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldRG.setName(""); // NOI18N
-        textFieldRG.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(textFieldRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, -1, -1));
-
-        labelRG.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelRG.setText("RG");
-        panelInfoPessoais.add(labelRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, -1, -1));
-
-        dateChooserNascimento.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelInfoPessoais.add(dateChooserNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, -1, -1));
-
         tabbedPane.addTab("Informações Pessoais", panelInfoPessoais);
 
         panelCNH.setBackground(new java.awt.Color(255, 255, 255));
@@ -215,58 +157,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         panelEndereco.setMaximumSize(new java.awt.Dimension(400, 240));
         panelEndereco.setMinimumSize(new java.awt.Dimension(400, 240));
         panelEndereco.setPreferredSize(new java.awt.Dimension(400, 240));
-        panelEndereco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        textFieldLogradouro.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(textFieldLogradouro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
-
-        labelLogradouro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelLogradouro.setText("Logradouro");
-        panelEndereco.add(labelLogradouro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
-
-        textFieldNumero.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(textFieldNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
-
-        labelNumero.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelNumero.setText("Número");
-        panelEndereco.add(labelNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
-
-        textFieldBairro.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(textFieldBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
-
-        labelUF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelUF.setText("UF");
-        panelEndereco.add(labelUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
-
-        textFieldComplemento.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(textFieldComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
-
-        labelComplemento.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelComplemento.setText("Complemento");
-        panelEndereco.add(labelComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
-
-        labelCidade.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelCidade.setText("Cidade");
-        panelEndereco.add(labelCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
-
-        textFieldCidade.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(textFieldCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, -1, -1));
-
-        labelCEP.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelCEP.setText("CEP");
-        panelEndereco.add(labelCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, -1, -1));
-
-        textFieldCEP.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(textFieldCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, -1, -1));
-
-        comboBoxUF.setMinimumSize(new java.awt.Dimension(150, 25));
-        comboBoxUF.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelEndereco.add(comboBoxUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
-
-        labelBairro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelBairro.setText("Bairro");
-        panelEndereco.add(labelBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
-
         tabbedPane.addTab("Endereço", panelEndereco);
 
         getContentPane().add(tabbedPane, java.awt.BorderLayout.PAGE_START);
@@ -341,44 +231,18 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonConfirmar;
     private javax.swing.JComboBox<String> comboBoxCategoriaCNH;
-    private javax.swing.JComboBox<String> comboBoxUF;
-    private com.toedter.calendar.JDateChooser dateChooserNascimento;
     private com.toedter.calendar.JDateChooser dateChooserValidadeCNH;
-    private javax.swing.JLabel labelBairro;
-    private javax.swing.JLabel labelCEP;
-    private javax.swing.JLabel labelCPF;
     private javax.swing.JLabel labelCPF1;
-    private javax.swing.JLabel labelCidade;
-    private javax.swing.JLabel labelComplemento;
-    private javax.swing.JLabel labelDataNascimento;
-    private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelFoto;
-    private javax.swing.JLabel labelLogradouro;
-    private javax.swing.JLabel labelNome;
     private javax.swing.JLabel labelNome1;
-    private javax.swing.JLabel labelNumero;
-    private javax.swing.JLabel labelRG;
     private javax.swing.JLabel labelShowFoto;
-    private javax.swing.JLabel labelTelefone;
-    private javax.swing.JLabel labelUF;
     private javax.swing.JLabel labelUF1;
     private javax.swing.JPanel panelButtoons;
     private javax.swing.JPanel panelCNH;
     private javax.swing.JPanel panelEndereco;
     private javax.swing.JPanel panelInfoPessoais;
     private javax.swing.JTabbedPane tabbedPane;
-    private javax.swing.JTextField textFieldBairro;
-    private javax.swing.JTextField textFieldCEP;
-    private javax.swing.JTextField textFieldCPF;
-    private javax.swing.JTextField textFieldCidade;
-    private javax.swing.JTextField textFieldComplemento;
-    private javax.swing.JTextField textFieldEmail;
     private javax.swing.JTextField textFieldFoto;
-    private javax.swing.JTextField textFieldLogradouro;
-    private javax.swing.JTextField textFieldNome;
-    private javax.swing.JTextField textFieldNumero;
     private javax.swing.JTextField textFieldNumeroRegistro;
-    private javax.swing.JTextField textFieldRG;
-    private javax.swing.JTextField textFieldTelefone;
     // End of variables declaration//GEN-END:variables
 }

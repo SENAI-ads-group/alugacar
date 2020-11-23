@@ -17,6 +17,7 @@ public class Motorista {
     private CNH cnh;
 
     public Motorista() {
+        pessoa = new PessoaFisica();
     }
 
     public Motorista(Integer id, PessoaFisica pessoa, CNH cnh, boolean ativo) {

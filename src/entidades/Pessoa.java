@@ -1,7 +1,5 @@
 package entidades;
 
-import entidades.Endereco;
-
 /**
  *
  * @author Patrick-Ribeiro

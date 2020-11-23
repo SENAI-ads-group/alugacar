@@ -1,6 +1,8 @@
 package ui.frames;
 
+import java.awt.Dimension;
 import ui.listeners.MouseListenerPanelButtonMenu;
+import ui.panels.PanelMotoristasList;
 
 /**
  *
@@ -49,7 +51,9 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemConfiguracoes = new javax.swing.JPanel();
         labelIconConfiguracoes = new javax.swing.JLabel();
         labelMenuConfiguracoes = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollPaneCenter = new javax.swing.JScrollPane();
+        panelCenter = new javax.swing.JPanel();
+        panelLoader = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Locação de Veículos");
@@ -134,7 +138,7 @@ public class FrameMain extends javax.swing.JFrame {
 
         labelMenuVeiculos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelMenuVeiculos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labelMenuVeiculos.setText("Veiculos");
+        labelMenuVeiculos.setText("Veículos");
         panelMenuItemVeiculos.add(labelMenuVeiculos, java.awt.BorderLayout.CENTER);
 
         panelMenu.add(panelMenuItemVeiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 205, -1, -1));
@@ -181,10 +185,21 @@ public class FrameMain extends javax.swing.JFrame {
 
         getContentPane().add(panelMenu, java.awt.BorderLayout.LINE_START);
 
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setFocusable(false);
-        jScrollPane1.setRequestFocusEnabled(false);
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        scrollPaneCenter.setBorder(null);
+        scrollPaneCenter.setFocusable(false);
+        scrollPaneCenter.setRequestFocusEnabled(false);
+
+        panelCenter.setBackground(new java.awt.Color(255, 255, 255));
+        panelCenter.setPreferredSize(new java.awt.Dimension(1200, 768));
+        panelCenter.setLayout(new java.awt.BorderLayout());
+
+        panelLoader.setBackground(new java.awt.Color(255, 255, 255));
+        panelLoader.setPreferredSize(new java.awt.Dimension(1200, 768));
+        panelCenter.add(panelLoader, java.awt.BorderLayout.CENTER);
+
+        scrollPaneCenter.setViewportView(panelCenter);
+
+        getContentPane().add(scrollPaneCenter, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -198,7 +213,15 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemClientesMouseClicked
 
     private void panelMenuItemMotoristasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMouseClicked
-        // TODO add your handling code here:
+        PanelMotoristasList panelLoaded = new PanelMotoristasList();
+        panelLoader.removeAll();
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoader.add(panelLoaded);
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+        panelLoaded.updateTable();
     }//GEN-LAST:event_panelMenuItemMotoristasMouseClicked
 
     private void panelMenuItemVeiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMouseClicked
@@ -215,7 +238,6 @@ public class FrameMain extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelIconClientes;
     private javax.swing.JLabel labelIconConfiguracoes;
     private javax.swing.JLabel labelIconDashboard;
@@ -228,6 +250,8 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelMenuMotoristas;
     private javax.swing.JLabel labelMenuRelatorios;
     private javax.swing.JLabel labelMenuVeiculos;
+    private javax.swing.JPanel panelCenter;
+    private javax.swing.JPanel panelLoader;
     private javax.swing.JPanel panelMenu;
     private javax.swing.JPanel panelMenuItemClientes;
     private javax.swing.JPanel panelMenuItemConfiguracoes;
@@ -235,5 +259,6 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelMenuItemMotoristas;
     private javax.swing.JPanel panelMenuItemRelatorios;
     private javax.swing.JPanel panelMenuItemVeiculos;
+    private javax.swing.JScrollPane scrollPaneCenter;
     // End of variables declaration//GEN-END:variables
 }

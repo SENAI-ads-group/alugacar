@@ -73,6 +73,7 @@ public class CNHPersistenceServiceCSV implements CNHPersistenseService {
             throw new IllegalStateException("numeroRegistro está nulo");
         }
         connection.open(arquivoDB);
+        
         String linha = connection.reader().readLine();
         while (linha != null) {
             CNH cnhEncontrada = new CNH(linha.split(";"));

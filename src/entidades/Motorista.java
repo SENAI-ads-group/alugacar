@@ -1,7 +1,10 @@
 package entidades;
 
+import entidades.enums.UF;
 import entidades.services.persistence.PersistenceFactory;
 import java.io.File;
+import java.util.Date;
+import util.DateUtilities;
 import util.Utilities;
 
 /**
@@ -27,13 +30,13 @@ public class Motorista {
         this.ativo = ativo;
     }
 
-    public Motorista(String[] csv, PessoaFisica pessoa) {
+    public Motorista(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
         ativo = Boolean.parseBoolean(csv[1]);
         foto = new File(csv[2]);
         Integer numeroRegistroCNH = Utilities.tryParseToInteger(csv[3]);
         cnh = PersistenceFactory.createCNHService().buscar(numeroRegistroCNH);
-        this.pessoa = pessoa;
+        pessoa = instanciarPessoa(csv);
     }
 
     public Integer getId() {
@@ -82,5 +85,24 @@ public class Motorista {
                 + foto.getAbsolutePath() + ";"
                 + cnh.getNumeroRegistro() + ";"
                 + pessoa.toCSV();
+    }
+
+    private PessoaFisica instanciarPessoa(String[] csv) {
+        String nome = csv[4];
+        String telefone = csv[5];
+        String email = csv[6];
+        String logradouro = csv[7];
+        Integer numero = Utilities.tryParseToInteger(csv[8]);
+        String complemento = csv[9];
+        String bairro = csv[10];
+        String cidade = csv[11];
+        UF uf = UF.valueOf(csv[12]);
+        String cep = csv[13];
+        String cpf = csv[14];
+        Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
+        Integer registroGeral = Utilities.tryParseToInteger(csv[16]);
+
+        Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
     }
 }

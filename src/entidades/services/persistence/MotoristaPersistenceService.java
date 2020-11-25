@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.Motorista;
+import entidades.services.persistence.exceptions.PersistenceException;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface MotoristaPersistenceService {
 
-    void inserir(Motorista motorista);
+    void inserir(Motorista motorista) throws PersistenceException;
 
     void atualizar(Motorista motorista);
 

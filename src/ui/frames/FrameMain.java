@@ -10,8 +10,6 @@ import ui.panels.PanelMotoristasList;
  */
 public class FrameMain extends javax.swing.JFrame {
 
-    private boolean showingSubMenu = false;
-
     public FrameMain() {
         initComponents();
 
@@ -205,7 +203,7 @@ public class FrameMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelMenuItemDashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDashboardMouseClicked
-        System.out.println("Clicou");
+
     }//GEN-LAST:event_panelMenuItemDashboardMouseClicked
 
     private void panelMenuItemClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMouseClicked

@@ -3,7 +3,6 @@ package entidades.services.persistence;
 import entidades.services.persistence.csv.CNHPersistenceServiceCSV;
 import entidades.services.persistence.csv.CategoriaPersistenceServiceCSV;
 import entidades.services.persistence.csv.ClientePersistenceServiceCSV;
-import entidades.services.persistence.csv.EnderecoPersistenceServiceCSV;
 import entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
 import entidades.services.persistence.csv.ModeloPersistenceServiceCSV;
 import entidades.services.persistence.csv.MotoristaPersistenceServiceCSV;

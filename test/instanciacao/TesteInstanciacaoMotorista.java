@@ -26,7 +26,7 @@ public class TesteInstanciacaoMotorista {
         motorista.setFoto(foto);
         System.out.println(motorista.toCSV());
 
-        Motorista motorista1 = new Motorista(motorista.toCSV().split(";"), pessoa);
+        Motorista motorista1 = new Motorista(motorista.toCSV().split(";"));
         //System.out.println(motorista1.toCSV());
     }
 }

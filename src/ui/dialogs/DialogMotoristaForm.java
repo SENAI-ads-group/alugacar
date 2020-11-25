@@ -1,18 +1,29 @@
 package ui.dialogs;
 
+import entidades.CNH;
 import entidades.Endereco;
 import entidades.Motorista;
+import entidades.PessoaFisica;
 import entidades.enums.CategoriaCNH;
-import entidades.enums.UF;
+import entidades.services.persistence.MotoristaPersistenceService;
+import entidades.services.persistence.PersistenceFactory;
+import entidades.services.persistence.exceptions.PersistenceException;
 import java.awt.Image;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
 import ui.panels.PanelFormPessoaFisica;
+import ui.panels.PanelMotoristasList;
+import util.PanelUtilities;
+import util.Utilities;
 
 /**
  *
@@ -21,6 +32,14 @@ import ui.panels.PanelFormPessoaFisica;
 public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
+    private MotoristaPersistenceService MotoristaPersistenceService = PersistenceFactory.createMotoristaService();
+
+    private PanelFormEndereco panelFormEndereco;
+    private PanelFormPessoaFisica panelFormPessoaFisica;
+    private PanelMotoristasList panelMotoristasList;
+    private File fileFotoMotorista;
+
+    private final List<DataChangeListener> listeners;
 
     public DialogMotoristaForm(java.awt.Frame parent, boolean modal, Motorista motorista) {
         super(parent, modal);
@@ -29,29 +48,56 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         initCombobox();
         loadPanels();
 
+        listeners = new ArrayList<>();
     }
 
     private void loadPanels() {
-        panelEndereco.removeAll();
-        panelEndereco.revalidate();
-        panelEndereco.repaint();
-        panelInfoPessoais.removeAll();
-        panelInfoPessoais.revalidate();
-        panelInfoPessoais.repaint();
+        panelFormEndereco = new PanelFormEndereco(motorista.getPessoa().getEndereco());
+        panelFormPessoaFisica = new PanelFormPessoaFisica(motorista.getPessoa());
 
-        PanelFormEndereco panelFormEndereco = new PanelFormEndereco(motorista.getPessoa().getEndereco());
-        PanelFormPessoaFisica panelFormPessoaFisica = new PanelFormPessoaFisica(motorista.getPessoa());
-
-        panelEndereco.add(panelFormEndereco);
-        panelEndereco.revalidate();
-        panelEndereco.repaint();
-        panelInfoPessoais.add(panelFormPessoaFisica);
-        panelInfoPessoais.revalidate();
-        panelInfoPessoais.repaint();
+        PanelUtilities.loadPanelToPanel(panelFormEndereco, panelEndereco);
+        PanelUtilities.loadPanelToPanel(panelFormPessoaFisica, panelInfoPessoais);
     }
 
     private void initCombobox() {
         comboBoxCategoriaCNH.setModel(new DefaultComboBoxModel(CategoriaCNH.values()));
+    }
+
+    private void persistEntity() throws PersistenceException {
+        motorista = getFormData();
+        if (motorista.getId() == null) {
+            MotoristaPersistenceService.inserir(motorista);
+        } else {
+            MotoristaPersistenceService.atualizar(motorista);
+        }
+    }
+
+    public Motorista getFormData() {
+        Endereco endereco = panelFormEndereco.getFormData();
+        PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
+        pessoa.setEndereco(endereco);
+        motorista.setPessoa(pessoa);
+
+        Integer numeroRegistroCNH = Utilities.tryParseToInteger(textFieldNumeroRegistro.getText());
+        Date dataValidadeCNH = dateChooserValidadeCNH.getDate();
+        CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
+        CNH cnh = new CNH(numeroRegistroCNH, categoriaCNH, dataValidadeCNH);
+        motorista.setCnh(cnh);
+        motorista.setFoto(fileFotoMotorista);
+
+        return motorista;
+    }
+
+    public void subscribeListener(DataChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public void notifyListeners() {
+        if (listeners.size() > 0) {
+            for (DataChangeListener listener : listeners) {
+                listener.onDataChanged();
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -202,7 +248,13 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
-
+        try {
+            persistEntity();
+            this.dispose();
+            notifyListeners();
+        } catch (PersistenceException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buttonConfirmarActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
@@ -216,9 +268,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         int retorno = fileChooser.showOpenDialog(this);
         if (retorno == JFileChooser.APPROVE_OPTION) {
-            File fileSelected = fileChooser.getSelectedFile();
-            textFieldFoto.setText(fileSelected.getPath());
-            ImageIcon imageIcon = new ImageIcon(fileSelected.getPath());
+            fileFotoMotorista = fileChooser.getSelectedFile();
+            textFieldFoto.setText(fileFotoMotorista.getPath());
+            ImageIcon imageIcon = new ImageIcon(fileFotoMotorista.getPath());
             Image image = imageIcon.getImage().getScaledInstance(labelShowFoto.getWidth(), labelShowFoto.getHeight(), Image.SCALE_DEFAULT);
             labelShowFoto.setIcon(new ImageIcon(image));
             labelShowFoto.repaint();

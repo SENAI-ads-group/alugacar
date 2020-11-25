@@ -1,7 +1,6 @@
 package persistencia;
 
 import entidades.CNH;
-import entidades.Marca;
 import entidades.enums.CategoriaCNH;
 import entidades.services.persistence.CNHPersistenseService;
 import entidades.services.persistence.PersistenceFactory;

@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.Cliente;
+import entidades.services.persistence.exceptions.PersistenceException;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ import java.util.List;
  *
  * @author Alexsander
  */
-public interface ClientePersistenceService {
+public interface ClientePersistenceService  {
 
-    void inserir(Cliente cliente);
+    void inserir(Cliente cliente) throws PersistenceException;
 
     void atualizar(Cliente cliente);
 

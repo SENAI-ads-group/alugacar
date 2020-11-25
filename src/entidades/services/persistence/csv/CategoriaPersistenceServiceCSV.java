@@ -2,7 +2,6 @@ package entidades.services.persistence.csv;
 
 import application.Configurations;
 import entidades.Categoria;
-import entidades.Marca;
 import entidades.services.persistence.CategoriaPersistenceService;
 import entidades.services.persistence.exceptions.PersistenceException;
 import java.io.File;

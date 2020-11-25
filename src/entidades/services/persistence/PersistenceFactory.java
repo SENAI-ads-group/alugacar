@@ -3,7 +3,7 @@ package entidades.services.persistence;
 import entidades.services.persistence.csv.CNHPersistenceServiceCSV;
 import entidades.services.persistence.csv.CategoriaPersistenceServiceCSV;
 import entidades.services.persistence.csv.ClientePersistenceServiceCSV;
-import entidades.services.persistence.csv.EnderecoPersistenceServiceCSV;
+
 import entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
 import entidades.services.persistence.csv.ModeloPersistenceServiceCSV;
 import entidades.services.persistence.csv.MotoristaPersistenceServiceCSV;
@@ -44,9 +44,6 @@ public class PersistenceFactory {
         return new CNHPersistenceServiceCSV();
     }
 
-    /*public static EnderecoPersistenseService createEnderecoService() {
-        return new EnderecoPersistenceServiceCSV();
-    }*/
     
     public static VeiculoPersistenceService createVeiculoService() {
         return new VeiculoPersistenceServiceCSV();

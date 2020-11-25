@@ -8,7 +8,7 @@ public class PessoaJuridica extends Pessoa {
 
     private String cnpj;
     private String razaoSocial;
-    private String nomeFantasia;
+
     private Integer inscricaoEstadual;
 
     public PessoaJuridica(String nome) {
@@ -26,11 +26,10 @@ public class PessoaJuridica extends Pessoa {
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
-    public PessoaJuridica(String nome, String telefone, String email, Endereco endereco, String cnpj, String razaoSocial, String nomeFantasia, Integer inscricaoEstadual) {
+    public PessoaJuridica(String nome, String telefone, String email, Endereco endereco, String cnpj, String razaoSocial, Integer inscricaoEstadual) {
         super(nome, telefone, email, endereco);
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
-        this.nomeFantasia = nomeFantasia;
         this.inscricaoEstadual = inscricaoEstadual;
     }
 
@@ -50,14 +49,6 @@ public class PessoaJuridica extends Pessoa {
         this.razaoSocial = razaoSocial;
     }
 
-    public String getNomeFantasia() {
-        return nomeFantasia;
-    }
-
-    public void setNomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
-    }
-
     public Integer getInscricaoEstadual() {
         return inscricaoEstadual;
     }
@@ -70,7 +61,6 @@ public class PessoaJuridica extends Pessoa {
     public String toCSV() {
         return super.toCSV() + ";"
                 + cnpj + ";"
-                + nomeFantasia + ";"
                 + razaoSocial + ";"
                 + inscricaoEstadual;
     }

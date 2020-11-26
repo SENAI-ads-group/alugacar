@@ -18,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.nashorn.internal.scripts.JO;
 import model.exceptions.ValidationException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
@@ -35,7 +34,7 @@ import util.Utilities;
 public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
-    private MotoristaPersistenceService MotoristaPersistenceService = PersistenceFactory.createMotoristaService();
+    private final MotoristaPersistenceService MotoristaPersistenceService = PersistenceFactory.createMotoristaService();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
@@ -58,8 +57,8 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         panelFormEndereco = new PanelFormEndereco(motorista.getPessoa().getEndereco());
         panelFormPessoaFisica = new PanelFormPessoaFisica(motorista.getPessoa());
 
-        PanelUtilities.loadPanelToPanel(panelFormEndereco, panelEndereco);
-        PanelUtilities.loadPanelToPanel(panelFormPessoaFisica, panelInfoPessoais);
+        PanelUtilities.loadPanelToPanel(panelFormPessoaFisica, panelCenterTab1);
+        PanelUtilities.loadPanelToPanel(panelFormEndereco, panelCenterTab3);
     }
 
     private void initCombobox() {
@@ -112,81 +111,176 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private void initComponents() {
 
         tabbedPane = new javax.swing.JTabbedPane();
-        panelInfoPessoais = new javax.swing.JPanel();
+        panelTab1 = new javax.swing.JPanel();
+        panelTopTab1 = new javax.swing.JPanel();
+        panelBorderLeftTab1 = new javax.swing.JPanel();
+        panelCenterTab1 = new javax.swing.JPanel();
+        panelBorderRightTab1 = new javax.swing.JPanel();
+        panelTab2 = new javax.swing.JPanel();
+        panelTopTab2 = new javax.swing.JPanel();
+        panelBorderLeftTab2 = new javax.swing.JPanel();
+        panelCenterTab2 = new javax.swing.JPanel();
         panelCNH = new javax.swing.JPanel();
         textFieldNumeroRegistro = new javax.swing.JTextField();
-        labelNome1 = new javax.swing.JLabel();
-        labelCPF1 = new javax.swing.JLabel();
+        labelNumRegistro = new javax.swing.JLabel();
+        labelDataValidade = new javax.swing.JLabel();
         comboBoxCategoriaCNH = new javax.swing.JComboBox<>();
-        labelUF1 = new javax.swing.JLabel();
+        labelCategoria = new javax.swing.JLabel();
         textFieldFoto = new javax.swing.JTextField();
         labelFoto = new javax.swing.JLabel();
         buttonBuscarFoto = new javax.swing.JButton();
         dateChooserValidadeCNH = new com.toedter.calendar.JDateChooser();
         labelShowFoto = new javax.swing.JLabel();
+        labelErroNumRegistro = new javax.swing.JLabel();
         labelErroFoto = new javax.swing.JLabel();
-        labelErroNumRegistros = new javax.swing.JLabel();
         labelErroCategoriaCNH = new javax.swing.JLabel();
-        labelErroDataValidadeCNH = new javax.swing.JLabel();
-        panelEndereco = new javax.swing.JPanel();
+        labelErroValidadeCNH = new javax.swing.JLabel();
+        panelBorderRightTab2 = new javax.swing.JPanel();
+        panelTab3 = new javax.swing.JPanel();
+        panelTopTab3 = new javax.swing.JPanel();
+        panelBorderLeftTab3 = new javax.swing.JPanel();
+        panelCenterTab3 = new javax.swing.JPanel();
+        panelBorderRightTab4 = new javax.swing.JPanel();
         panelButtons = new javax.swing.JPanel();
-        buttonConfirmar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         buttonCancelar = new javax.swing.JButton();
+        buttonConfirmar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de motorista");
-        setMaximumSize(new java.awt.Dimension(400, 400));
-        setMinimumSize(new java.awt.Dimension(400, 400));
+        setMaximumSize(new java.awt.Dimension(440, 420));
+        setMinimumSize(new java.awt.Dimension(440, 420));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(440, 420));
+        setResizable(false);
+        setSize(new java.awt.Dimension(440, 420));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 50));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 400));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 330));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
         tabbedPane.setRequestFocusEnabled(false);
 
-        panelInfoPessoais.setBackground(new java.awt.Color(255, 255, 255));
-        panelInfoPessoais.setMaximumSize(new java.awt.Dimension(400, 0));
-        panelInfoPessoais.setMinimumSize(new java.awt.Dimension(400, 400));
-        panelInfoPessoais.setPreferredSize(new java.awt.Dimension(400, 320));
-        tabbedPane.addTab("Informações pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelInfoPessoais, "Informações pessoais do motorista"); // NOI18N
+        panelTab1.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab1.setMaximumSize(new java.awt.Dimension(400, 280));
+        panelTab1.setMinimumSize(new java.awt.Dimension(400, 280));
+        panelTab1.setPreferredSize(new java.awt.Dimension(400, 280));
+        panelTab1.setLayout(new java.awt.BorderLayout());
+
+        panelTopTab1.setBackground(new java.awt.Color(255, 255, 255));
+        panelTopTab1.setPreferredSize(new java.awt.Dimension(400, 10));
+        panelTab1.add(panelTopTab1, java.awt.BorderLayout.PAGE_START);
+
+        panelBorderLeftTab1.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderLeftTab1.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderLeftTab1.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderLeftTab1Layout = new javax.swing.GroupLayout(panelBorderLeftTab1);
+        panelBorderLeftTab1.setLayout(panelBorderLeftTab1Layout);
+        panelBorderLeftTab1Layout.setHorizontalGroup(
+            panelBorderLeftTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderLeftTab1Layout.setVerticalGroup(
+            panelBorderLeftTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab1.add(panelBorderLeftTab1, java.awt.BorderLayout.LINE_START);
+
+        panelCenterTab1.setBackground(new java.awt.Color(250, 250, 250));
+        panelCenterTab1.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab1.setLayout(new javax.swing.BoxLayout(panelCenterTab1, javax.swing.BoxLayout.LINE_AXIS));
+        panelTab1.add(panelCenterTab1, java.awt.BorderLayout.CENTER);
+
+        panelBorderRightTab1.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderRightTab1.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderRightTab1.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderRightTab1Layout = new javax.swing.GroupLayout(panelBorderRightTab1);
+        panelBorderRightTab1.setLayout(panelBorderRightTab1Layout);
+        panelBorderRightTab1Layout.setHorizontalGroup(
+            panelBorderRightTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderRightTab1Layout.setVerticalGroup(
+            panelBorderRightTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
+
+        tabbedPane.addTab("Informações Pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1); // NOI18N
+
+        panelTab2.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab2.setMaximumSize(new java.awt.Dimension(400, 280));
+        panelTab2.setMinimumSize(new java.awt.Dimension(400, 280));
+        panelTab2.setPreferredSize(new java.awt.Dimension(400, 280));
+        panelTab2.setLayout(new java.awt.BorderLayout());
+
+        panelTopTab2.setBackground(new java.awt.Color(255, 255, 255));
+        panelTopTab2.setPreferredSize(new java.awt.Dimension(400, 10));
+        panelTab2.add(panelTopTab2, java.awt.BorderLayout.PAGE_START);
+
+        panelBorderLeftTab2.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderLeftTab2.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderLeftTab2.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderLeftTab2Layout = new javax.swing.GroupLayout(panelBorderLeftTab2);
+        panelBorderLeftTab2.setLayout(panelBorderLeftTab2Layout);
+        panelBorderLeftTab2Layout.setHorizontalGroup(
+            panelBorderLeftTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderLeftTab2Layout.setVerticalGroup(
+            panelBorderLeftTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab2.add(panelBorderLeftTab2, java.awt.BorderLayout.LINE_START);
+
+        panelCenterTab2.setBackground(new java.awt.Color(250, 250, 250));
+        panelCenterTab2.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab2.setLayout(new javax.swing.BoxLayout(panelCenterTab2, javax.swing.BoxLayout.LINE_AXIS));
 
         panelCNH.setBackground(new java.awt.Color(255, 255, 255));
-        panelCNH.setMaximumSize(new java.awt.Dimension(400, 0));
-        panelCNH.setMinimumSize(new java.awt.Dimension(400, 400));
-        panelCNH.setPreferredSize(new java.awt.Dimension(400, 320));
+        panelCNH.setMaximumSize(new java.awt.Dimension(400, 280));
+        panelCNH.setMinimumSize(new java.awt.Dimension(400, 280));
+        panelCNH.setPreferredSize(new java.awt.Dimension(400, 280));
         panelCNH.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textFieldNumeroRegistro.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldNumeroRegistro.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldNumeroRegistro.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(textFieldNumeroRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+        panelCNH.add(textFieldNumeroRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
 
-        labelNome1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelNome1.setText("Número de registro");
-        panelCNH.add(labelNome1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+        labelNumRegistro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelNumRegistro.setText("Número de registro");
+        panelCNH.add(labelNumRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        labelCPF1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelCPF1.setText("Data validade");
-        panelCNH.add(labelCPF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 75, -1, -1));
+        labelDataValidade.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelDataValidade.setText("Data validade");
+        panelCNH.add(labelDataValidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
         comboBoxCategoriaCNH.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(comboBoxCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
+        panelCNH.add(comboBoxCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
-        labelUF1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelUF1.setText("Categoria");
-        panelCNH.add(labelUF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
+        labelCategoria.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelCategoria.setText("Categoria");
+        panelCNH.add(labelCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
 
         textFieldFoto.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldFoto.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldFoto.setPreferredSize(new java.awt.Dimension(140, 25));
-        panelCNH.add(textFieldFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 95, -1, -1));
+        panelCNH.add(textFieldFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
 
         labelFoto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelFoto.setText("Foto");
-        panelCNH.add(labelFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 75, 110, -1));
+        panelCNH.add(labelFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 110, -1));
 
         buttonBuscarFoto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonBuscarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pasta-24x24.png"))); // NOI18N
@@ -199,73 +293,128 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonBuscarFotoActionPerformed(evt);
             }
         });
-        panelCNH.add(buttonBuscarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 95, -1, -1));
+        panelCNH.add(buttonBuscarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
 
         dateChooserValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 95, -1, -1));
+        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
 
         labelShowFoto.setMaximumSize(new java.awt.Dimension(170, 90));
         labelShowFoto.setMinimumSize(new java.awt.Dimension(170, 90));
         labelShowFoto.setPreferredSize(new java.awt.Dimension(170, 90));
-        panelCNH.add(labelShowFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 135, -1, -1));
+        panelCNH.add(labelShowFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, -1, 120));
+
+        labelErroNumRegistro.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroNumRegistro.setForeground(java.awt.Color.red);
+        labelErroNumRegistro.setMaximumSize(new java.awt.Dimension(170, 15));
+        labelErroNumRegistro.setMinimumSize(new java.awt.Dimension(170, 15));
+        labelErroNumRegistro.setPreferredSize(new java.awt.Dimension(170, 15));
+        panelCNH.add(labelErroNumRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
 
         labelErroFoto.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroFoto.setForeground(java.awt.Color.red);
         labelErroFoto.setMaximumSize(new java.awt.Dimension(170, 15));
         labelErroFoto.setMinimumSize(new java.awt.Dimension(170, 15));
         labelErroFoto.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, -1, -1));
-
-        labelErroNumRegistros.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroNumRegistros.setForeground(java.awt.Color.red);
-        labelErroNumRegistros.setMaximumSize(new java.awt.Dimension(170, 15));
-        labelErroNumRegistros.setMinimumSize(new java.awt.Dimension(170, 15));
-        labelErroNumRegistros.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroNumRegistros, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 55, -1, -1));
+        panelCNH.add(labelErroFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 105, -1, -1));
 
         labelErroCategoriaCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroCategoriaCNH.setForeground(java.awt.Color.red);
         labelErroCategoriaCNH.setMaximumSize(new java.awt.Dimension(170, 15));
         labelErroCategoriaCNH.setMinimumSize(new java.awt.Dimension(170, 15));
         labelErroCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 55, -1, -1));
+        panelCNH.add(labelErroCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, -1, -1));
 
-        labelErroDataValidadeCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroDataValidadeCNH.setForeground(java.awt.Color.red);
-        labelErroDataValidadeCNH.setMaximumSize(new java.awt.Dimension(150, 15));
-        labelErroDataValidadeCNH.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroDataValidadeCNH.setPreferredSize(new java.awt.Dimension(150, 15));
-        panelCNH.add(labelErroDataValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 170, -1));
+        labelErroValidadeCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroValidadeCNH.setForeground(java.awt.Color.red);
+        labelErroValidadeCNH.setMaximumSize(new java.awt.Dimension(170, 15));
+        labelErroValidadeCNH.setMinimumSize(new java.awt.Dimension(170, 15));
+        labelErroValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 15));
+        panelCNH.add(labelErroValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
-        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelCNH); // NOI18N
+        panelCenterTab2.add(panelCNH);
 
-        panelEndereco.setBackground(new java.awt.Color(255, 255, 255));
-        panelEndereco.setMaximumSize(new java.awt.Dimension(400, 0));
-        panelEndereco.setMinimumSize(new java.awt.Dimension(400, 400));
-        panelEndereco.setPreferredSize(new java.awt.Dimension(400, 320));
-        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelEndereco, "Dados do endereço do motorista"); // NOI18N
+        panelTab2.add(panelCenterTab2, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(tabbedPane, java.awt.BorderLayout.PAGE_START);
+        panelBorderRightTab2.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderRightTab2.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderRightTab2.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderRightTab2Layout = new javax.swing.GroupLayout(panelBorderRightTab2);
+        panelBorderRightTab2.setLayout(panelBorderRightTab2Layout);
+        panelBorderRightTab2Layout.setHorizontalGroup(
+            panelBorderRightTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderRightTab2Layout.setVerticalGroup(
+            panelBorderRightTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
+
+        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2); // NOI18N
+
+        panelTab3.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab3.setMaximumSize(new java.awt.Dimension(400, 280));
+        panelTab3.setMinimumSize(new java.awt.Dimension(400, 280));
+        panelTab3.setPreferredSize(new java.awt.Dimension(400, 280));
+        panelTab3.setLayout(new java.awt.BorderLayout());
+
+        panelTopTab3.setBackground(new java.awt.Color(255, 255, 255));
+        panelTopTab3.setPreferredSize(new java.awt.Dimension(400, 10));
+        panelTab3.add(panelTopTab3, java.awt.BorderLayout.PAGE_START);
+
+        panelBorderLeftTab3.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderLeftTab3.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderLeftTab3.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderLeftTab3Layout = new javax.swing.GroupLayout(panelBorderLeftTab3);
+        panelBorderLeftTab3.setLayout(panelBorderLeftTab3Layout);
+        panelBorderLeftTab3Layout.setHorizontalGroup(
+            panelBorderLeftTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderLeftTab3Layout.setVerticalGroup(
+            panelBorderLeftTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab3.add(panelBorderLeftTab3, java.awt.BorderLayout.LINE_START);
+
+        panelCenterTab3.setBackground(new java.awt.Color(250, 250, 250));
+        panelCenterTab3.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab3.setLayout(new javax.swing.BoxLayout(panelCenterTab3, javax.swing.BoxLayout.LINE_AXIS));
+        panelTab3.add(panelCenterTab3, java.awt.BorderLayout.CENTER);
+
+        panelBorderRightTab4.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderRightTab4.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderRightTab4.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderRightTab4Layout = new javax.swing.GroupLayout(panelBorderRightTab4);
+        panelBorderRightTab4.setLayout(panelBorderRightTab4Layout);
+        panelBorderRightTab4Layout.setHorizontalGroup(
+            panelBorderRightTab4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderRightTab4Layout.setVerticalGroup(
+            panelBorderRightTab4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab3.add(panelBorderRightTab4, java.awt.BorderLayout.LINE_END);
+
+        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab3); // NOI18N
+
+        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(400, 0));
-        panelButtons.setMinimumSize(new java.awt.Dimension(400, 400));
-        panelButtons.setPreferredSize(new java.awt.Dimension(400, 70));
+        panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
+        panelButtons.setMinimumSize(new java.awt.Dimension(400, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(400, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
+        panelButtons.setLayout(new java.awt.BorderLayout());
 
-        buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-confirmar-24x24.png"))); // NOI18N
-        buttonConfirmar.setText("Confirmar");
-        buttonConfirmar.setBorderPainted(false);
-        buttonConfirmar.setFocusPainted(false);
-        buttonConfirmar.setFocusable(false);
-        buttonConfirmar.setPreferredSize(new java.awt.Dimension(115, 35));
-        buttonConfirmar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonConfirmarActionPerformed(evt);
-            }
-        });
-        panelButtons.add(buttonConfirmar);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cancelar-24x24.png"))); // NOI18N
@@ -279,9 +428,29 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonCancelarActionPerformed(evt);
             }
         });
-        panelButtons.add(buttonCancelar);
+        jPanel1.add(buttonCancelar);
 
-        getContentPane().add(panelButtons, java.awt.BorderLayout.CENTER);
+        buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-confirmar-24x24.png"))); // NOI18N
+        buttonConfirmar.setText("Confirmar");
+        buttonConfirmar.setBorderPainted(false);
+        buttonConfirmar.setFocusPainted(false);
+        buttonConfirmar.setFocusable(false);
+        buttonConfirmar.setPreferredSize(new java.awt.Dimension(115, 35));
+        buttonConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonConfirmarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buttonConfirmar);
+
+        jLabel1.setToolTipText("");
+        jLabel1.setPreferredSize(new java.awt.Dimension(5, 5));
+        jPanel1.add(jLabel1);
+
+        panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
+
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -293,7 +462,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             this.dispose();
             notifyListeners();
         } catch (ValidationException ex) {
-            JOptionPane.showMessageDialog(rootPane, "Não foi possível prosseguir, por favor verifique os campos marcados em vermelho", "Erro de validação no formulário", JOptionPane.ERROR_MESSAGE);
             panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
             panelFormEndereco.setErrorsMessages(ex.getErrors());
         } catch (PersistenceException ex) {
@@ -328,19 +496,34 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private javax.swing.JButton buttonConfirmar;
     private javax.swing.JComboBox<String> comboBoxCategoriaCNH;
     private com.toedter.calendar.JDateChooser dateChooserValidadeCNH;
-    private javax.swing.JLabel labelCPF1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelCategoria;
+    private javax.swing.JLabel labelDataValidade;
     private javax.swing.JLabel labelErroCategoriaCNH;
-    private javax.swing.JLabel labelErroDataValidadeCNH;
     private javax.swing.JLabel labelErroFoto;
-    private javax.swing.JLabel labelErroNumRegistros;
+    private javax.swing.JLabel labelErroNumRegistro;
+    private javax.swing.JLabel labelErroValidadeCNH;
     private javax.swing.JLabel labelFoto;
-    private javax.swing.JLabel labelNome1;
+    private javax.swing.JLabel labelNumRegistro;
     private javax.swing.JLabel labelShowFoto;
-    private javax.swing.JLabel labelUF1;
+    private javax.swing.JPanel panelBorderLeftTab1;
+    private javax.swing.JPanel panelBorderLeftTab2;
+    private javax.swing.JPanel panelBorderLeftTab3;
+    private javax.swing.JPanel panelBorderRightTab1;
+    private javax.swing.JPanel panelBorderRightTab2;
+    private javax.swing.JPanel panelBorderRightTab4;
     private javax.swing.JPanel panelButtons;
     private javax.swing.JPanel panelCNH;
-    private javax.swing.JPanel panelEndereco;
-    private javax.swing.JPanel panelInfoPessoais;
+    private javax.swing.JPanel panelCenterTab1;
+    private javax.swing.JPanel panelCenterTab2;
+    private javax.swing.JPanel panelCenterTab3;
+    private javax.swing.JPanel panelTab1;
+    private javax.swing.JPanel panelTab2;
+    private javax.swing.JPanel panelTab3;
+    private javax.swing.JPanel panelTopTab1;
+    private javax.swing.JPanel panelTopTab2;
+    private javax.swing.JPanel panelTopTab3;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTextField textFieldFoto;
     private javax.swing.JTextField textFieldNumeroRegistro;

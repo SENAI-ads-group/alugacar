@@ -14,20 +14,20 @@ import ui.listeners.DataChangeListener;
  * @author patrick-ribeiro
  */
 public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
-    
-    private MotoristaPersistenceService persistenceService = PersistenceFactory.createMotoristaService();
-    
+
+    private final MotoristaPersistenceService persistenceService = PersistenceFactory.createMotoristaService();
+
     public PanelMotoristasList() {
         initComponents();
         updateTable();
     }
-    
+
     public void updateTable() {
         List<Motorista> motoristas = persistenceService.buscarTodos();
-        
+
         DefaultTableModel tableModel = (DefaultTableModel) tableMotoristas.getModel();
         tableModel.setNumRows(0);
-        
+
         for (Motorista motorista : motoristas) {
             Object[] row = {
                 motorista.getId(),
@@ -45,18 +45,19 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             tableMotoristas.getSelectionModel().setSelectionInterval(0, 0);
         }
     }
-    
+
     public void createMotoristaForm(Motorista motorista) {
         DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
         dialogForm.subscribeListener(this);
         dialogForm.setVisible(true);
+
     }
-    
+
     @Override
     public void onDataChanged() {
         updateTable();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -145,6 +146,7 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
         jScrollPane1.setFocusable(false);
 
+        tableMotoristas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tableMotoristas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

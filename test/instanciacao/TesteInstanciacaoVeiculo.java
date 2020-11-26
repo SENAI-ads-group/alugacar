@@ -1,9 +1,9 @@
 package instanciacao;
 
-import entidades.Categoria;
-import entidades.Marca;
-import entidades.Modelo;
-import entidades.Veiculo;
+import model.entidades.Categoria;
+import model.entidades.Marca;
+import model.entidades.Modelo;
+import model.entidades.Veiculo;
 import java.util.Date;
 
 /**

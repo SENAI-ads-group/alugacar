@@ -1,13 +1,13 @@
 package ui.dialogs;
 
-import entidades.CNH;
-import entidades.Endereco;
-import entidades.Motorista;
-import entidades.PessoaFisica;
-import entidades.enums.CategoriaCNH;
-import entidades.services.persistence.MotoristaPersistenceService;
-import entidades.services.persistence.PersistenceFactory;
-import entidades.services.persistence.exceptions.PersistenceException;
+import model.entidades.CNH;
+import model.entidades.Endereco;
+import model.entidades.Motorista;
+import model.entidades.PessoaFisica;
+import model.entidades.enums.CategoriaCNH;
+import model.entidades.services.persistence.MotoristaPersistenceService;
+import model.entidades.services.persistence.PersistenceFactory;
+import model.entidades.services.persistence.exceptions.PersistenceException;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -18,10 +18,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.exceptions.ValidationException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
 import ui.panels.PanelFormPessoaFisica;
 import ui.panels.PanelMotoristasList;
+import util.DateUtilities;
 import util.PanelUtilities;
 import util.Utilities;
 
@@ -63,7 +65,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         comboBoxCategoriaCNH.setModel(new DefaultComboBoxModel(CategoriaCNH.values()));
     }
 
-    private void persistEntity() throws PersistenceException {
+    private void persistEntity() throws PersistenceException, ValidationException {
         motorista = getFormData();
         if (motorista.getId() == null) {
             MotoristaPersistenceService.inserir(motorista);
@@ -72,12 +74,16 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         }
     }
 
-    public Motorista getFormData() {
+    public Motorista getFormData() throws ValidationException {
         Endereco endereco = panelFormEndereco.getFormData();
         PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
+        if (DateUtilities.getAge(pessoa.getDataNascimento()) < Motorista.IDADE_MINIMA) {
+            ValidationException exception = new ValidationException("Exceção motorista fora da idade mínima");
+            exception.addError("dataNascimento", "Idade mínima " + Motorista.IDADE_MINIMA + " anos");
+            throw exception;
+        }
         pessoa.setEndereco(endereco);
         motorista.setPessoa(pessoa);
-
         Integer numeroRegistroCNH = Utilities.tryParseToInteger(textFieldNumeroRegistro.getText());
         Date dataValidadeCNH = dateChooserValidadeCNH.getDate();
         CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
@@ -117,33 +123,38 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         buttonBuscarFoto = new javax.swing.JButton();
         dateChooserValidadeCNH = new com.toedter.calendar.JDateChooser();
         labelShowFoto = new javax.swing.JLabel();
+        labelErroFoto = new javax.swing.JLabel();
+        labelErroNumRegistros = new javax.swing.JLabel();
+        labelErroCategoriaCNH = new javax.swing.JLabel();
+        labelErroDataValidadeCNH = new javax.swing.JLabel();
         panelEndereco = new javax.swing.JPanel();
-        panelButtoons = new javax.swing.JPanel();
+        panelButtons = new javax.swing.JPanel();
         buttonConfirmar = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de motorista");
+        setMaximumSize(new java.awt.Dimension(400, 350));
         setMinimumSize(new java.awt.Dimension(400, 300));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 240));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 240));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 240));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 270));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 270));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 270));
 
         panelInfoPessoais.setBackground(new java.awt.Color(255, 255, 255));
-        panelInfoPessoais.setMaximumSize(new java.awt.Dimension(400, 240));
-        panelInfoPessoais.setMinimumSize(new java.awt.Dimension(400, 240));
-        panelInfoPessoais.setPreferredSize(new java.awt.Dimension(400, 240));
-        tabbedPane.addTab("Informações Pessoais", panelInfoPessoais);
+        panelInfoPessoais.setMaximumSize(new java.awt.Dimension(400, 250));
+        panelInfoPessoais.setMinimumSize(new java.awt.Dimension(400, 250));
+        panelInfoPessoais.setPreferredSize(new java.awt.Dimension(400, 250));
+        tabbedPane.addTab("Informações pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelInfoPessoais, "Informações pessoais do motorista"); // NOI18N
 
         panelCNH.setBackground(new java.awt.Color(255, 255, 255));
-        panelCNH.setMaximumSize(new java.awt.Dimension(400, 240));
-        panelCNH.setMinimumSize(new java.awt.Dimension(400, 240));
-        panelCNH.setPreferredSize(new java.awt.Dimension(400, 240));
+        panelCNH.setMaximumSize(new java.awt.Dimension(400, 250));
+        panelCNH.setMinimumSize(new java.awt.Dimension(400, 250));
+        panelCNH.setPreferredSize(new java.awt.Dimension(400, 250));
         panelCNH.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textFieldNumeroRegistro.setMaximumSize(new java.awt.Dimension(170, 25));
@@ -157,7 +168,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         labelCPF1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelCPF1.setText("Data validade");
-        panelCNH.add(labelCPF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+        panelCNH.add(labelCPF1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 75, -1, -1));
 
         comboBoxCategoriaCNH.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 25));
@@ -170,11 +181,11 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         textFieldFoto.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldFoto.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldFoto.setPreferredSize(new java.awt.Dimension(140, 25));
-        panelCNH.add(textFieldFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, -1, -1));
+        panelCNH.add(textFieldFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 95, -1, -1));
 
         labelFoto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelFoto.setText("Foto");
-        panelCNH.add(labelFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, 110, -1));
+        panelCNH.add(labelFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 75, 110, -1));
 
         buttonBuscarFoto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonBuscarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pasta-24x24.png"))); // NOI18N
@@ -187,31 +198,58 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonBuscarFotoActionPerformed(evt);
             }
         });
-        panelCNH.add(buttonBuscarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 80, -1, -1));
+        panelCNH.add(buttonBuscarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 95, -1, -1));
 
         dateChooserValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
+        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 95, -1, -1));
 
-        labelShowFoto.setMaximumSize(new java.awt.Dimension(360, 50));
-        labelShowFoto.setMinimumSize(new java.awt.Dimension(360, 50));
-        labelShowFoto.setPreferredSize(new java.awt.Dimension(360, 50));
-        panelCNH.add(labelShowFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 170, 90));
+        labelShowFoto.setMaximumSize(new java.awt.Dimension(170, 90));
+        labelShowFoto.setMinimumSize(new java.awt.Dimension(170, 90));
+        labelShowFoto.setPreferredSize(new java.awt.Dimension(170, 90));
+        panelCNH.add(labelShowFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 135, -1, -1));
 
-        tabbedPane.addTab("CNH", panelCNH);
+        labelErroFoto.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroFoto.setForeground(java.awt.Color.red);
+        labelErroFoto.setMaximumSize(new java.awt.Dimension(170, 15));
+        labelErroFoto.setMinimumSize(new java.awt.Dimension(170, 15));
+        labelErroFoto.setPreferredSize(new java.awt.Dimension(170, 15));
+        panelCNH.add(labelErroFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 120, -1, -1));
+
+        labelErroNumRegistros.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroNumRegistros.setForeground(java.awt.Color.red);
+        labelErroNumRegistros.setMaximumSize(new java.awt.Dimension(170, 15));
+        labelErroNumRegistros.setMinimumSize(new java.awt.Dimension(170, 15));
+        labelErroNumRegistros.setPreferredSize(new java.awt.Dimension(170, 15));
+        panelCNH.add(labelErroNumRegistros, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 55, -1, -1));
+
+        labelErroCategoriaCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroCategoriaCNH.setForeground(java.awt.Color.red);
+        labelErroCategoriaCNH.setMaximumSize(new java.awt.Dimension(170, 15));
+        labelErroCategoriaCNH.setMinimumSize(new java.awt.Dimension(170, 15));
+        labelErroCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 15));
+        panelCNH.add(labelErroCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 55, -1, -1));
+
+        labelErroDataValidadeCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroDataValidadeCNH.setForeground(java.awt.Color.red);
+        labelErroDataValidadeCNH.setMaximumSize(new java.awt.Dimension(150, 15));
+        labelErroDataValidadeCNH.setMinimumSize(new java.awt.Dimension(150, 15));
+        labelErroDataValidadeCNH.setPreferredSize(new java.awt.Dimension(150, 15));
+        panelCNH.add(labelErroDataValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 170, -1));
+
+        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelCNH); // NOI18N
 
         panelEndereco.setBackground(new java.awt.Color(255, 255, 255));
-        panelEndereco.setMaximumSize(new java.awt.Dimension(400, 240));
-        panelEndereco.setMinimumSize(new java.awt.Dimension(400, 240));
-        panelEndereco.setPreferredSize(new java.awt.Dimension(400, 240));
-        tabbedPane.addTab("Endereço", panelEndereco);
+        panelEndereco.setMaximumSize(new java.awt.Dimension(400, 300));
+        panelEndereco.setMinimumSize(new java.awt.Dimension(400, 250));
+        panelEndereco.setPreferredSize(new java.awt.Dimension(400, 250));
+        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelEndereco, "Dados do endereço do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, java.awt.BorderLayout.PAGE_START);
 
-        panelButtoons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtoons.setMaximumSize(new java.awt.Dimension(400, 60));
-        panelButtoons.setMinimumSize(new java.awt.Dimension(400, 60));
-        panelButtoons.setPreferredSize(new java.awt.Dimension(400, 60));
-        panelButtoons.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelButtons.setBackground(new java.awt.Color(255, 255, 255));
+        panelButtons.setMaximumSize(new java.awt.Dimension(400, 70));
+        panelButtons.setMinimumSize(new java.awt.Dimension(400, 10));
+        panelButtons.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-confirmar-24x24.png"))); // NOI18N
@@ -225,7 +263,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonConfirmarActionPerformed(evt);
             }
         });
-        panelButtoons.add(buttonConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 115, -1));
+        panelButtons.add(buttonConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 5, 115, -1));
 
         buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cancelar-24x24.png"))); // NOI18N
@@ -239,9 +277,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonCancelarActionPerformed(evt);
             }
         });
-        panelButtoons.add(buttonCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));
+        panelButtons.add(buttonCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 5, -1, -1));
 
-        getContentPane().add(panelButtoons, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelButtons, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -252,6 +290,8 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             persistEntity();
             this.dispose();
             notifyListeners();
+        } catch (ValidationException ex) {
+            panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
         } catch (PersistenceException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
@@ -285,11 +325,15 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> comboBoxCategoriaCNH;
     private com.toedter.calendar.JDateChooser dateChooserValidadeCNH;
     private javax.swing.JLabel labelCPF1;
+    private javax.swing.JLabel labelErroCategoriaCNH;
+    private javax.swing.JLabel labelErroDataValidadeCNH;
+    private javax.swing.JLabel labelErroFoto;
+    private javax.swing.JLabel labelErroNumRegistros;
     private javax.swing.JLabel labelFoto;
     private javax.swing.JLabel labelNome1;
     private javax.swing.JLabel labelShowFoto;
     private javax.swing.JLabel labelUF1;
-    private javax.swing.JPanel panelButtoons;
+    private javax.swing.JPanel panelButtons;
     private javax.swing.JPanel panelCNH;
     private javax.swing.JPanel panelEndereco;
     private javax.swing.JPanel panelInfoPessoais;

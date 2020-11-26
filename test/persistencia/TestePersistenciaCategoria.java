@@ -1,10 +1,10 @@
 package persistencia;
 
-import entidades.Categoria;
-import entidades.services.persistence.CategoriaPersistenceService;
-import entidades.services.persistence.PersistenceFactory;
-import entidades.services.persistence.exceptions.DBConnectionException;
-import entidades.services.persistence.exceptions.PersistenceException;
+import model.entidades.Categoria;
+import model.entidades.services.persistence.CategoriaPersistenceService;
+import model.entidades.services.persistence.PersistenceFactory;
+import model.entidades.services.persistence.exceptions.DBConnectionException;
+import model.entidades.services.persistence.exceptions.PersistenceException;
 
 /**
  *

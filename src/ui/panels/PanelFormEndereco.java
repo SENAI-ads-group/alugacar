@@ -1,7 +1,7 @@
 package ui.panels;
 
-import entidades.Endereco;
-import entidades.enums.UF;
+import model.entidades.Endereco;
+import model.entidades.enums.UF;
 import javax.swing.DefaultComboBoxModel;
 import util.Utilities;
 
@@ -67,11 +67,12 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         textFieldCEP = new javax.swing.JTextField();
         comboBoxUF = new javax.swing.JComboBox<>();
         labelBairro = new javax.swing.JLabel();
+        labelErroDataNascimento = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(400, 240));
-        setMinimumSize(new java.awt.Dimension(400, 240));
-        setPreferredSize(new java.awt.Dimension(400, 240));
+        setMaximumSize(new java.awt.Dimension(400, 270));
+        setMinimumSize(new java.awt.Dimension(400, 270));
+        setPreferredSize(new java.awt.Dimension(400, 270));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textFieldLogradouro.setPreferredSize(new java.awt.Dimension(170, 25));
@@ -123,6 +124,13 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         labelBairro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelBairro.setText("Bairro");
         add(labelBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+
+        labelErroDataNascimento.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroDataNascimento.setForeground(java.awt.Color.red);
+        labelErroDataNascimento.setMaximumSize(new java.awt.Dimension(150, 15));
+        labelErroDataNascimento.setMinimumSize(new java.awt.Dimension(150, 15));
+        labelErroDataNascimento.setPreferredSize(new java.awt.Dimension(150, 15));
+        add(labelErroDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 55, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -132,6 +140,7 @@ public class PanelFormEndereco extends javax.swing.JPanel {
     private javax.swing.JLabel labelCEP;
     private javax.swing.JLabel labelCidade;
     private javax.swing.JLabel labelComplemento;
+    private javax.swing.JLabel labelErroDataNascimento;
     private javax.swing.JLabel labelLogradouro;
     private javax.swing.JLabel labelNumero;
     private javax.swing.JLabel labelUF;

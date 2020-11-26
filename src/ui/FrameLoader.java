@@ -12,21 +12,21 @@ import javax.swing.SwingUtilities;
  * @author Patrick-Ribeiro
  */
 public class FrameLoader {
-    
+
     private static FrameMain frameMain;
-    
+
     public static FrameMain getFrameMain() {
         return frameMain;
     }
-    
+
     public static void main(String args[]) {
-        
+
         SwingUtilities.invokeLater(() -> {
             // Install WebLaF as application L&F
             WebLookAndFeel.install();
             WebLookAndFeel.initializeManagers();
             CoreManagers.initialize();
-            
+
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
             frameMain = new FrameMain();

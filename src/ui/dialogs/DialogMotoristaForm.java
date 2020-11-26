@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import jdk.nashorn.internal.scripts.JO;
 import model.exceptions.ValidationException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
@@ -75,13 +76,13 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     }
 
     public Motorista getFormData() throws ValidationException {
-        Endereco endereco = panelFormEndereco.getFormData();
         PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
         if (DateUtilities.getAge(pessoa.getDataNascimento()) < Motorista.IDADE_MINIMA) {
             ValidationException exception = new ValidationException("Exceção motorista fora da idade mínima");
             exception.addError("dataNascimento", "Idade mínima " + Motorista.IDADE_MINIMA + " anos");
             throw exception;
         }
+        Endereco endereco = panelFormEndereco.getFormData();
         pessoa.setEndereco(endereco);
         motorista.setPessoa(pessoa);
         Integer numeroRegistroCNH = Utilities.tryParseToInteger(textFieldNumeroRegistro.getText());
@@ -100,9 +101,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
     public void notifyListeners() {
         if (listeners.size() > 0) {
-            for (DataChangeListener listener : listeners) {
+            listeners.forEach((listener) -> {
                 listener.onDataChanged();
-            }
+            });
         }
     }
 
@@ -134,27 +135,27 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de motorista");
-        setMaximumSize(new java.awt.Dimension(400, 350));
-        setMinimumSize(new java.awt.Dimension(400, 300));
+        setMaximumSize(new java.awt.Dimension(400, 400));
+        setMinimumSize(new java.awt.Dimension(400, 400));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        setResizable(false);
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 270));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 270));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 270));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 50));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 400));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 330));
+        tabbedPane.setRequestFocusEnabled(false);
 
         panelInfoPessoais.setBackground(new java.awt.Color(255, 255, 255));
-        panelInfoPessoais.setMaximumSize(new java.awt.Dimension(400, 250));
-        panelInfoPessoais.setMinimumSize(new java.awt.Dimension(400, 250));
-        panelInfoPessoais.setPreferredSize(new java.awt.Dimension(400, 250));
+        panelInfoPessoais.setMaximumSize(new java.awt.Dimension(400, 0));
+        panelInfoPessoais.setMinimumSize(new java.awt.Dimension(400, 400));
+        panelInfoPessoais.setPreferredSize(new java.awt.Dimension(400, 320));
         tabbedPane.addTab("Informações pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelInfoPessoais, "Informações pessoais do motorista"); // NOI18N
 
         panelCNH.setBackground(new java.awt.Color(255, 255, 255));
-        panelCNH.setMaximumSize(new java.awt.Dimension(400, 250));
-        panelCNH.setMinimumSize(new java.awt.Dimension(400, 250));
-        panelCNH.setPreferredSize(new java.awt.Dimension(400, 250));
+        panelCNH.setMaximumSize(new java.awt.Dimension(400, 0));
+        panelCNH.setMinimumSize(new java.awt.Dimension(400, 400));
+        panelCNH.setPreferredSize(new java.awt.Dimension(400, 320));
         panelCNH.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textFieldNumeroRegistro.setMaximumSize(new java.awt.Dimension(170, 25));
@@ -239,17 +240,18 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelCNH); // NOI18N
 
         panelEndereco.setBackground(new java.awt.Color(255, 255, 255));
-        panelEndereco.setMaximumSize(new java.awt.Dimension(400, 300));
-        panelEndereco.setMinimumSize(new java.awt.Dimension(400, 250));
-        panelEndereco.setPreferredSize(new java.awt.Dimension(400, 250));
+        panelEndereco.setMaximumSize(new java.awt.Dimension(400, 0));
+        panelEndereco.setMinimumSize(new java.awt.Dimension(400, 400));
+        panelEndereco.setPreferredSize(new java.awt.Dimension(400, 320));
         tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelEndereco, "Dados do endereço do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, java.awt.BorderLayout.PAGE_START);
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(400, 70));
-        panelButtons.setMinimumSize(new java.awt.Dimension(400, 10));
-        panelButtons.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelButtons.setMaximumSize(new java.awt.Dimension(400, 0));
+        panelButtons.setMinimumSize(new java.awt.Dimension(400, 400));
+        panelButtons.setPreferredSize(new java.awt.Dimension(400, 70));
+        panelButtons.setVerifyInputWhenFocusTarget(false);
 
         buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-confirmar-24x24.png"))); // NOI18N
@@ -263,7 +265,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonConfirmarActionPerformed(evt);
             }
         });
-        panelButtons.add(buttonConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 5, 115, -1));
+        panelButtons.add(buttonConfirmar);
 
         buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         buttonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cancelar-24x24.png"))); // NOI18N
@@ -277,7 +279,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 buttonCancelarActionPerformed(evt);
             }
         });
-        panelButtons.add(buttonCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 5, -1, -1));
+        panelButtons.add(buttonCancelar);
 
         getContentPane().add(panelButtons, java.awt.BorderLayout.CENTER);
 
@@ -291,7 +293,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             this.dispose();
             notifyListeners();
         } catch (ValidationException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Não foi possível prosseguir, por favor verifique os campos marcados em vermelho", "Erro de validação no formulário", JOptionPane.ERROR_MESSAGE);
             panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
+            panelFormEndereco.setErrorsMessages(ex.getErrors());
         } catch (PersistenceException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }

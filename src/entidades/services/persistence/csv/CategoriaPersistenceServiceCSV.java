@@ -82,6 +82,7 @@ public class CategoriaPersistenceServiceCSV implements CategoriaPersistenceServi
         while (linha != null) {
             Categoria categoriaEncontrada = new Categoria(linha.split(";"));
             if (categoriaEncontrada.getId().equals(id)) {
+                System.out.println(categoriaEncontrada.toCSV());
                 connection.close();
                 return categoriaEncontrada;
             }

@@ -45,7 +45,7 @@ public class ModeloPersistenceServiceCSV implements ModeloPersistenceService {
 
     @Override
     public void atualizar(Modelo modelo) {
-        File arquivoDBTemp = new File(canonicalPath + "\\temp\\marcas-temp.txt");
+        File arquivoDBTemp = new File(canonicalPath + "\\temp\\marcas-temp.csv");
         CSVConnection connectionTemp = new CSVConnection();
 
         connection.open(arquivoDB);
@@ -80,10 +80,10 @@ public class ModeloPersistenceServiceCSV implements ModeloPersistenceService {
 
         String linha = connection.reader().readLine();
         while (linha != null) {
-            Modelo modeloEcontrado = new Modelo(linha.split(";"));
-            if (modeloEcontrado.getId().equals(id)) {
+            Modelo modeloEncontrado = new Modelo(linha.split(";"));
+            if (modeloEncontrado.getId().equals(id)) {
                 connection.close();
-                return modeloEcontrado;
+                return modeloEncontrado;
             }
             linha = connection.reader().readLine();
         }

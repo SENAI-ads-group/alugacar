@@ -1,6 +1,7 @@
 package entidades.services.persistence;
 
 import entidades.Veiculo;
+import entidades.services.persistence.exceptions.PersistenceException;
 import java.util.List;
 
 /**
@@ -9,11 +10,12 @@ import java.util.List;
  */
 public interface VeiculoPersistenceService {
 
-    void inserir(Veiculo veiculo);
+    void inserir(Veiculo veiculo)throws PersistenceException;
 
     void atualizar(Veiculo veiculo);
 
-    Veiculo buscar(Integer id);
+    Veiculo buscar(String placa);
+    
 
     List<Veiculo> buscarTodos();
 

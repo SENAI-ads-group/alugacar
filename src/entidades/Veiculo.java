@@ -68,6 +68,10 @@ public class Veiculo {
         modelo = PersistenceFactory.createModeloService().buscar(idModelo);
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -59,8 +59,8 @@ public class PessoaFisica extends Pessoa {
     public String toCSV() {
         return super.toCSV() + ";"
                 + cpf + ";"
-                + DateUtilities.formatData(dataNascimento) + ";"
-                + registroGeral;
+                + registroGeral + ";"
+                + DateUtilities.formatData(dataNascimento);
     }
 
 }

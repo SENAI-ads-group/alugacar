@@ -2,6 +2,7 @@ package model.entidades.services.persistence;
 
 import model.entidades.Veiculo;
 import java.util.List;
+import model.entidades.services.persistence.exceptions.PersistenceException;
 
 /**
  *
@@ -9,11 +10,13 @@ import java.util.List;
  */
 public interface VeiculoPersistenceService {
 
-    void inserir(Veiculo veiculo);
+    void inserir(Veiculo veiculo) throws PersistenceException;
 
     void atualizar(Veiculo veiculo);
 
     Veiculo buscar(Integer id);
+
+    Veiculo buscar(String placa);
 
     List<Veiculo> buscarTodos();
 

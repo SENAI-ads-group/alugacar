@@ -72,6 +72,10 @@ public class Veiculo {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getPlaca() {
         return placa;
     }

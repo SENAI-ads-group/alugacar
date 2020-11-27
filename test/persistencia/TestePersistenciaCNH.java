@@ -2,10 +2,10 @@ package persistencia;
 
 import model.entidades.CNH;
 import model.entidades.enums.CategoriaCNH;
-import model.entidades.services.persistence.CNHPersistenseService;
-import model.entidades.services.persistence.PersistenceFactory;
-import model.entidades.services.persistence.exceptions.DBConnectionException;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.CNHPersistenseService;
+import model.services.persistence.PersistenceFactory;
+import model.services.persistence.exceptions.DBConnectionException;
+import model.services.persistence.exceptions.PersistenceException;
 import java.util.Date;
 
 /**

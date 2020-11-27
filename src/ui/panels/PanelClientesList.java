@@ -1,12 +1,16 @@
 package ui.panels;
 
-import model.entidades.Motorista;
-import model.services.persistence.MotoristaPersistenceService;
 import model.services.persistence.PersistenceFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.entidades.Cliente;
+import model.entidades.PessoaFisica;
+import model.entidades.PessoaJuridica;
+import model.entidades.enums.TipoCliente;
+import model.services.persistence.ClientePersistenceService;
 import ui.FrameLoader;
-import ui.dialogs.DialogMotoristaForm;
+import ui.dialogs.DialogClienteForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
 
@@ -14,38 +18,50 @@ import util.Utilities;
  *
  * @author patrick-ribeiro
  */
-public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
+public final class PanelClientesList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MotoristaPersistenceService persistenceService = PersistenceFactory.createMotoristaService();
+    private final ClientePersistenceService persistenceService = PersistenceFactory.createClienteService();
 
-    public PanelMotoristasList() {
+    public PanelClientesList() {
         initComponents();
         updateTable();
     }
 
     public void updateTable() {
-        List<Motorista> motoristas = persistenceService.buscarTodos();
+        List<Cliente> clientes = persistenceService.buscarTodos();
 
-        DefaultTableModel tableModel = (DefaultTableModel) tableMotoristas.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
 
-        for (Motorista motorista : motoristas) {
+        clientes.stream().map((cliente) -> {
+            String cpfCnpj = null;
+            String rgInscricaoEstadual = null;
+            if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
+                PessoaFisica pf = (PessoaFisica) cliente.getPessoa();
+                cpfCnpj = pf.getCpf();
+                rgInscricaoEstadual = pf.getRegistroGeral();
+            } else if (cliente.getTipoCliente() == TipoCliente.PESSOA_JURIDICA) {
+                PessoaJuridica pj = (PessoaJuridica) cliente.getPessoa();
+                cpfCnpj = pj.getCnpj();
+                rgInscricaoEstadual = pj.getInscricaoEstadual();
+            }
             Object[] row = {
-                motorista.getId(),
-                motorista.getPessoa().getNome(),
-                motorista.getPessoa().getEmail(),
-                motorista.getPessoa().getTelefone(),
-                motorista.getPessoa().getCpf(),
-                motorista.getPessoa().getRegistroGeral(),
-                motorista.getCnh().getNumeroRegistro(),
-                motorista.getCnh().getCategoria().toString(),
-                motorista.isAtivo()
+                cliente.getId(),
+                cliente.getPessoa().getNome(),
+                cliente.getPessoa().getEmail(),
+                cliente.getPessoa().getTelefone(),
+                cliente.getTipoCliente().toString(),
+                cpfCnpj,
+                rgInscricaoEstadual,
+                cliente.isAtivo()
             };
+            return row;
+        }).forEachOrdered((row) -> {
             tableModel.addRow(row);
-        }
-        tableMotoristas.setModel(tableModel);
+        });
+        table.setModel(tableModel);
         if (tableModel.getRowCount() > 0) {
-            tableMotoristas.getSelectionModel().setSelectionInterval(0, 0);
+            table.getSelectionModel().setSelectionInterval(0, 0);
             buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
         } else {
@@ -54,10 +70,10 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         }
     }
 
-    public void createMotoristaForm(Motorista motorista) {
-        DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
-        dialogForm.subscribeListener(this);
+    public void createClienteForm(Cliente cliente) {
+        DialogClienteForm dialogForm = new DialogClienteForm(FrameLoader.getFrameMain(), true, cliente);
         dialogForm.updateFormData();
+        dialogForm.subscribeListener(this);
         dialogForm.setVisible(true);
     }
 
@@ -76,7 +92,7 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         buttonExcluir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
-        tableMotoristas = new javax.swing.JTable();
+        table = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(800, 600));
@@ -121,7 +137,7 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Motoristas");
+        jLabel1.setText("Clientes");
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -130,7 +146,7 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 798, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 822, Short.MAX_VALUE)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -154,20 +170,20 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
         scrollPane.setFocusable(false);
 
-        tableMotoristas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        tableMotoristas.setModel(new javax.swing.table.DefaultTableModel(
+        table.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Nome", "Email", "Telefone", "CPF", "RG", "CNH", "Categoria CNH", "Ativo"
+                "Id", "Nome", "Email", "Telefone", "Tipo", "CPF / CNPJ", "RG / Inscrição Estadual", "Ativo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -178,31 +194,33 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
                 return canEdit [columnIndex];
             }
         });
-        tableMotoristas.setFocusable(false);
-        tableMotoristas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        scrollPane.setViewportView(tableMotoristas);
-        if (tableMotoristas.getColumnModel().getColumnCount() > 0) {
-            tableMotoristas.getColumnModel().getColumn(0).setPreferredWidth(40);
-            tableMotoristas.getColumnModel().getColumn(1).setPreferredWidth(200);
-            tableMotoristas.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tableMotoristas.getColumnModel().getColumn(3).setPreferredWidth(80);
-            tableMotoristas.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tableMotoristas.getColumnModel().getColumn(5).setPreferredWidth(80);
-            tableMotoristas.getColumnModel().getColumn(6).setPreferredWidth(100);
-            tableMotoristas.getColumnModel().getColumn(7).setPreferredWidth(50);
-            tableMotoristas.getColumnModel().getColumn(8).setPreferredWidth(20);
+        table.setFocusable(false);
+        table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        scrollPane.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setPreferredWidth(40);
+            table.getColumnModel().getColumn(1).setPreferredWidth(200);
+            table.getColumnModel().getColumn(2).setPreferredWidth(180);
+            table.getColumnModel().getColumn(3).setPreferredWidth(150);
+            table.getColumnModel().getColumn(5).setPreferredWidth(100);
+            table.getColumnModel().getColumn(6).setPreferredWidth(80);
+            table.getColumnModel().getColumn(7).setPreferredWidth(20);
         }
 
         add(scrollPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        createMotoristaForm(new Motorista());
+        TipoCliente[] itens = TipoCliente.values();
+        TipoCliente selectedValue = (TipoCliente) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o tipo de cliente", "Tipo de cliente",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+        System.out.println(selectedValue.name());
+        createClienteForm(new Cliente(selectedValue));
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
-        Integer idSelecionado = Utilities.tryParseToInteger(tableMotoristas.getValueAt(tableMotoristas.getSelectedRow(), 0).toString());
-        createMotoristaForm(persistenceService.buscar(idSelecionado));
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        createClienteForm(persistenceService.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
 
@@ -213,6 +231,6 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JScrollPane scrollPane;
-    private javax.swing.JTable tableMotoristas;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

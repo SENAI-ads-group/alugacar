@@ -2,7 +2,9 @@ package ui.frames;
 
 import java.awt.Dimension;
 import ui.listeners.MouseListenerPanelButtonMenu;
+import ui.panels.PanelClientesList;
 import ui.panels.PanelMotoristasList;
+import util.PanelUtilities;
 
 /**
  *
@@ -68,6 +70,9 @@ public class FrameMain extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelMenuItemDashboardMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemDashboardMousePressed(evt);
+            }
         });
         panelMenuItemDashboard.setLayout(new java.awt.BorderLayout());
 
@@ -87,6 +92,9 @@ public class FrameMain extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelMenuItemClientesMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemClientesMousePressed(evt);
+            }
         });
         panelMenuItemClientes.setLayout(new java.awt.BorderLayout());
 
@@ -105,6 +113,9 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemMotoristas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelMenuItemMotoristasMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemMotoristasMousePressed(evt);
             }
         });
         panelMenuItemMotoristas.setLayout(new java.awt.BorderLayout());
@@ -207,19 +218,11 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemDashboardMouseClicked
 
     private void panelMenuItemClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMouseClicked
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_panelMenuItemClientesMouseClicked
 
     private void panelMenuItemMotoristasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMouseClicked
-        PanelMotoristasList panelLoaded = new PanelMotoristasList();
-        panelLoader.removeAll();
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoader.add(panelLoaded);
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
-        panelLoaded.updateTable();
+
     }//GEN-LAST:event_panelMenuItemMotoristasMouseClicked
 
     private void panelMenuItemVeiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMouseClicked
@@ -233,6 +236,34 @@ public class FrameMain extends javax.swing.JFrame {
     private void panelMenuItemConfiguracoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemConfiguracoesMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_panelMenuItemConfiguracoesMouseClicked
+
+    private void panelMenuItemDashboardMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDashboardMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_panelMenuItemDashboardMousePressed
+
+    private void panelMenuItemMotoristasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMousePressed
+        PanelMotoristasList panelLoaded = new PanelMotoristasList();
+        panelLoader.removeAll();
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoader.add(panelLoaded);
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+        panelLoaded.updateTable();
+    }//GEN-LAST:event_panelMenuItemMotoristasMousePressed
+
+    private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed
+        PanelClientesList panelLoaded = new PanelClientesList();
+        //PanelUtilities.loadPanelToPanel(panelLoaded, panelLoader);
+        panelLoader.removeAll();
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoader.add(panelLoaded);
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+    }//GEN-LAST:event_panelMenuItemClientesMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -94,11 +94,11 @@ public class PanelFormEndereco extends javax.swing.JPanel {
     }
 
     public void clearErrors() {
-        labelLogradouro.setText("");
-        labelNumero.setText("");
-        labelCEP.setText("");
-        labelBairro.setText("");
-        labelCidade.setText("");
+        labelErroLogradouro.setText("");
+        labelErroNumero.setText("");
+        labelErroCEP.setText("");
+        labelErroBairro.setText("");
+        labelErroCidade.setText("");
     }
 
     @SuppressWarnings("unchecked")

@@ -1,6 +1,6 @@
 package model.entidades;
 
-import model.entidades.services.persistence.PersistenceFactory;
+import model.services.persistence.PersistenceFactory;
 import util.Utilities;
 
 /**

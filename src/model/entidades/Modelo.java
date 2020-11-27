@@ -44,6 +44,10 @@ public class Modelo {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Marca getMarca() {
         return marca;
     }

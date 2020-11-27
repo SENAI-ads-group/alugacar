@@ -31,7 +31,10 @@ public class TestePersistenciaModelo {
             System.out.println("BUSCAR");
 
             System.out.println("LISTAR");
-            new ModeloPersistenceServiceCSV().getUltimoRegistro();
+
+            for (Modelo m : new ModeloPersistenceServiceCSV().buscarTodos()) {
+                System.out.println(m.toCSV());
+            }
         } catch (PersistenceException ex) {
             System.out.println("Erro de persistencia: " + ex.getMessage());
         } catch (DBConnectionException ex) {

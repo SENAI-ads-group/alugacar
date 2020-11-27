@@ -1,5 +1,7 @@
 package util;
 
+import javax.swing.JTextField;
+
 /**
  *
  * @author patrick-ribeiro
@@ -20,5 +22,9 @@ public class Utilities {
         } catch (NumberFormatException ex) {
             return null;
         }
+    }
+
+    public static boolean textFieldIsEmpty(JTextField textField) {
+        return textField.getText() == null || textField.getText().trim().equals("");
     }
 }

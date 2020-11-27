@@ -1,9 +1,9 @@
 package instanciacao;
 
-import entidades.Cliente;
-import entidades.Endereco;
-import entidades.PessoaJuridica;
-import entidades.enums.UF;
+import model.entidades.Cliente;
+import model.entidades.Endereco;
+import model.entidades.PessoaJuridica;
+import model.entidades.enums.UF;
 
 /**
  *

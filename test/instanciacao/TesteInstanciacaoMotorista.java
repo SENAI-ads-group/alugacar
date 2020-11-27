@@ -1,11 +1,11 @@
 package instanciacao;
 
-import entidades.CNH;
-import entidades.Endereco;
-import entidades.Motorista;
-import entidades.PessoaFisica;
-import entidades.enums.CategoriaCNH;
-import entidades.enums.UF;
+import model.entidades.CNH;
+import model.entidades.Endereco;
+import model.entidades.Motorista;
+import model.entidades.PessoaFisica;
+import model.entidades.enums.CategoriaCNH;
+import model.entidades.enums.UF;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;

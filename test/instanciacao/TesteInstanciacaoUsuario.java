@@ -1,10 +1,10 @@
 package instanciacao;
 
-import entidades.Endereco;
-import entidades.PessoaFisica;
-import entidades.Usuario;
-import entidades.enums.CategoriaUsuario;
-import entidades.enums.UF;
+import model.entidades.Endereco;
+import model.entidades.PessoaFisica;
+import model.entidades.Usuario;
+import model.entidades.enums.CategoriaUsuario;
+import model.entidades.enums.UF;
 
 /**
  *

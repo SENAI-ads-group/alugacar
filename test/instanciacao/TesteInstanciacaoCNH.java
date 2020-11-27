@@ -1,7 +1,7 @@
 package instanciacao;
 
-import entidades.CNH;
-import entidades.enums.CategoriaCNH;
+import model.entidades.CNH;
+import model.entidades.enums.CategoriaCNH;
 import java.util.Date;
 
 /**

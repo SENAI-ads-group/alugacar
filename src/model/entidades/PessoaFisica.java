@@ -10,7 +10,7 @@ import util.DateUtilities;
 public class PessoaFisica extends Pessoa {
 
     private String cpf;
-    private Integer registroGeral;
+    private String registroGeral;
     private Date dataNascimento;
 
     public PessoaFisica() {
@@ -24,7 +24,7 @@ public class PessoaFisica extends Pessoa {
         super(nome, telefone, email, endereco);
     }
 
-    public PessoaFisica(String nome, String telefone, String email, Endereco endereco, String cpf, Integer registroGeral, Date dataNascimento) {
+    public PessoaFisica(String nome, String telefone, String email, Endereco endereco, String cpf, String registroGeral, Date dataNascimento) {
         super(nome, telefone, email, endereco);
         this.cpf = cpf;
         this.registroGeral = registroGeral;
@@ -39,11 +39,11 @@ public class PessoaFisica extends Pessoa {
         this.cpf = cpf;
     }
 
-    public Integer getRegistroGeral() {
+    public String getRegistroGeral() {
         return registroGeral;
     }
 
-    public void setRegistroGeral(Integer registroGeral) {
+    public void setRegistroGeral(String registroGeral) {
         this.registroGeral = registroGeral;
     }
 

@@ -18,6 +18,7 @@ public class PanelFormEndereco extends javax.swing.JPanel {
 
     public PanelFormEndereco(Endereco endereco) {
         initComponents();
+        this.endereco = endereco;
         comboBoxUF.setModel(new DefaultComboBoxModel(UF.values()));
     }
 
@@ -26,16 +27,15 @@ public class PanelFormEndereco extends javax.swing.JPanel {
     }
 
     public void updateFormData() {
-        if (endereco == null) {
-            throw new IllegalStateException("O endereço está nulo");
+        if (endereco != null) {
+            textFieldLogradouro.setText(endereco.getLogradouro());
+            textFieldNumero.setText("" + endereco.getNumero());
+            textFieldComplemento.setText(endereco.getComplemento());
+            textFieldBairro.setText(endereco.getBairro());
+            textFieldCidade.setText(endereco.getCidade());
+            textFieldCEP.setText(endereco.getCep());
+            comboBoxUF.setSelectedIndex(endereco.getUf().ordinal());
         }
-        textFieldLogradouro.setText(endereco.getLogradouro());
-        textFieldNumero.setText("" + endereco.getNumero());
-        textFieldComplemento.setText(endereco.getComplemento());
-        textFieldBairro.setText(endereco.getBairro());
-        textFieldCidade.setText(endereco.getCidade());
-        textFieldCEP.setText(endereco.getCep());
-        comboBoxUF.setSelectedItem(endereco.getUf().toString());
     }
 
     public Endereco getFormData() {

@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class CNHPersistenceServiceCSV implements CNHPersistenseService {
 
-    private File arquivoDB;
-    private String canonicalPath;
-    private CSVConnection connection;
+    private final File arquivoDB;
+    private final String canonicalPath;
+    private final CSVConnection connection;
 
     public CNHPersistenceServiceCSV() {
         String caminhoDB = Configurations.getProperties().getProperty("db.cnh");
@@ -29,7 +29,7 @@ public class CNHPersistenceServiceCSV implements CNHPersistenseService {
     @Override
     public void inserir(CNH cnh) throws PersistenceException {
         if (buscar(cnh.getNumeroRegistro()) != null) {
-            throw new PersistenceException("A cnh já existe");
+            throw new PersistenceException("A CNH " + cnh.getNumeroRegistro() + " já existe");
         }
         connection.open(arquivoDB);
 
@@ -73,7 +73,7 @@ public class CNHPersistenceServiceCSV implements CNHPersistenseService {
             throw new IllegalStateException("numeroRegistro está nulo");
         }
         connection.open(arquivoDB);
-        
+
         String linha = connection.reader().readLine();
         while (linha != null) {
             CNH cnhEncontrada = new CNH(linha.split(";"));

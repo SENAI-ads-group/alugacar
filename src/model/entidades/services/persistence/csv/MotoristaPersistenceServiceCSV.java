@@ -31,6 +31,8 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
 
     @Override
     public void inserir(Motorista motorista) throws PersistenceException {
+        CNHPersistenseService cnhPersistenceService = PersistenceFactory.createCNHService();
+        cnhPersistenceService.inserir(motorista.getCnh());
         if (motorista.getId() == null) {
             motorista.setId(getUltimoID() + 1);
         }
@@ -43,13 +45,13 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
         connection.writer().newLine();
 
         connection.close();
-
-        CNHPersistenseService cnhPersistenceService = PersistenceFactory.createCNHService();
-        cnhPersistenceService.inserir(motorista.getCnh());
     }
 
     @Override
     public void atualizar(Motorista motorista) {
+        if (motorista.getCnh() != null) {
+            PersistenceFactory.createCNHService().atualizar(motorista.getCnh());
+        }
         File arquivoDBTemp = new File(canonicalPath + "\\temp\\motorista-temp.csv");
         CSVConnection connectionTemp = new CSVConnection();
 
@@ -82,7 +84,6 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
             throw new IllegalStateException("id está nulo");
         }
         connection.open(arquivoDB);
-        System.out.println(arquivoDB.toString());
         String linha = connection.reader().readLine();
         while (linha != null) {
             String[] csv = linha.split(";");

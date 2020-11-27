@@ -25,7 +25,6 @@ import model.exceptions.ValidationException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
 import ui.panels.PanelFormPessoaFisica;
-import ui.panels.PanelMotoristasList;
 import util.DateUtilities;
 import util.PanelUtilities;
 import util.Utilities;
@@ -41,7 +40,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
-    private PanelMotoristasList panelMotoristasList;
     private File fileFotoMotorista;
 
     private final List<DataChangeListener> listeners;
@@ -106,9 +104,32 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
         CNH cnh = new CNH(numeroRegistroCNH, categoriaCNH, dataValidadeCNH);
         motorista.setCnh(cnh);
-        motorista.setFoto(fileFotoMotorista);
+        motorista.setAtivo(checkBoxAtivo.isSelected());
 
         return motorista;
+    }
+
+    public void updateFormData() {
+        if (motorista.getCnh() != null) {
+            textFieldNumeroRegistro.setText("" + motorista.getCnh().getNumeroRegistro());
+            comboBoxCategoriaCNH.setSelectedIndex(motorista.getCnh().getCategoria().ordinal());
+            dateChooserValidadeCNH.setDate(motorista.getCnh().getDataValidade());
+        }
+        if (motorista.getFoto() != null) {
+            textFieldFoto.setText(motorista.getFoto().getPath());
+            showImageOnLabel(motorista.getFoto());
+        }
+        checkBoxAtivo.setSelected(motorista.isAtivo());
+        panelFormEndereco.updateFormData();
+        panelFormPessoaFisica.updateFormData();
+
+    }
+
+    public void showImageOnLabel(File fileImage) {
+        ImageIcon imageIcon = new ImageIcon(fileImage.getPath());
+        Image image = imageIcon.getImage().getScaledInstance(labelShowFoto.getWidth(), labelShowFoto.getHeight(), Image.SCALE_DEFAULT);
+        labelShowFoto.setIcon(new ImageIcon(image));
+        labelShowFoto.repaint();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -172,6 +193,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         labelErroFoto = new javax.swing.JLabel();
         labelErroCategoriaCNH = new javax.swing.JLabel();
         labelErroValidadeCNH = new javax.swing.JLabel();
+        checkBoxAtivo = new javax.swing.JCheckBox();
         panelBorderRightTab2 = new javax.swing.JPanel();
         panelTab3 = new javax.swing.JPanel();
         panelTopTab3 = new javax.swing.JPanel();
@@ -250,7 +272,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Informações Pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1); // NOI18N
+        tabbedPane.addTab("Informações Pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
 
         panelTab2.setBackground(new java.awt.Color(153, 153, 153));
         panelTab2.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -368,6 +390,11 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         labelErroValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 15));
         panelCNH.add(labelErroValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
+        checkBoxAtivo.setBackground(new java.awt.Color(255, 255, 255));
+        checkBoxAtivo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        checkBoxAtivo.setText("Ativo");
+        panelCNH.add(checkBoxAtivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
+
         panelCenterTab2.add(panelCNH);
 
         panelTab2.add(panelCenterTab2, java.awt.BorderLayout.CENTER);
@@ -389,7 +416,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2); // NOI18N
+        tabbedPane.addTab("Motorista e CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2, "Informaçõoes sobre o motorista e sua CNH"); // NOI18N
 
         panelTab3.setBackground(new java.awt.Color(153, 153, 153));
         panelTab3.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -440,7 +467,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         panelTab3.add(panelBorderRightTab4, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab3); // NOI18N
+        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab3, "Informações sobre o endereço do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -531,12 +558,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         int retorno = fileChooser.showOpenDialog(this);
         if (retorno == JFileChooser.APPROVE_OPTION) {
-            fileFotoMotorista = fileChooser.getSelectedFile();
-            textFieldFoto.setText(fileFotoMotorista.getPath());
-            ImageIcon imageIcon = new ImageIcon(fileFotoMotorista.getPath());
-            Image image = imageIcon.getImage().getScaledInstance(labelShowFoto.getWidth(), labelShowFoto.getHeight(), Image.SCALE_DEFAULT);
-            labelShowFoto.setIcon(new ImageIcon(image));
-            labelShowFoto.repaint();
+            motorista.setFoto(fileChooser.getSelectedFile());
+            textFieldFoto.setText(motorista.getFoto().getPath());
+            showImageOnLabel(motorista.getFoto());
         }
     }//GEN-LAST:event_buttonBuscarFotoActionPerformed
 
@@ -545,6 +569,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private javax.swing.JButton buttonBuscarFoto;
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonConfirmar;
+    private javax.swing.JCheckBox checkBoxAtivo;
     private javax.swing.JComboBox<String> comboBoxCategoriaCNH;
     private com.toedter.calendar.JDateChooser dateChooserValidadeCNH;
     private javax.swing.JLabel jLabel1;

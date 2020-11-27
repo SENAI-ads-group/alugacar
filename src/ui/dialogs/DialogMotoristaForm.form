@@ -86,11 +86,12 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Informa&#xe7;&#xf5;es Pessoais">
+              <JTabbedPaneConstraints tabName="Informa&#xe7;&#xf5;es Pessoais" toolTip="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista">
                 <Property name="tabTitle" type="java.lang.String" value="Informa&#xe7;&#xf5;es Pessoais"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/ui/media/icons/icon-pessoafisica-24x24.png"/>
                 </Property>
+                <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -212,11 +213,12 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="CNH">
-                <Property name="tabTitle" type="java.lang.String" value="CNH"/>
+              <JTabbedPaneConstraints tabName="Motorista e CNH" toolTip="Informa&#xe7;&#xf5;oes sobre o motorista e sua CNH">
+                <Property name="tabTitle" type="java.lang.String" value="Motorista e CNH"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/ui/media/icons/icon-cnh-24x24.png"/>
                 </Property>
+                <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;oes sobre o motorista e sua CNH"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -567,6 +569,22 @@
                         </Constraint>
                       </Constraints>
                     </Component>
+                    <Component class="javax.swing.JCheckBox" name="checkBoxAtivo">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Segoe UI" size="12" style="0"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Ativo"/>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                          <AbsoluteConstraints x="0" y="130" width="-1" height="-1"/>
+                        </Constraint>
+                      </Constraints>
+                    </Component>
                   </SubComponents>
                 </Container>
               </SubComponents>
@@ -621,11 +639,12 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Endere&#xe7;o">
+              <JTabbedPaneConstraints tabName="Endere&#xe7;o" toolTip="Informa&#xe7;&#xf5;es sobre o endere&#xe7;o do motorista">
                 <Property name="tabTitle" type="java.lang.String" value="Endere&#xe7;o"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/ui/media/icons/icon-endereco-24x24.png"/>
                 </Property>
+                <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;es sobre o endere&#xe7;o do motorista"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

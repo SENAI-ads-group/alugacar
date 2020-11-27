@@ -24,15 +24,14 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
     }
 
     public void updateFormData() {
-        if (pessoa == null) {
-            throw new IllegalStateException("pessoaFísica está nulo");
+        if (pessoa != null) {
+            textFieldNome.setText(pessoa.getNome());
+            textFieldEmail.setText(pessoa.getEmail());
+            textFieldCPF.setText(pessoa.getCpf());
+            textFieldRG.setText(pessoa.getRegistroGeral());
+            textFieldTelefone.setText(pessoa.getTelefone());
+            dateChooserNascimento.setDate(pessoa.getDataNascimento());
         }
-        textFieldNome.setText(pessoa.getNome());
-        textFieldEmail.setText(pessoa.getEmail());
-        textFieldCPF.setText(pessoa.getCpf());
-        textFieldRG.setText("" + pessoa.getRegistroGeral());
-        textFieldTelefone.setText(pessoa.getTelefone());
-        dateChooserNascimento.setDate(pessoa.getDataNascimento());
     }
 
     public PessoaFisica getFormData() throws ValidationException {
@@ -58,13 +57,12 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         pessoa.setNome(textFieldNome.getText());
         pessoa.setCpf(textFieldCPF.getText());
         pessoa.setTelefone(textFieldTelefone.getText());
-        pessoa.setRegistroGeral(Utilities.tryParseToInteger(textFieldRG.getText()));
+        pessoa.setRegistroGeral(textFieldRG.getText());
         pessoa.setEmail(textFieldEmail.getText());
         pessoa.setDataNascimento(dateChooserNascimento.getDate());
 
         clearErrors();
         if (exception.getErrors().size() > 0) {
-            System.out.println("validação");
             throw exception;
         }
         return pessoa;

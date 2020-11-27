@@ -4,6 +4,7 @@ import model.entidades.enums.UF;
 import model.entidades.services.persistence.PersistenceFactory;
 import java.io.File;
 import java.util.Date;
+import java.util.Objects;
 import util.DateUtilities;
 import util.Utilities;
 
@@ -82,11 +83,40 @@ public class Motorista {
     }
 
     public String toCSV() {
+        String caminhoFoto = null;
+        if (foto != null) {
+            caminhoFoto = foto.getPath();
+        }
         return "" + id + ";"
                 + ativo + ";"
-                + foto.getAbsolutePath() + ";"
+                + caminhoFoto + ";"
                 + cnh.getNumeroRegistro() + ";"
                 + pessoa.toCSV();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Motorista other = (Motorista) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
     private PessoaFisica instanciarPessoa(String[] csv) {
@@ -102,7 +132,7 @@ public class Motorista {
         String cep = csv[13];
         String cpf = csv[14];
         Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
-        Integer registroGeral = Utilities.tryParseToInteger(csv[16]);
+        String registroGeral = csv[16];
 
         Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
         return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);

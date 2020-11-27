@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import ui.FrameLoader;
 import ui.dialogs.DialogMotoristaForm;
 import ui.listeners.DataChangeListener;
+import util.Utilities;
 
 /**
  *
@@ -32,6 +33,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             Object[] row = {
                 motorista.getId(),
                 motorista.getPessoa().getNome(),
+                motorista.getPessoa().getEmail(),
+                motorista.getPessoa().getTelefone(),
                 motorista.getPessoa().getCpf(),
                 motorista.getPessoa().getRegistroGeral(),
                 motorista.getCnh().getNumeroRegistro(),
@@ -43,14 +46,19 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         tableMotoristas.setModel(tableModel);
         if (tableModel.getRowCount() > 0) {
             tableMotoristas.getSelectionModel().setSelectionInterval(0, 0);
+            buttonExcluir.setEnabled(true);
+            buttonEditar.setEnabled(true);
+        } else {
+            buttonExcluir.setEnabled(false);
+            buttonEditar.setEnabled(false);
         }
     }
 
     public void createMotoristaForm(Motorista motorista) {
         DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
         dialogForm.subscribeListener(this);
+        dialogForm.updateFormData();
         dialogForm.setVisible(true);
-
     }
 
     @Override
@@ -64,10 +72,9 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
         panelHeader = new javax.swing.JPanel();
         buttonNovo = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        buttonEditar = new javax.swing.JButton();
+        buttonExcluir = new javax.swing.JButton();
+        scrollPane = new javax.swing.JScrollPane();
         tableMotoristas = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -91,41 +98,36 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-editar-24x24.png"))); // NOI18N
-        jButton2.setText("Editar");
-        jButton2.setBorderPainted(false);
-        jButton2.setFocusPainted(false);
-        jButton2.setFocusable(false);
-        jButton2.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonEditar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-editar-24x24.png"))); // NOI18N
+        buttonEditar.setText("Editar");
+        buttonEditar.setBorderPainted(false);
+        buttonEditar.setFocusPainted(false);
+        buttonEditar.setFocusable(false);
+        buttonEditar.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEditarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-excluir-24x24.png"))); // NOI18N
-        jButton3.setText("Excluir");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusPainted(false);
-        jButton3.setFocusable(false);
-        jButton3.setPreferredSize(new java.awt.Dimension(95, 35));
-
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png"))); // NOI18N
-        jButton4.setText("CNH");
-        jButton4.setBorderPainted(false);
-        jButton4.setFocusPainted(false);
-        jButton4.setFocusable(false);
-        jButton4.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonExcluir.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-excluir-24x24.png"))); // NOI18N
+        buttonExcluir.setText("Excluir");
+        buttonExcluir.setBorderPainted(false);
+        buttonExcluir.setFocusPainted(false);
+        buttonExcluir.setFocusable(false);
+        buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
-                .addContainerGap(792, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(893, Short.MAX_VALUE)
+                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -136,15 +138,14 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
                 .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         add(panelHeader, java.awt.BorderLayout.PAGE_START);
 
-        jScrollPane1.setFocusable(false);
+        scrollPane.setFocusable(false);
 
         tableMotoristas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tableMotoristas.setModel(new javax.swing.table.DefaultTableModel(
@@ -152,14 +153,14 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
             },
             new String [] {
-                "Id", "Nome", "CPF", "RG", "CNH", "Categoria CNH", "Ativo"
+                "Id", "Nome", "Email", "Telefone", "CPF", "RG", "CNH", "Categoria CNH", "Ativo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -171,31 +172,39 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             }
         });
         tableMotoristas.setFocusable(false);
-        jScrollPane1.setViewportView(tableMotoristas);
+        tableMotoristas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        scrollPane.setViewportView(tableMotoristas);
         if (tableMotoristas.getColumnModel().getColumnCount() > 0) {
-            tableMotoristas.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tableMotoristas.getColumnModel().getColumn(0).setPreferredWidth(40);
             tableMotoristas.getColumnModel().getColumn(1).setPreferredWidth(200);
             tableMotoristas.getColumnModel().getColumn(2).setPreferredWidth(200);
-            tableMotoristas.getColumnModel().getColumn(3).setPreferredWidth(200);
-            tableMotoristas.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tableMotoristas.getColumnModel().getColumn(5).setPreferredWidth(50);
+            tableMotoristas.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tableMotoristas.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tableMotoristas.getColumnModel().getColumn(5).setPreferredWidth(80);
+            tableMotoristas.getColumnModel().getColumn(6).setPreferredWidth(100);
+            tableMotoristas.getColumnModel().getColumn(7).setPreferredWidth(50);
+            tableMotoristas.getColumnModel().getColumn(8).setPreferredWidth(20);
         }
 
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        add(scrollPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
         createMotoristaForm(new Motorista());
     }//GEN-LAST:event_buttonNovoActionPerformed
 
+    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(tableMotoristas.getValueAt(tableMotoristas.getSelectedRow(), 0).toString());
+        createMotoristaForm(persistenceService.buscar(idSelecionado));
+    }//GEN-LAST:event_buttonEditarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonEditar;
+    private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable tableMotoristas;
     // End of variables declaration//GEN-END:variables
 }

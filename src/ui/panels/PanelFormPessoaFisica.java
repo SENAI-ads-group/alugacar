@@ -39,21 +39,21 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         if (pessoa == null) {
             pessoa = new PessoaFisica();
         }
-        ValidationException exception = new ValidationException("Exceção de validação Pessoa Física");
+        ValidationException exception = new ValidationException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldNome)) {
-            exception.addError("nome", "O nome não pode ser vazio");
+            exception.addError("nome", "Nome não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldCPF)) {
-            exception.addError("CPF", "O CPF não pode ser vazio");
+            exception.addError("CPF", "CPF não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldRG)) {
-            exception.addError("RG", "O RG não pode ser vazio");
+            exception.addError("RG", "RG não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldTelefone)) {
-            exception.addError("telefone", "O telefone não pode ser vazio");
+            exception.addError("telefone", "Telefone não informado");
         }
         if (dateChooserNascimento.getDate() == null) {
-            exception.addError("dataNascimento", "Selecione a data");
+            exception.addError("dataNascimento", "Data não informada");
         }
         pessoa.setNome(textFieldNome.getText());
         pessoa.setCpf(textFieldCPF.getText());
@@ -95,6 +95,7 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelErroCPF.setText("");
         labelErroRG.setText("");
         labelErroTelefone.setText("");
+        labelErroDataNascimento.setText("");
     }
 
     @SuppressWarnings("unchecked")

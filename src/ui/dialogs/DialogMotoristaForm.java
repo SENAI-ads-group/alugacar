@@ -13,7 +13,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -77,9 +80,23 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     public Motorista getFormData() throws ValidationException {
         PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
         if (DateUtilities.getAge(pessoa.getDataNascimento()) < Motorista.IDADE_MINIMA) {
-            ValidationException exception = new ValidationException("Exceção motorista fora da idade mínima");
+            ValidationException exception = new ValidationException("PanelFormPessoaFisica");
             exception.addError("dataNascimento", "Idade mínima " + Motorista.IDADE_MINIMA + " anos");
             throw exception;
+        }
+        ValidationException exceptionCNH = new ValidationException("CNH");
+        if (Utilities.textFieldIsEmpty(textFieldNumeroRegistro)) {
+            exceptionCNH.addError("numeroRegistro", "Registro não informado");
+        }
+        if (Utilities.textFieldIsEmpty(textFieldFoto)) {
+            exceptionCNH.addError("foto", "Foto não selecionada");
+        }
+        if (dateChooserValidadeCNH.getDate() == null) {
+            exceptionCNH.addError("validadeCNH", "Data não selecionada");
+        }
+        clearErrors();
+        if (exceptionCNH.getErrors().size() > 0) {
+            throw exceptionCNH;
         }
         Endereco endereco = panelFormEndereco.getFormData();
         pessoa.setEndereco(endereco);
@@ -104,6 +121,26 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 listener.onDataChanged();
             });
         }
+    }
+
+    public void setErrors(Map<String, String> errors) {
+        Set<String> fields = errors.keySet();
+
+        if (fields.contains("numeroRegistro")) {
+            labelErroNumRegistro.setText(errors.get("numeroRegistro"));
+        }
+        if (fields.contains("foto")) {
+            labelErroFoto.setText(errors.get("foto"));
+        }
+        if (fields.contains("validadeCNH")) {
+            labelErroValidadeCNH.setText(errors.get("validadeCNH"));
+        }
+    }
+
+    public void clearErrors() {
+        labelErroNumRegistro.setText("");
+        labelErroFoto.setText("");
+        labelErroValidadeCNH.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -457,13 +494,27 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
+        tabbedPane.setIconAt(0, new ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")));
+        tabbedPane.setIconAt(1, new ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")));
+        tabbedPane.setIconAt(2, new ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")));
         try {
             persistEntity();
             this.dispose();
             notifyListeners();
         } catch (ValidationException ex) {
-            panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
-            panelFormEndereco.setErrorsMessages(ex.getErrors());
+            Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
+            if (ex.getMessage().equals("PanelFormPessoaFisica")) {
+                tabbedPane.setIconAt(0, iconError);
+                panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
+            }
+            if (ex.getMessage().equals("CNH")) {
+                tabbedPane.setIconAt(1, iconError);
+                setErrors(ex.getErrors());
+            }
+            if (ex.getMessage().equals("PanelFormEndereco")) {
+                tabbedPane.setIconAt(2, iconError);
+                panelFormEndereco.setErrorsMessages(ex.getErrors());
+            }
         } catch (PersistenceException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }

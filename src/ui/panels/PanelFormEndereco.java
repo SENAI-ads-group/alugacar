@@ -42,21 +42,21 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         if (endereco == null) {
             endereco = new Endereco();
         }
-        ValidationException exception = new ValidationException("Exceção de validação no endereço");
+        ValidationException exception = new ValidationException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldLogradouro)) {
-            exception.addError("logradouro", "O logradouro não pode ser vazio");
+            exception.addError("logradouro", "Logradouro não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldNumero)) {
-            exception.addError("numero", "O número não pode ser vazio");
+            exception.addError("numero", "Número não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldCEP)) {
-            exception.addError("CEP", "O CEP não pode ser vazio");
+            exception.addError("CEP", "CEP não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldBairro)) {
-            exception.addError("bairro", "O bairro não pode ser vazio");
+            exception.addError("bairro", "Bairro não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldCidade)) {
-            exception.addError("cidade", "A cidade não pode ser vazia");
+            exception.addError("cidade", "Cidade não informada");
         }
         endereco.setLogradouro(textFieldLogradouro.getText());
         endereco.setNumero(Utilities.tryParseToInteger(textFieldNumero.getText()));
@@ -80,16 +80,16 @@ public class PanelFormEndereco extends javax.swing.JPanel {
             labelErroLogradouro.setText(errors.get("logradouro"));
         }
         if (fields.contains("numero")) {
-            labelNumero.setText(errors.get("numero"));
+            labelErroNumero.setText(errors.get("numero"));
         }
         if (fields.contains("CEP")) {
             labelErroCEP.setText(errors.get("CEP"));
         }
         if (fields.contains("bairro")) {
-            labelBairro.setText(errors.get("bairro"));
+            labelErroBairro.setText(errors.get("bairro"));
         }
         if (fields.contains("cidade")) {
-            labelCidade.setText(errors.get("cidade"));
+            labelErroCidade.setText(errors.get("cidade"));
         }
     }
 

@@ -10,6 +10,9 @@ public class PessoaJuridica extends Pessoa {
     private String razaoSocial;
     private String inscricaoEstadual;
 
+    public PessoaJuridica() {
+    }
+
     public PessoaJuridica(String nome) {
         super(nome);
     }

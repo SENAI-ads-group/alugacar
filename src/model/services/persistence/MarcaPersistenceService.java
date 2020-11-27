@@ -1,7 +1,7 @@
-package model.entidades.services.persistence;
+package model.services.persistence;
 
 import model.entidades.Marca;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.exceptions.PersistenceException;
 import java.util.List;
 
 /**

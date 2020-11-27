@@ -1,4 +1,4 @@
-package model.entidades.services.persistence;
+package model.services.persistence;
 
 import model.entidades.Usuario;
 import java.util.List;

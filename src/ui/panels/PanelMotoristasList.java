@@ -1,8 +1,8 @@
 package ui.panels;
 
 import model.entidades.Motorista;
-import model.entidades.services.persistence.MotoristaPersistenceService;
-import model.entidades.services.persistence.PersistenceFactory;
+import model.services.persistence.MotoristaPersistenceService;
+import model.services.persistence.PersistenceFactory;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import ui.FrameLoader;

@@ -1,4 +1,4 @@
-package model.entidades.services.persistence.exceptions;
+package model.services.persistence.exceptions;
 
 /**
  *

@@ -1,9 +1,9 @@
-package model.entidades.services.persistence.csv;
+package model.services.persistence.csv;
 
 import application.Configurations;
 import model.entidades.CNH;
-import model.entidades.services.persistence.CNHPersistenseService;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.CNHPersistenseService;
+import model.services.persistence.exceptions.PersistenceException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

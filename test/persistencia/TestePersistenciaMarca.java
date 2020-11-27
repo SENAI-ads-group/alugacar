@@ -1,10 +1,10 @@
 package persistencia;
 
 import model.entidades.Marca;
-import model.entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
-import model.entidades.services.persistence.MarcaPersistenceService;
-import model.entidades.services.persistence.exceptions.DBConnectionException;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.csv.MarcaPersistenceServiceCSV;
+import model.services.persistence.MarcaPersistenceService;
+import model.services.persistence.exceptions.DBConnectionException;
+import model.services.persistence.exceptions.PersistenceException;
 
 /**
  *

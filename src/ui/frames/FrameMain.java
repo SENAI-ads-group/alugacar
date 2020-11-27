@@ -2,7 +2,9 @@ package ui.frames;
 
 import java.awt.Dimension;
 import ui.listeners.MouseListenerPanelButtonMenu;
+import ui.panels.PanelClientesList;
 import ui.panels.PanelMotoristasList;
+import util.PanelUtilities;
 
 /**
  *
@@ -207,7 +209,16 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemDashboardMouseClicked
 
     private void panelMenuItemClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMouseClicked
-        // TODO add your handling code here:
+        PanelClientesList panelLoaded = new PanelClientesList();
+        //PanelUtilities.loadPanelToPanel(panelLoaded, panelLoader);
+        panelLoader.removeAll();
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoader.add(panelLoaded);
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+        //panelLoaded.updateTable();
     }//GEN-LAST:event_panelMenuItemClientesMouseClicked
 
     private void panelMenuItemMotoristasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMouseClicked

@@ -1,4 +1,4 @@
-package model.entidades.services.persistence.csv;
+package model.services.persistence.csv;
 
 import application.Configurations;
 
@@ -6,8 +6,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Veiculo;
-import model.entidades.services.persistence.VeiculoPersistenceService;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.VeiculoPersistenceService;
+import model.services.persistence.exceptions.PersistenceException;
 import util.Utilities;
 
 /**

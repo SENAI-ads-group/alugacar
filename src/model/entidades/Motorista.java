@@ -1,7 +1,7 @@
 package model.entidades;
 
 import model.entidades.enums.UF;
-import model.entidades.services.persistence.PersistenceFactory;
+import model.services.persistence.PersistenceFactory;
 import java.io.File;
 import java.util.Date;
 import java.util.Objects;

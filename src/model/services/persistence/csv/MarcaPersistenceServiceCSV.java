@@ -1,28 +1,26 @@
-package model.entidades.services.persistence.csv;
+package model.services.persistence.csv;
 
 import application.Configurations;
-import model.entidades.Motorista;
-import model.entidades.services.persistence.CNHPersistenseService;
-import model.entidades.services.persistence.MotoristaPersistenceService;
-import model.entidades.services.persistence.PersistenceFactory;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.entidades.Marca;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import model.services.persistence.MarcaPersistenceService;
+import model.services.persistence.exceptions.PersistenceException;
 import util.Utilities;
 
 /**
  *
- * @author Alexsander
+ * @author Patrick-Ribeiro
  */
-public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceService {
+public class MarcaPersistenceServiceCSV implements MarcaPersistenceService {
 
     private final File arquivoDB;
     private final String canonicalPath;
     private final CSVConnection connection;
 
-    public MotoristaPersistenceServiceCSV() {
-        String caminhoDB = Configurations.getProperties().getProperty("db.motorista");
+    public MarcaPersistenceServiceCSV() {
+        String caminhoDB = Configurations.getProperties().getProperty("db.marca");
         canonicalPath = Configurations.getProperties().getProperty("canonicalPath");
 
         arquivoDB = new File(canonicalPath + caminhoDB);
@@ -30,29 +28,24 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
     }
 
     @Override
-    public void inserir(Motorista motorista) throws PersistenceException {
-        CNHPersistenseService cnhPersistenceService = PersistenceFactory.createCNHService();
-        cnhPersistenceService.inserir(motorista.getCnh());
-        if (motorista.getId() == null) {
-            motorista.setId(getUltimoID() + 1);
+    public void inserir(Marca marca) throws PersistenceException {
+        if (marca.getId() == null) {
+            marca.setId(getUltimoID() + 1);
         }
-        if (buscar(motorista.getId()) != null) {
-            throw new PersistenceException("O motorista já existe");
+        if (buscar(marca.getId()) != null) {
+            throw new PersistenceException("A marca já existe");
         }
         connection.open(arquivoDB);
 
-        connection.writer().write(motorista.toCSV());
+        connection.writer().write(marca.toCSV());
         connection.writer().newLine();
 
         connection.close();
     }
 
     @Override
-    public void atualizar(Motorista motorista) {
-        if (motorista.getCnh() != null) {
-            PersistenceFactory.createCNHService().atualizar(motorista.getCnh());
-        }
-        File arquivoDBTemp = new File(canonicalPath + "\\temp\\motorista-temp.csv");
+    public void atualizar(Marca marca) {
+        File arquivoDBTemp = new File(canonicalPath + "\\temp\\marcas-temp.csv");
         CSVConnection connectionTemp = new CSVConnection();
 
         connection.open(arquivoDB);
@@ -60,12 +53,12 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
 
         String linha = connection.reader().readLine();
         while (linha != null) {
-            Motorista motoristaEncontrado = new Motorista(linha.split(";"));
+            Marca marcaEncontrada = new Marca(linha.split(";"));
 
-            if (motoristaEncontrado.equals(motorista)) {
-                connectionTemp.writer().write(motorista.toCSV());
+            if (marcaEncontrada.equals(marca)) {
+                connectionTemp.writer().write(marca.toCSV());
             } else {
-                connectionTemp.writer().write(motoristaEncontrado.toCSV());
+                connectionTemp.writer().write(marcaEncontrada.toCSV());
             }
             connectionTemp.writer().flush();
             connectionTemp.writer().newLine();
@@ -79,19 +72,20 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
     }
 
     @Override
-    public Motorista buscar(Integer id) {
+    public Marca buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
         connection.open(arquivoDB);
+        System.out.println(arquivoDB.toString());
         String linha = connection.reader().readLine();
         while (linha != null) {
             String[] csv = linha.split(";");
-            Motorista motoristaEncontrado = new Motorista(csv);
+            Marca marcaEncontrada = new Marca(csv);
 
-            if (motoristaEncontrado.getId().equals(id)) {
+            if (marcaEncontrada.getId().equals(id)) {
                 connection.close();
-                return motoristaEncontrado;
+                return marcaEncontrada;
             }
             linha = connection.reader().readLine();
         }
@@ -100,31 +94,31 @@ public class MotoristaPersistenceServiceCSV implements MotoristaPersistenceServi
     }
 
     @Override
-    public List<Motorista> buscarTodos() {
+    public List<Marca> buscarTodos() {
         connection.open(arquivoDB);
 
-        List<Motorista> motoristasEncontrados = new ArrayList<>();
+        List<Marca> marcasEncontradas = new ArrayList<>();
         String linha = connection.reader().readLine();
-
         while (linha != null) {
-            Motorista motoristaEncontrado = new Motorista(linha.split(";"));
-            motoristasEncontrados.add(motoristaEncontrado);
+            String[] csv = linha.split(";");
+            Marca marcaEncontrada = new Marca(csv);
+            marcasEncontradas.add(marcaEncontrada);
             linha = connection.reader().readLine();
         }
 
         connection.close();
-        return motoristasEncontrados;
+        return marcasEncontradas;
     }
 
     private Integer getUltimoID() {
         connection.open(arquivoDB);
 
-        Integer ultimoID = 0;
+        Integer ultimoID = 1;
         String linha = connection.reader().readLine();
         while (linha != null) {
             ultimoID = Utilities.tryParseToInteger(linha.split(";")[0]);
             if (ultimoID == null) {
-                ultimoID = 0;
+                ultimoID = 1;
             }
             linha = connection.reader().readLine();
         }

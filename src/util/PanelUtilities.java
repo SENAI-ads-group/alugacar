@@ -1,5 +1,6 @@
 package util;
 
+import java.awt.Dimension;
 import javax.swing.JPanel;
 
 /**
@@ -16,5 +17,6 @@ public class PanelUtilities {
         loader.add(loaded);
         loader.revalidate();
         loader.repaint();
+        loaded.setPreferredSize(new Dimension(loader.getWidth(), loaded.getHeight()));
     }
 }

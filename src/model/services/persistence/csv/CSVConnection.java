@@ -1,6 +1,6 @@
-package model.entidades.services.persistence.csv;
+package model.services.persistence.csv;
 
-import model.entidades.services.persistence.exceptions.DBConnectionException;
+import model.services.persistence.exceptions.DBConnectionException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;

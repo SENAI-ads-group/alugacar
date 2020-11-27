@@ -1,13 +1,13 @@
-package model.entidades.services.persistence;
+package model.services.persistence;
 
-import model.entidades.services.persistence.csv.CNHPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.CategoriaPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.ClientePersistenceServiceCSV;
-import model.entidades.services.persistence.csv.MarcaPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.ModeloPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.MotoristaPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.UsuarioPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.VeiculoPersistenceServiceCSV;
+import model.services.persistence.csv.CNHPersistenceServiceCSV;
+import model.services.persistence.csv.CategoriaPersistenceServiceCSV;
+import model.services.persistence.csv.ClientePersistenceServiceCSV;
+import model.services.persistence.csv.MarcaPersistenceServiceCSV;
+import model.services.persistence.csv.ModeloPersistenceServiceCSV;
+import model.services.persistence.csv.MotoristaPersistenceServiceCSV;
+import model.services.persistence.csv.UsuarioPersistenceServiceCSV;
+import model.services.persistence.csv.VeiculoPersistenceServiceCSV;
 
 /**
  *

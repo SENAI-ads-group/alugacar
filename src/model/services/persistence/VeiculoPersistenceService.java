@@ -1,8 +1,8 @@
-package model.entidades.services.persistence;
+package model.services.persistence;
 
 import model.entidades.Veiculo;
 import java.util.List;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.exceptions.PersistenceException;
 
 /**
  *

@@ -1,10 +1,10 @@
-package model.entidades.services.persistence.csv;
+package model.services.persistence.csv;
 
 import application.Configurations;
 import model.entidades.Marca;
 import model.entidades.Modelo;
-import model.entidades.services.persistence.ModeloPersistenceService;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.ModeloPersistenceService;
+import model.services.persistence.exceptions.PersistenceException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

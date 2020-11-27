@@ -1,32 +1,32 @@
-package model.entidades.services.persistence.csv;
+package model.services.persistence.csv;
 
-import model.entidades.Cliente;
-import model.entidades.services.persistence.ClientePersistenceService;
+import model.entidades.Endereco;
+import model.services.persistence.EnderecoPersistenseService;
 import java.util.List;
 
 /**
  *
  * @author Alexsander
  */
-public class ClientePersistenceServiceCSV implements ClientePersistenceService {
+public class EnderecoPersistenceServiceCSV implements EnderecoPersistenseService {
 
     @Override
-    public void inserir(Cliente cliente) {
+    public void inserir(Endereco endereco) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void atualizar(Cliente cliente) {
+    public void atualizar(Endereco endereco) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Cliente buscar(Integer id) {
+    public Endereco buscar(Integer id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Cliente> buscarTodos() {
+    public List<Endereco> buscarTodos() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

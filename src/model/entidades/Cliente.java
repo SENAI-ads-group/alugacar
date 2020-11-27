@@ -13,6 +13,8 @@ import util.Utilities;
  */
 public class Cliente {
 
+    public static final int IDADE_MINIMA = 18;
+
     private Integer id;
     private Pessoa pessoa;
     private boolean ativo;
@@ -20,6 +22,11 @@ public class Cliente {
 
     public Cliente(TipoCliente tipo) {
         this.tipoCliente = tipo;
+        if (tipo == TipoCliente.PESSOA_FISICA) {
+            pessoa = new PessoaFisica();
+        } else if (tipo == TipoCliente.PESSOA_JURIDICA) {
+            pessoa = new PessoaJuridica();
+        }
     }
 
     public Cliente(Integer id, Pessoa pessoa, boolean ativo) {
@@ -66,6 +73,10 @@ public class Cliente {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public TipoCliente getTipoCliente() {
+        return tipoCliente;
     }
 
     public String toCSV() {

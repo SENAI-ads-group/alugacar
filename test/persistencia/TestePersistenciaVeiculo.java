@@ -5,12 +5,12 @@ import model.entidades.Categoria;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
-import model.entidades.services.persistence.VeiculoPersistenceService;
-import model.entidades.services.persistence.csv.CategoriaPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.ModeloPersistenceServiceCSV;
-import model.entidades.services.persistence.csv.VeiculoPersistenceServiceCSV;
-import model.entidades.services.persistence.exceptions.DBConnectionException;
-import model.entidades.services.persistence.exceptions.PersistenceException;
+import model.services.persistence.VeiculoPersistenceService;
+import model.services.persistence.csv.CategoriaPersistenceServiceCSV;
+import model.services.persistence.csv.ModeloPersistenceServiceCSV;
+import model.services.persistence.csv.VeiculoPersistenceServiceCSV;
+import model.services.persistence.exceptions.DBConnectionException;
+import model.services.persistence.exceptions.PersistenceException;
 
 /**
  *

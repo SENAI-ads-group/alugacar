@@ -1,11 +1,16 @@
 package ui.panels;
 
-import model.entidades.Motorista;
-import model.entidades.services.persistence.PersistenceFactory;
+import model.services.persistence.PersistenceFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Cliente;
-import model.entidades.services.persistence.ClientePersistenceService;
+import model.entidades.PessoaFisica;
+import model.entidades.PessoaJuridica;
+import model.entidades.enums.TipoCliente;
+import model.services.persistence.ClientePersistenceService;
+import ui.FrameLoader;
+import ui.dialogs.DialogClienteForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
 
@@ -19,7 +24,6 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
     public PanelClientesList() {
         initComponents();
-        updateTable();
     }
 
     public void updateTable() {
@@ -28,12 +32,31 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
 
-        for (Cliente cliente : clientes) {
+        clientes.stream().map((cliente) -> {
+            String cpfCnpj = null;
+            String rgInscricaoEstadual = null;
+            if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
+                PessoaFisica pf = (PessoaFisica) cliente.getPessoa();
+                cpfCnpj = pf.getCpf();
+                rgInscricaoEstadual = pf.getRegistroGeral();
+            } else if (cliente.getTipoCliente() == TipoCliente.PESSOA_JURIDICA) {
+                PessoaJuridica pj = (PessoaJuridica) cliente.getPessoa();
+                cpfCnpj = pj.getCnpj();
+                rgInscricaoEstadual = pj.getInscricaoEstadual();
+            }
             Object[] row = {
-            
+                cliente.getId(),
+                cliente.getPessoa().getNome(),
+                cliente.getPessoa().getEmail(),
+                cliente.getPessoa().getTelefone(),
+                cpfCnpj,
+                rgInscricaoEstadual,
+                cliente.isAtivo()
             };
+            return row;
+        }).forEachOrdered((row) -> {
             tableModel.addRow(row);
-        }
+        });
         table.setModel(tableModel);
         if (tableModel.getRowCount() > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
@@ -45,8 +68,10 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         }
     }
 
-    public void createMotoristaForm(Motorista motorista) {
-        
+    public void createMotoristaForm(Cliente cliente) {
+        DialogClienteForm dialogForm = new DialogClienteForm(FrameLoader.getFrameMain(), true, cliente);
+        dialogForm.updateFormData();
+        dialogForm.setVisible(true);
     }
 
     @Override
@@ -176,7 +201,10 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        createMotoristaForm(new Motorista());
+        TipoCliente[] itens = TipoCliente.values();
+        TipoCliente selectedValue = (TipoCliente) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o tipo de cliente", "Tipo de cliente",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+        createMotoristaForm(new Cliente(selectedValue));
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed

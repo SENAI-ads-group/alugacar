@@ -14,6 +14,7 @@ public class PessoaFisica extends Pessoa {
     private Date dataNascimento;
 
     public PessoaFisica() {
+        super();
     }
 
     public PessoaFisica(String nome) {

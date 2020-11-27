@@ -1,7 +1,7 @@
 package model.entidades;
 
 import model.entidades.enums.StatusVeiculo;
-import model.entidades.services.persistence.PersistenceFactory;
+import model.services.persistence.PersistenceFactory;
 import java.util.Date;
 import util.DateUtilities;
 import util.Utilities;

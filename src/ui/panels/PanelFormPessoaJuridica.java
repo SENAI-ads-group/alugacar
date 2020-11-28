@@ -11,28 +11,29 @@ import util.Utilities;
  * @author Patrick-Ribeiro
  */
 public class PanelFormPessoaJuridica extends javax.swing.JPanel {
-
+    
     private PessoaJuridica pessoa;
-
+    
     public PanelFormPessoaJuridica(PessoaJuridica pessoa) {
         initComponents();
         this.pessoa = pessoa;
     }
-
+    
     public void setPessoa(PessoaJuridica pessoa) {
         this.pessoa = pessoa;
     }
-
+    
     public void updateFormData() {
         if (pessoa != null) {
             textFieldNome.setText(pessoa.getNome());
             textFieldEmail.setText(pessoa.getEmail());
             textFieldCNPJ.setText(pessoa.getCnpj());
+            textFieldTelefone.setText(pessoa.getTelefone());
             textFieldInscricaoEstadual.setText(pessoa.getInscricaoEstadual());
             textFieldRazaoSocial.setText(pessoa.getTelefone());
         }
     }
-
+    
     public PessoaJuridica getFormData() throws ValidationException {
         if (pessoa == null) {
             pessoa = new PessoaJuridica();
@@ -45,7 +46,7 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
             exception.addError("CNPJ", "CNPJ não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldInscricaoEstadual)) {
-            exception.addError("inscricaoEstadual", "Inscricao estadual não informada");
+            exception.addError("IE", "IE não informada");
         }
         if (Utilities.textFieldIsEmpty(textFieldTelefone)) {
             exception.addError("telefone", "Telefone não informado");
@@ -59,34 +60,34 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         pessoa.setInscricaoEstadual(textFieldInscricaoEstadual.getText());
         pessoa.setEmail(textFieldEmail.getText());
         pessoa.setRazaoSocial(textFieldRazaoSocial.getText());
-
+        
         clearErrors();
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
         return pessoa;
     }
-
+    
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-
+        
         if (fields.contains("nome")) {
             labelErroNome.setText(errors.get("nome"));
         }
         if (fields.contains("CNPJ")) {
             labelErroCNPJ.setText(errors.get("CNPJ"));
         }
-        if (fields.contains("inscricaoEstadual")) {
-            labelErroInscricaoEstadual.setText(errors.get("inscricaoEstadual"));
+        if (fields.contains("IE")) {
+            labelErroInscricaoEstadual.setText(errors.get("IE"));
         }
         if (fields.contains("telefone")) {
-            labelErroRazaoSocial.setText(errors.get("telefone"));
+            labelErroTelefone.setText(errors.get("telefone"));
         }
         if (fields.contains("razaoSocial")) {
-            labelErroTelefone.setText(errors.get("razaoSocial"));
+            labelErroRazaoSocial.setText(errors.get("razaoSocial"));
         }
     }
-
+    
     private void clearErrors() {
         labelErroNome.setText("");
         labelErroCNPJ.setText("");
@@ -94,7 +95,7 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         labelErroRazaoSocial.setText("");
         labelErroTelefone.setText("");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

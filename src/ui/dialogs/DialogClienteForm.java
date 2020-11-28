@@ -6,12 +6,11 @@ import model.services.persistence.PersistenceFactory;
 import model.services.persistence.exceptions.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.entidades.Cliente;
+import model.entidades.Pessoa;
 import model.entidades.PessoaJuridica;
 import model.entidades.enums.TipoCliente;
 import model.exceptions.ValidationException;
@@ -58,10 +57,8 @@ public class DialogClienteForm extends javax.swing.JDialog {
         } else if (tipoCliente == TipoCliente.PESSOA_JURIDICA) {
             panelFormPessoaJuridica = new PanelFormPessoaJuridica((PessoaJuridica) cliente.getPessoa());
             PanelUtilities.loadPanelToPanel(panelFormPessoaJuridica, panelCenterTab1);
-            tabbedPane.setTitleAt(0, "Informações empresariais");
-            tabbedPane.setToolTipTextAt(0, "Informações sobre a empresa");
-            tabbedPane.setIconAt(0, new ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoaJuridica-24x24.png")));
         }
+        updateTabIcons();
         PanelUtilities.loadPanelToPanel(panelFormEndereco, panelCenterTab2);
     }
 
@@ -75,13 +72,18 @@ public class DialogClienteForm extends javax.swing.JDialog {
     }
 
     public Cliente getFormData() throws ValidationException {
-        PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
-        Endereco endereco = panelFormEndereco.getFormData();
-        if (DateUtilities.getAge(pessoa.getDataNascimento()) < Cliente.IDADE_MINIMA) {
-            ValidationException exception = new ValidationException("PanelFormPessoaFisica");
-            exception.addError("dataNascimento", "Idade mínima " + Cliente.IDADE_MINIMA + " anos");
-            throw exception;
+        Pessoa pessoa = null;
+        if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
+            pessoa = panelFormPessoaFisica.getFormData();
+            if (DateUtilities.getAge(((PessoaFisica) pessoa).getDataNascimento()) < Cliente.IDADE_MINIMA) {
+                ValidationException exception = new ValidationException("PanelFormPessoaFisica");
+                exception.addError("dataNascimento", "Idade mínima " + Cliente.IDADE_MINIMA + " anos");
+                throw exception;
+            }
+        } else {
+            pessoa = panelFormPessoaJuridica.getFormData();
         }
+        Endereco endereco = panelFormEndereco.getFormData();
         pessoa.setEndereco(endereco);
         cliente.setPessoa(pessoa);
 
@@ -96,7 +98,6 @@ public class DialogClienteForm extends javax.swing.JDialog {
         if (panelFormPessoaJuridica != null) {
             panelFormPessoaJuridica.updateFormData();
         }
-
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -111,13 +112,16 @@ public class DialogClienteForm extends javax.swing.JDialog {
         }
     }
 
-    public void setErrors(Map<String, String> errors) {
-        Set<String> fields = errors.keySet();
-
-    }
-
-    public void clearErrors() {
-
+    public void updateTabIcons() {
+        if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
+            tabbedPane.setTitleAt(0, "Informações pessoais");
+            tabbedPane.setToolTipTextAt(0, "Informações pessoais básicas sobre o cliente");
+            tabbedPane.setIconAt(0, new ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")));
+        } else if (cliente.getTipoCliente() == TipoCliente.PESSOA_JURIDICA) {
+            tabbedPane.setTitleAt(0, "Informações empresariais");
+            tabbedPane.setToolTipTextAt(0, "Informações sobre a empresa");
+            tabbedPane.setIconAt(0, new ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoaJuridica-24x24.png")));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -305,16 +309,12 @@ public class DialogClienteForm extends javax.swing.JDialog {
 
         getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
 
-        getAccessibleContext().setAccessibleName("Formulário de cliente");
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
-        tabbedPane.setIconAt(0, new ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")));
-        tabbedPane.setIconAt(1, new ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")));
-        tabbedPane.setIconAt(2, new ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")));
+        updateTabIcons();
         try {
             persistEntity();
             this.dispose();
@@ -325,12 +325,12 @@ public class DialogClienteForm extends javax.swing.JDialog {
                 tabbedPane.setIconAt(0, iconError);
                 panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
             }
-            if (ex.getMessage().equals("CNH")) {
-                tabbedPane.setIconAt(1, iconError);
-                setErrors(ex.getErrors());
+            if (ex.getMessage().equals("PanelFormPessoaJuridica")) {
+                tabbedPane.setIconAt(0, iconError);
+                panelFormPessoaJuridica.setErrorsMessages(ex.getErrors());
             }
             if (ex.getMessage().equals("PanelFormEndereco")) {
-                tabbedPane.setIconAt(2, iconError);
+                tabbedPane.setIconAt(1, iconError);
                 panelFormEndereco.setErrorsMessages(ex.getErrors());
             }
         } catch (PersistenceException ex) {

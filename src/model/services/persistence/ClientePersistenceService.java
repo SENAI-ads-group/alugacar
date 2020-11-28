@@ -3,6 +3,7 @@ package model.services.persistence;
 import model.entidades.Cliente;
 
 import java.util.List;
+import model.services.persistence.exceptions.PersistenceException;
 
 /**
  *
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface ClientePersistenceService {
 
-    void inserir(Cliente cliente);
+    void inserir(Cliente cliente) throws PersistenceException;
 
     void atualizar(Cliente cliente);
 

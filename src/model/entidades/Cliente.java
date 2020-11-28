@@ -17,7 +17,7 @@ public class Cliente {
 
     private Integer id;
     private Pessoa pessoa;
-    private boolean ativo;
+    private boolean ativo = true;
     private final TipoCliente tipoCliente;
 
     public Cliente(TipoCliente tipo) {
@@ -82,7 +82,7 @@ public class Cliente {
     public String toCSV() {
         return "" + id + ";"
                 + ativo + ";"
-                + tipoCliente.toString() + ";"
+                + tipoCliente.toCSV() + ";"
                 + pessoa.toCSV();
     }
 

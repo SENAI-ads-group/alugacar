@@ -24,6 +24,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
     public PanelClientesList() {
         initComponents();
+        updateTable();
     }
 
     public void updateTable() {
@@ -49,6 +50,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
                 cliente.getPessoa().getNome(),
                 cliente.getPessoa().getEmail(),
                 cliente.getPessoa().getTelefone(),
+                cliente.getTipoCliente().toString(),
                 cpfCnpj,
                 rgInscricaoEstadual,
                 cliente.isAtivo()
@@ -68,9 +70,10 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         }
     }
 
-    public void createMotoristaForm(Cliente cliente) {
+    public void createClienteForm(Cliente cliente) {
         DialogClienteForm dialogForm = new DialogClienteForm(FrameLoader.getFrameMain(), true, cliente);
         dialogForm.updateFormData();
+        dialogForm.subscribeListener(this);
         dialogForm.setVisible(true);
     }
 
@@ -87,6 +90,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonNovo = new javax.swing.JButton();
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -132,12 +136,17 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Clientes");
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
-                .addContainerGap(893, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 822, Short.MAX_VALUE)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,7 +161,8 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addContainerGap())
         );
 
@@ -166,14 +176,14 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
             },
             new String [] {
-                "Id", "Nome", "Email", "Telefone", "CPF / CNPJ", "RG / Inscrição Estadual", "Ativo"
+                "Id", "Nome", "Email", "Telefone", "Tipo", "CPF / CNPJ", "RG / Inscrição Estadual", "Ativo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -190,11 +200,11 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setPreferredWidth(40);
             table.getColumnModel().getColumn(1).setPreferredWidth(200);
-            table.getColumnModel().getColumn(2).setPreferredWidth(200);
-            table.getColumnModel().getColumn(3).setPreferredWidth(80);
-            table.getColumnModel().getColumn(4).setPreferredWidth(100);
-            table.getColumnModel().getColumn(5).setPreferredWidth(80);
-            table.getColumnModel().getColumn(6).setPreferredWidth(20);
+            table.getColumnModel().getColumn(2).setPreferredWidth(180);
+            table.getColumnModel().getColumn(3).setPreferredWidth(150);
+            table.getColumnModel().getColumn(5).setPreferredWidth(100);
+            table.getColumnModel().getColumn(6).setPreferredWidth(80);
+            table.getColumnModel().getColumn(7).setPreferredWidth(20);
         }
 
         add(scrollPane, java.awt.BorderLayout.CENTER);
@@ -204,11 +214,13 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         TipoCliente[] itens = TipoCliente.values();
         TipoCliente selectedValue = (TipoCliente) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o tipo de cliente", "Tipo de cliente",
                 JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
-        createMotoristaForm(new Cliente(selectedValue));
+        System.out.println(selectedValue.name());
+        createClienteForm(new Cliente(selectedValue));
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        createClienteForm(persistenceService.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
 
@@ -216,6 +228,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable table;

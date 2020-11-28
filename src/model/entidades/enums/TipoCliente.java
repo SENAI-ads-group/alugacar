@@ -19,4 +19,8 @@ public enum TipoCliente {
         return formatado;
     }
 
+    public String toCSV() {
+        return name();
+    }
+
 }

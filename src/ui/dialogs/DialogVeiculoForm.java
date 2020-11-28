@@ -1,18 +1,18 @@
 package ui.dialogs;
 
-import model.services.persistence.PersistenceFactory;
-import model.services.persistence.exceptions.PersistenceException;
+import model.servicos.persistencia.DAOFactory;
+import model.exceptions.PersistenciaException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.entidades.Veiculo;
-import model.exceptions.ValidationException;
-import model.services.persistence.VeiculoPersistenceService;
+import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormVeiculo;
 import util.PanelUtilities;
+import model.servicos.persistencia.VeiculoDAO;
 
 /**
  *
@@ -21,7 +21,7 @@ import util.PanelUtilities;
 public class DialogVeiculoForm extends javax.swing.JDialog {
 
     private Veiculo veiculo;
-    private final VeiculoPersistenceService persistenceService = PersistenceFactory.createVeiculoService();
+    private final VeiculoDAO persistenceService = DAOFactory.createVeiculoService();
 
     private PanelFormVeiculo formVeiculo;
 
@@ -41,7 +41,7 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
         PanelUtilities.loadPanelToPanel(formVeiculo, panelCenterTab1);
     }
 
-    private void persistEntity() throws PersistenceException, ValidationException {
+    private void persistEntity() throws PersistenciaException, ValidacaoException {
         getFormData();
         if (veiculo.getId() == null) {
             persistenceService.inserir(veiculo);
@@ -50,7 +50,7 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
         }
     }
 
-    public Veiculo getFormData() throws ValidationException {
+    public Veiculo getFormData() throws ValidacaoException {
         veiculo = formVeiculo.getFormData();
         return veiculo;
     }
@@ -210,13 +210,13 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
             persistEntity();
             this.dispose();
             notifyListeners();
-        } catch (ValidationException ex) {
+        } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormVeiculo")) {
                 tabbedPane.setIconAt(0, iconError);
                 formVeiculo.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed

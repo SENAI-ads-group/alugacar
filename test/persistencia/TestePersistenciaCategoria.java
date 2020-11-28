@@ -1,10 +1,10 @@
 package persistencia;
 
 import model.entidades.Categoria;
-import model.services.persistence.CategoriaPersistenceService;
-import model.services.persistence.PersistenceFactory;
-import model.services.persistence.exceptions.DBConnectionException;
-import model.services.persistence.exceptions.PersistenceException;
+import model.servicos.persistencia.DAOFactory;
+import model.exceptions.DBException;
+import model.exceptions.PersistenciaException;
+import model.servicos.persistencia.CategoriaDAO;
 
 /**
  *
@@ -13,10 +13,10 @@ import model.services.persistence.exceptions.PersistenceException;
 public class TestePersistenciaCategoria {
 
     public static void main(String[] args) {
-        CategoriaPersistenceService persistenceService = PersistenceFactory.createCategoriaService();
+        CategoriaDAO persistenceService = DAOFactory.createCategoriaService();
         try {
             System.out.println("INSERIR");
-            Categoria categoria = new Categoria("teste", 56.87);
+            Categoria categoria = new Categoria(1, "descricao", 1500.0, 100.0);
             persistenceService.inserir(categoria);
 
             System.out.println("BUSCAR");
@@ -34,9 +34,9 @@ public class TestePersistenciaCategoria {
             for (Categoria ctg : persistenceService.buscarTodos()) {
                 System.out.println(ctg.toCSV());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             System.out.println("Erro de persistencia: " + ex.getMessage());
-        } catch (DBConnectionException ex) {
+        } catch (DBException ex) {
             System.out.println("Erro de conexão: " + ex.getMessage());
         }
     }

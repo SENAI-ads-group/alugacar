@@ -5,9 +5,8 @@ import model.entidades.Endereco;
 import model.entidades.Motorista;
 import model.entidades.PessoaFisica;
 import model.entidades.enums.CategoriaCNH;
-import model.services.persistence.MotoristaPersistenceService;
-import model.services.persistence.PersistenceFactory;
-import model.services.persistence.exceptions.PersistenceException;
+import model.servicos.persistencia.DAOFactory;
+import model.exceptions.PersistenciaException;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -21,13 +20,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import model.exceptions.ValidationException;
+import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
 import ui.panels.PanelFormPessoaFisica;
 import util.DateUtilities;
 import util.PanelUtilities;
 import util.Utilities;
+import model.servicos.persistencia.MotoristaDAO;
 
 /**
  *
@@ -36,7 +36,7 @@ import util.Utilities;
 public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
-    private final MotoristaPersistenceService MotoristaPersistenceService = PersistenceFactory.createMotoristaService();
+    private final MotoristaDAO MotoristaPersistenceService = DAOFactory.createMotoristaService();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
@@ -66,7 +66,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         comboBoxCategoriaCNH.setModel(new DefaultComboBoxModel(CategoriaCNH.values()));
     }
 
-    private void persistEntity() throws PersistenceException, ValidationException {
+    private void persistEntity() throws PersistenciaException, ValidacaoException {
         motorista = getFormData();
         if (motorista.getId() == null) {
             MotoristaPersistenceService.inserir(motorista);
@@ -75,14 +75,14 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         }
     }
 
-    public Motorista getFormData() throws ValidationException {
+    public Motorista getFormData() throws ValidacaoException {
         PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
         if (DateUtilities.getAge(pessoa.getDataNascimento()) < Motorista.IDADE_MINIMA) {
-            ValidationException exception = new ValidationException("PanelFormPessoaFisica");
+            ValidacaoException exception = new ValidacaoException("PanelFormPessoaFisica");
             exception.addError("dataNascimento", "Idade mínima " + Motorista.IDADE_MINIMA + " anos");
             throw exception;
         }
-        ValidationException exceptionCNH = new ValidationException("CNH");
+        ValidacaoException exceptionCNH = new ValidacaoException("CNH");
         if (Utilities.textFieldIsEmpty(textFieldNumeroRegistro)) {
             exceptionCNH.addError("numeroRegistro", "Registro não informado");
         }
@@ -115,9 +115,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             comboBoxCategoriaCNH.setSelectedIndex(motorista.getCnh().getCategoria().ordinal());
             dateChooserValidadeCNH.setDate(motorista.getCnh().getDataValidade());
         }
-        if (motorista.getFoto() != null) {
-            textFieldFoto.setText(motorista.getFoto().getPath());
-            showImageOnLabel(motorista.getFoto());
+        if (motorista.getCnh().getFoto() != null) {
+            textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
+            showImageOnLabel(motorista.getCnh().getFoto());
         }
         checkBoxAtivo.setSelected(motorista.isAtivo());
         panelFormEndereco.updateFormData();
@@ -528,7 +528,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             persistEntity();
             this.dispose();
             notifyListeners();
-        } catch (ValidationException ex) {
+        } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormPessoaFisica")) {
                 tabbedPane.setIconAt(0, iconError);
@@ -542,7 +542,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 tabbedPane.setIconAt(2, iconError);
                 panelFormEndereco.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed
@@ -558,9 +558,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         int retorno = fileChooser.showOpenDialog(this);
         if (retorno == JFileChooser.APPROVE_OPTION) {
-            motorista.setFoto(fileChooser.getSelectedFile());
-            textFieldFoto.setText(motorista.getFoto().getPath());
-            showImageOnLabel(motorista.getFoto());
+            motorista.getCnh().setFoto(fileChooser.getSelectedFile());
+            textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
+            showImageOnLabel(motorista.getCnh().getFoto());
         }
     }//GEN-LAST:event_buttonBuscarFotoActionPerformed
 

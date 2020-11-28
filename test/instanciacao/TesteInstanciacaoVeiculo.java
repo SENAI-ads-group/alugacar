@@ -4,6 +4,7 @@ import model.entidades.Categoria;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
+import model.entidades.enums.Combustivel;
 
 /**
  *
@@ -13,11 +14,10 @@ public class TesteInstanciacaoVeiculo {
 
     public static void main(String[] args) {
 
-        Marca marca = new Marca("marca1");
-        Modelo modelo = new Modelo(marca, "modelo1");
-        Categoria categoria = new Categoria(1, "categoria1", 103.0);
-        Veiculo veiculo = new Veiculo(1, "KKK-3333", "123456789", modelo,
-                2019, 2020, 15000.0);
+        Marca marca = new Marca(1, "descricao");
+        Categoria categoria = new Categoria(1, "descricao", 1500.0, 100.0);
+        Modelo modelo = new Modelo(1, "codigoFipe", "descricao", marca, categoria, Combustivel.DIESEL, 2020);
+        Veiculo veiculo = new Veiculo(1, "placa", "renavam", 25000.0, modelo, 2020, 0.0, 5.0);
         System.out.println(veiculo.toCSV());
 
         Veiculo veiculo1 = new Veiculo(veiculo.toCSV().split(";"));

@@ -1,14 +1,14 @@
 package ui.panels;
 
 import model.entidades.Motorista;
-import model.services.persistence.MotoristaPersistenceService;
-import model.services.persistence.PersistenceFactory;
+import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import ui.FrameLoader;
 import ui.dialogs.DialogMotoristaForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
+import model.servicos.persistencia.MotoristaDAO;
 
 /**
  *
@@ -16,7 +16,7 @@ import util.Utilities;
  */
 public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MotoristaPersistenceService persistenceService = PersistenceFactory.createMotoristaService();
+    private final MotoristaDAO persistenceService = DAOFactory.createMotoristaService();
 
     public PanelMotoristasList() {
         initComponents();

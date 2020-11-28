@@ -5,7 +5,7 @@ import java.util.Set;
 import model.entidades.Endereco;
 import model.entidades.enums.UF;
 import javax.swing.DefaultComboBoxModel;
-import model.exceptions.ValidationException;
+import model.exceptions.ValidacaoException;
 import util.Utilities;
 
 /**
@@ -42,7 +42,7 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         if (endereco == null) {
             endereco = new Endereco();
         }
-        ValidationException exception = new ValidationException(getClass().getSimpleName());
+        ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldLogradouro)) {
             exception.addError("logradouro", "Logradouro não informado");
         }

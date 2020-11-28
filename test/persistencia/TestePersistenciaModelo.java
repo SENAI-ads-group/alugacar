@@ -1,14 +1,16 @@
 package persistencia;
 
+import model.entidades.Categoria;
 import model.entidades.Marca;
 import model.entidades.Modelo;
-import model.services.persistence.MarcaPersistenceService;
-import model.services.persistence.ModeloPersistenceService;
-import model.services.persistence.PersistenceFactory;
-import model.services.persistence.csv.MarcaPersistenceServiceCSV;
-import model.services.persistence.csv.ModeloPersistenceServiceCSV;
-import model.services.persistence.exceptions.DBConnectionException;
-import model.services.persistence.exceptions.PersistenceException;
+import model.entidades.enums.Combustivel;
+import model.servicos.persistencia.DAOFactory;
+import model.servicos.persistencia.implementacaoCSV.MarcaCSV;
+import model.servicos.persistencia.implementacaoCSV.ModeloCSV;
+import model.exceptions.DBException;
+import model.exceptions.PersistenciaException;
+import model.servicos.persistencia.ModeloDAO;
+import model.servicos.persistencia.MarcaDAO;
 
 /**
  *
@@ -17,14 +19,15 @@ import model.services.persistence.exceptions.PersistenceException;
 public class TestePersistenciaModelo {
 
     public static void main(String[] args) {
-        MarcaPersistenceService marcaPersistenceService = new MarcaPersistenceServiceCSV();
-        ModeloPersistenceService modeloPersistenceService = PersistenceFactory.createModeloService();
+        MarcaDAO marcaPersistenceService = new MarcaCSV();
+        ModeloDAO modeloPersistenceService = DAOFactory.createModeloService();
 
         try {
             System.out.println("INSERIR");
             Marca marcaBuscada = marcaPersistenceService.buscar(5);
             System.out.println(marcaBuscada.toCSV());
-            Modelo modelo = new Modelo(1, marcaBuscada, "descr");
+            Categoria categoria = new Categoria(1, "descricao", 1500.0, 100.0);
+            Modelo modelo = new Modelo(1, "codigoFipe", "descricao", marcaBuscada, categoria, Combustivel.DIESEL, 2020);
             modeloPersistenceService.inserir(modelo);
             System.out.println(modelo.toCSV());
 
@@ -32,12 +35,12 @@ public class TestePersistenciaModelo {
 
             System.out.println("LISTAR");
 
-            for (Modelo m : new ModeloPersistenceServiceCSV().buscarTodos()) {
+            for (Modelo m : new ModeloCSV().buscarTodos()) {
                 System.out.println(m.toCSV());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             System.out.println("Erro de persistencia: " + ex.getMessage());
-        } catch (DBConnectionException ex) {
+        } catch (DBException ex) {
             System.out.println("Erro de conexão: " + ex.getMessage());
         }
 

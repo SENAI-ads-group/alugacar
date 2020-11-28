@@ -1,10 +1,10 @@
 package persistencia;
 
 import model.entidades.Marca;
-import model.services.persistence.csv.MarcaPersistenceServiceCSV;
-import model.services.persistence.MarcaPersistenceService;
-import model.services.persistence.exceptions.DBConnectionException;
-import model.services.persistence.exceptions.PersistenceException;
+import model.servicos.persistencia.implementacaoCSV.MarcaCSV;
+import model.exceptions.DBException;
+import model.exceptions.PersistenciaException;
+import model.servicos.persistencia.MarcaDAO;
 
 /**
  *
@@ -14,7 +14,7 @@ public class TestePersistenciaMarca {
 
     public static void main(String[] args) {
 
-        MarcaPersistenceService persistenceService = new MarcaPersistenceServiceCSV();
+        MarcaDAO persistenceService = new MarcaCSV();
 
         try {
             System.out.println("INSERIR");
@@ -35,9 +35,9 @@ public class TestePersistenciaMarca {
             for (Marca m : persistenceService.buscarTodos()) {
                 System.out.println(m.toCSV());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             System.out.println("Erro de persistencia: " + ex.getMessage());
-        } catch (DBConnectionException ex) {
+        } catch (DBException ex) {
             System.out.println("Erro de conexão: " + ex.getMessage());
         }
     }

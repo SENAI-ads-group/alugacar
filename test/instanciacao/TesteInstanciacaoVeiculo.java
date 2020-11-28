@@ -4,7 +4,6 @@ import model.entidades.Categoria;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
-import java.util.Date;
 
 /**
  *
@@ -17,8 +16,8 @@ public class TesteInstanciacaoVeiculo {
         Marca marca = new Marca("marca1");
         Modelo modelo = new Modelo(marca, "modelo1");
         Categoria categoria = new Categoria(1, "categoria1", 103.0);
-        Veiculo veiculo = new Veiculo(1, "KKK-3333", "123456789", categoria, modelo,
-                new Date(), new Date(), 15000.0);
+        Veiculo veiculo = new Veiculo(1, "KKK-3333", "123456789", modelo,
+                2019, 2020, 15000.0);
         System.out.println(veiculo.toCSV());
 
         Veiculo veiculo1 = new Veiculo(veiculo.toCSV().split(";"));

@@ -2,8 +2,6 @@ package model.entidades;
 
 import model.entidades.enums.StatusVeiculo;
 import model.services.persistence.PersistenceFactory;
-import java.util.Date;
-import util.DateUtilities;
 import util.Utilities;
 
 /**
@@ -16,38 +14,32 @@ public class Veiculo {
     private String placa;
     private String renavam;
     private Double precoCompra;
-    private Double precoVenda;
-    private Integer qtdeMaximaPessoas;
-    private Date anoFabricacao;
-    private Date anoModelo;
+    private Integer anoFabricacao;
+    private Integer anoModelo;
     private Double quilometragemRodada;
-    private StatusVeiculo statusVeiculo;
-    private Categoria categoria;
+    private StatusVeiculo statusVeiculo = StatusVeiculo.INDISPONIVEL;
     private Modelo modelo;
 
-    public Veiculo(String placa, String renavam, Categoria categoria, Modelo modelo, Date anoFabricacao, Date anoModelo, Double quilometragemRodada) {
+    public Veiculo() {
+    }
+
+    public Veiculo(String placa, String renavam, Modelo modelo, int anoFabricacao, int anoModelo, Double quilometragemRodada) {
         this.placa = placa;
         this.renavam = renavam;
-        this.categoria = categoria;
         this.modelo = modelo;
         this.anoFabricacao = anoFabricacao;
         this.anoModelo = anoModelo;
         this.quilometragemRodada = quilometragemRodada;
-
-        statusVeiculo = StatusVeiculo.INDISPONIVEL;
     }
 
-    public Veiculo(Integer id, String placa, String renavam, Categoria categoria, Modelo modelo, Date anoFabricacao, Date anoModelo, Double quilometragemRodada) {
+    public Veiculo(Integer id, String placa, String renavam, Modelo modelo, int anoFabricacao, int anoModelo, Double quilometragemRodada) {
         this.id = id;
         this.placa = placa;
         this.renavam = renavam;
-        this.categoria = categoria;
         this.modelo = modelo;
         this.anoFabricacao = anoFabricacao;
         this.anoModelo = anoModelo;
         this.quilometragemRodada = quilometragemRodada;
-
-        statusVeiculo = StatusVeiculo.INDISPONIVEL;
     }
 
     public Veiculo(String[] csv) {
@@ -55,16 +47,11 @@ public class Veiculo {
         placa = csv[1];
         renavam = csv[2];
         precoCompra = Utilities.tryParseToDouble(csv[3]);
-        precoVenda = Utilities.tryParseToDouble(csv[4]);
-        qtdeMaximaPessoas = Utilities.tryParseToInteger(csv[5]);
-        anoFabricacao = DateUtilities.tryParseToDate(csv[6]);
-        anoModelo = DateUtilities.tryParseToDate(csv[7]);
-        quilometragemRodada = Utilities.tryParseToDouble(csv[8]);
-        statusVeiculo = StatusVeiculo.valueOf(csv[9]);
-
-        Integer idCategoria = Utilities.tryParseToInteger(csv[10]);
-        categoria = PersistenceFactory.createCategoriaService().buscar(idCategoria);
-        Integer idModelo = Utilities.tryParseToInteger(csv[11]);
+        anoFabricacao = Utilities.tryParseToInteger(csv[4]);
+        anoModelo = Utilities.tryParseToInteger(csv[5]);
+        quilometragemRodada = Utilities.tryParseToDouble(csv[6]);
+        statusVeiculo = StatusVeiculo.valueOf(csv[7]);
+        Integer idModelo = Utilities.tryParseToInteger(csv[8]);
         modelo = PersistenceFactory.createModeloService().buscar(idModelo);
     }
 
@@ -92,14 +79,6 @@ public class Veiculo {
         this.renavam = renavam;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
     public Modelo getModelo() {
         return modelo;
     }
@@ -116,44 +95,24 @@ public class Veiculo {
         this.precoCompra = precoCompra;
     }
 
-    public Double getPrecoVenda() {
-        return precoVenda;
-    }
-
-    public void setPrecoVenda(Double precoVenda) {
-        this.precoVenda = precoVenda;
-    }
-
-    public Integer getQtdeMaximaPessoas() {
-        return qtdeMaximaPessoas;
-    }
-
-    public void setQtdeMaximaPessoas(Integer qtdeMaximaPessoas) {
-        this.qtdeMaximaPessoas = qtdeMaximaPessoas;
-    }
-
-    public Date getAnoFabricacao() {
+    public Integer getAnoFabricacao() {
         return anoFabricacao;
     }
 
-    public void setAnoFabricacao(Date anoFabricacao) {
+    public void setAnoFabricacao(Integer anoFabricacao) {
         this.anoFabricacao = anoFabricacao;
     }
 
-    public Date getAnoModelo() {
+    public Integer getAnoModelo() {
         return anoModelo;
     }
 
-    public void setAnoModelo(Date anoModelo) {
+    public void setAnoModelo(Integer anoModelo) {
         this.anoModelo = anoModelo;
     }
 
     public Double getQuilometragemRodada() {
         return quilometragemRodada;
-    }
-
-    public void setQuilometragemRodada(Double quilometragemRodada) {
-        this.quilometragemRodada = quilometragemRodada;
     }
 
     public StatusVeiculo getStatusVeiculo() {
@@ -164,18 +123,19 @@ public class Veiculo {
         this.statusVeiculo = statusVeiculo;
     }
 
+    public void adicionarQuilometragem(double quilometragem) {
+        quilometragemRodada += quilometragem;
+    }
+
     public String toCSV() {
         return "" + id + ";"
                 + placa + ";"
                 + renavam + ";"
                 + precoCompra + ";"
-                + precoVenda + ";"
-                + qtdeMaximaPessoas + ";"
-                + DateUtilities.formatData(anoFabricacao) + ";"
-                + DateUtilities.formatData(anoModelo) + ";"
+                + anoFabricacao + ";"
+                + anoModelo + ";"
                 + quilometragemRodada + ";"
                 + statusVeiculo.toString() + ";"
-                + categoria.getId() + ";"
                 + modelo.getId();
     }
 

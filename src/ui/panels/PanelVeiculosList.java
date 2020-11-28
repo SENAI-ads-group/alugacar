@@ -2,15 +2,11 @@ package ui.panels;
 
 import model.services.persistence.PersistenceFactory;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.entidades.Cliente;
-import model.entidades.PessoaFisica;
-import model.entidades.PessoaJuridica;
-import model.entidades.enums.TipoCliente;
-import model.services.persistence.ClientePersistenceService;
+import model.entidades.Veiculo;
+import model.services.persistence.VeiculoPersistenceService;
 import ui.FrameLoader;
-import ui.dialogs.DialogClienteForm;
+import ui.dialogs.DialogVeiculoForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
 
@@ -18,49 +14,40 @@ import util.Utilities;
  *
  * @author patrick-ribeiro
  */
-public final class PanelClientesList extends javax.swing.JPanel implements DataChangeListener {
+public final class PanelVeiculosList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final ClientePersistenceService persistenceService = PersistenceFactory.createClienteService();
+    private final VeiculoPersistenceService persistenceService = PersistenceFactory.createVeiculoService();
 
-    public PanelClientesList() {
+    public PanelVeiculosList() {
         initComponents();
         updateTable();
     }
 
     public void updateTable() {
-        List<Cliente> clientes = persistenceService.buscarTodos();
+        List<Veiculo> veiculos = persistenceService.buscarTodos();
 
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
 
-        clientes.stream().map((cliente) -> {
-            String cpfCnpj = null;
-            String rgInscricaoEstadual = null;
-            if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
-                PessoaFisica pf = (PessoaFisica) cliente.getPessoa();
-                cpfCnpj = pf.getCpf();
-                rgInscricaoEstadual = pf.getRegistroGeral();
-            } else if (cliente.getTipoCliente() == TipoCliente.PESSOA_JURIDICA) {
-                PessoaJuridica pj = (PessoaJuridica) cliente.getPessoa();
-                cpfCnpj = pj.getCnpj();
-                rgInscricaoEstadual = pj.getInscricaoEstadual();
-            }
+        for (Veiculo veiculo : veiculos) {
             Object[] row = {
-                cliente.getId(),
-                cliente.getPessoa().getNome(),
-                cliente.getPessoa().getEmail(),
-                cliente.getPessoa().getTelefone(),
-                cliente.getTipoCliente().toString(),
-                cpfCnpj,
-                rgInscricaoEstadual,
-                cliente.isAtivo()
+                veiculo.getId(),
+                veiculo.getPlaca(),
+                veiculo.getRenavam(),
+                veiculo.getModelo(),
+                veiculo.getAnoFabricacao(),
+                veiculo.getAnoModelo(),
+                veiculo.getQuilometragemRodada(),
+                veiculo.getStatusVeiculo()
             };
-            return row;
-        }).forEachOrdered((row) -> {
+
             tableModel.addRow(row);
-        });
+        }
+
         table.setModel(tableModel);
-        if (tableModel.getRowCount() > 0) {
+
+        if (tableModel.getRowCount()
+                > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
@@ -70,10 +57,10 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         }
     }
 
-    public void createClienteForm(Cliente cliente) {
-        DialogClienteForm dialogForm = new DialogClienteForm(FrameLoader.getFrameMain(), true, cliente);
-        dialogForm.updateFormData();
+    public void createVeiculoForm(Veiculo veiculo) {
+        DialogVeiculoForm dialogForm = new DialogVeiculoForm(FrameLoader.getFrameMain(), true, veiculo);
         dialogForm.subscribeListener(this);
+        dialogForm.updateFormData();
         dialogForm.setVisible(true);
     }
 
@@ -91,6 +78,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        buttonOutros = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -137,7 +125,15 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Clientes");
+        jLabel1.setText("Veículos");
+
+        buttonOutros.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonOutros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-options-24x24.png"))); // NOI18N
+        buttonOutros.setText("Outros");
+        buttonOutros.setBorderPainted(false);
+        buttonOutros.setFocusPainted(false);
+        buttonOutros.setFocusable(false);
+        buttonOutros.setPreferredSize(new java.awt.Dimension(96, 35));
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -146,8 +142,10 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 822, Short.MAX_VALUE)
-                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 716, Short.MAX_VALUE)
+                .addComponent(buttonOutros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -162,7 +160,8 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
                     .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(buttonOutros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -176,11 +175,11 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
             },
             new String [] {
-                "Id", "Nome", "Email", "Telefone", "Tipo", "CPF / CNPJ", "RG / Inscrição Estadual", "Ativo"
+                "Id", "Placa", "Renavam", "Modelo", "Ano fabricação", "Ano modelo", "KM atual", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
@@ -198,30 +197,19 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(0).setPreferredWidth(40);
-            table.getColumnModel().getColumn(1).setPreferredWidth(200);
-            table.getColumnModel().getColumn(2).setPreferredWidth(180);
-            table.getColumnModel().getColumn(3).setPreferredWidth(150);
-            table.getColumnModel().getColumn(5).setPreferredWidth(100);
-            table.getColumnModel().getColumn(6).setPreferredWidth(80);
-            table.getColumnModel().getColumn(7).setPreferredWidth(20);
+            table.getColumnModel().getColumn(0).setPreferredWidth(10);
         }
 
         add(scrollPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        TipoCliente[] itens = TipoCliente.values();
-        TipoCliente selectedValue = (TipoCliente) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o tipo de cliente", "Tipo de cliente",
-                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
-        if (selectedValue != null) {
-            createClienteForm(new Cliente(selectedValue));
-        }
+        createVeiculoForm(new Veiculo());
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        createClienteForm(persistenceService.buscar(idSelecionado));
+        createVeiculoForm(persistenceService.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
 
@@ -229,6 +217,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
+    private javax.swing.JButton buttonOutros;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JScrollPane scrollPane;

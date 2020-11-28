@@ -1,6 +1,5 @@
 package persistencia;
 
-import java.util.Date;
 import model.entidades.Categoria;
 import model.entidades.Marca;
 import model.entidades.Modelo;
@@ -28,7 +27,7 @@ public class TestePersistenciaVeiculo {
             Categoria cat = new CategoriaPersistenceServiceCSV().buscar(10);
             Marca marc = new Marca(4332, "gol");
             Modelo mod = new ModeloPersistenceServiceCSV().buscar(1);
-            Veiculo veiculo = new Veiculo("KFCS-765", "renavam", cat, mod, new Date(), new Date(), 32.43);
+            Veiculo veiculo = new Veiculo("KFCS-765", "renavam", mod, 2019, 2020, 32.43);
 
             persistenceService.inserir(veiculo);
 

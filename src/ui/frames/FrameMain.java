@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.PanelClientesList;
 import ui.panels.PanelMotoristasList;
+import ui.panels.PanelVeiculosList;
 import util.PanelUtilities;
 
 /**
@@ -89,9 +90,6 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenuItemClientes.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemClientes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMenuItemClientesMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 panelMenuItemClientesMousePressed(evt);
             }
@@ -111,9 +109,6 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenuItemMotoristas.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemMotoristas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMenuItemMotoristasMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 panelMenuItemMotoristasMousePressed(evt);
             }
@@ -134,8 +129,8 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenuItemVeiculos.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMenuItemVeiculosMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemVeiculosMousePressed(evt);
             }
         });
         panelMenuItemVeiculos.setLayout(new java.awt.BorderLayout());
@@ -217,18 +212,6 @@ public class FrameMain extends javax.swing.JFrame {
 
     }//GEN-LAST:event_panelMenuItemDashboardMouseClicked
 
-    private void panelMenuItemClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMouseClicked
-
-    }//GEN-LAST:event_panelMenuItemClientesMouseClicked
-
-    private void panelMenuItemMotoristasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMouseClicked
-
-    }//GEN-LAST:event_panelMenuItemMotoristasMouseClicked
-
-    private void panelMenuItemVeiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_panelMenuItemVeiculosMouseClicked
-
     private void panelMenuItemRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemRelatoriosMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_panelMenuItemRelatoriosMouseClicked
@@ -264,6 +247,18 @@ public class FrameMain extends javax.swing.JFrame {
         panelLoader.repaint();
         panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
     }//GEN-LAST:event_panelMenuItemClientesMousePressed
+
+    private void panelMenuItemVeiculosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMousePressed
+        PanelVeiculosList panelLoaded = new PanelVeiculosList();
+        //PanelUtilities.loadPanelToPanel(panelLoaded, panelLoader);
+        panelLoader.removeAll();
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoader.add(panelLoaded);
+        panelLoader.revalidate();
+        panelLoader.repaint();
+        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+    }//GEN-LAST:event_panelMenuItemVeiculosMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -13,12 +13,17 @@ public class Modelo {
     private String codigoFipe;
     private String descricao;
     private Marca marca;
+    private Categoria categoria;
 
-    public Modelo(Integer id, Marca marca, String codigoFipe, String descricao) {
+    public Modelo() {
+    }
+
+    public Modelo(Integer id, String codigoFipe, String descricao, Categoria categoria, Marca marca) {
         this.id = id;
-        this.marca = marca;
         this.codigoFipe = codigoFipe;
         this.descricao = descricao;
+        this.categoria = categoria;
+        this.marca = marca;
     }
 
     public Modelo(Integer id, Marca marca, String descricao) {
@@ -72,11 +77,20 @@ public class Modelo {
         this.descricao = descricao;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public String toCSV() {
         return "" + id + ";"
                 + codigoFipe + ";"
                 + descricao + ";"
-                + marca.getId();
+                + marca.getId() + ";"
+                + categoria.getId();
     }
 
 }

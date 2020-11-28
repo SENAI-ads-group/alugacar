@@ -2,11 +2,11 @@ package persistencia;
 
 import model.entidades.CNH;
 import model.entidades.enums.CategoriaCNH;
-import model.services.persistence.CNHPersistenseService;
-import model.services.persistence.PersistenceFactory;
-import model.services.persistence.exceptions.DBConnectionException;
-import model.services.persistence.exceptions.PersistenceException;
+import model.servicos.persistencia.DAOFactory;
+import model.exceptions.DBException;
+import model.exceptions.PersistenciaException;
 import java.util.Date;
+import model.servicos.persistencia.CnhDAO;
 
 /**
  *
@@ -16,7 +16,7 @@ public class TestePersistenciaCNH {
 
     public static void main(String[] args) {
 
-        CNHPersistenseService persistenceService = PersistenceFactory.createCNHService();
+        CnhDAO persistenceService = DAOFactory.createCNHService();
         try {
             System.out.println("INSERIR");
             CNH cnh = new CNH(1234567, CategoriaCNH.A, new Date());
@@ -37,9 +37,9 @@ public class TestePersistenciaCNH {
             for (CNH cn : persistenceService.buscarTodos()) {
                 System.out.println(cn.toCSV());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             System.out.println("Erro de persistencia: " + ex.getMessage());
-        } catch (DBConnectionException ex) {
+        } catch (DBException ex) {
             System.out.println("Erro de conexão: " + ex.getMessage());
         }
     }

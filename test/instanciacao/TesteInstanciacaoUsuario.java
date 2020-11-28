@@ -19,7 +19,7 @@ public class TesteInstanciacaoUsuario {
         Usuario usuario = new Usuario(1, pessoa, "123456", CategoriaUsuario.ADMINISTRADOR, true);
         System.out.println(usuario.toCSV());
 
-        Usuario usuario1 = new Usuario(usuario.toCSV().split(";"), pessoa);
+        Usuario usuario1 = new Usuario(usuario.toCSV().split(";"));
         System.out.println(usuario1.toCSV());
     }
 }

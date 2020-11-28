@@ -1,11 +1,12 @@
 package model.entidades;
 
-import model.services.persistence.PersistenceFactory;
+import model.entidades.enums.Combustivel;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 
 /**
  *
- * @author usuario
+ * @author Patrick-Ribeiro
  */
 public class Modelo {
 
@@ -14,27 +15,21 @@ public class Modelo {
     private String descricao;
     private Marca marca;
     private Categoria categoria;
+    private Integer ano;
+    private Combustivel combustivel;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Modelo() {
     }
 
-    public Modelo(Integer id, String codigoFipe, String descricao, Categoria categoria, Marca marca) {
+    public Modelo(Integer id, String codigoFipe, String descricao, Marca marca, Categoria categoria, Combustivel combustivel, Integer ano) {
         this.id = id;
         this.codigoFipe = codigoFipe;
         this.descricao = descricao;
+        this.marca = marca;
         this.categoria = categoria;
-        this.marca = marca;
-    }
-
-    public Modelo(Integer id, Marca marca, String descricao) {
-        this.id = id;
-        this.marca = marca;
-        this.descricao = descricao;
-    }
-
-    public Modelo(Marca marca, String descricao) {
-        this.marca = marca;
-        this.descricao = descricao;
+        this.combustivel = combustivel;
+        this.ano = ano;
     }
 
     public Modelo(String[] csv) {
@@ -42,9 +37,15 @@ public class Modelo {
         codigoFipe = csv[1];
         descricao = csv[2];
         Integer idMarca = Utilities.tryParseToInteger(csv[3]);
-        marca = PersistenceFactory.createMarcaService().buscar(idMarca);
+        marca = DAOFactory.createMarcaService().buscar(idMarca);
+        Integer idCategoria = Utilities.tryParseToInteger(csv[4]);
+        categoria = DAOFactory.createCategoriaService().buscar(idCategoria);
+        ano = Utilities.tryParseToInteger(csv[5]);
+        combustivel = Combustivel.valueOf(csv[6]);
     }
+    // </editor-fold>  
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getId() {
         return id;
     }
@@ -85,12 +86,32 @@ public class Modelo {
         this.categoria = categoria;
     }
 
+    public Combustivel getCombustivel() {
+        return combustivel;
+    }
+
+    public void setCombustivel(Combustivel combustivel) {
+        this.combustivel = combustivel;
+    }
+
+    public Integer getAno() {
+        return ano;
+    }
+
+    public void setAno(Integer ano) {
+        this.ano = ano;
+    }
+    // </editor-fold> 
+
     public String toCSV() {
+        //id;codigoFipe;descricao;idMarca;idCategoria;ano;combustivel
         return "" + id + ";"
                 + codigoFipe + ";"
                 + descricao + ";"
                 + marca.getId() + ";"
-                + categoria.getId();
+                + categoria.getId() + ";"
+                + ano + ";"
+                + combustivel.toCSV();
     }
 
 }

@@ -1,7 +1,7 @@
 package model.entidades;
 
 import model.entidades.enums.StatusVeiculo;
-import model.services.persistence.PersistenceFactory;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 
 /**
@@ -14,32 +14,24 @@ public class Veiculo {
     private String placa;
     private String renavam;
     private Double precoCompra;
-    private Integer anoFabricacao;
-    private Integer anoModelo;
-    private Double quilometragemRodada;
-    private StatusVeiculo statusVeiculo = StatusVeiculo.INDISPONIVEL;
     private Modelo modelo;
+    private Integer anoFabricacao;
+    private Double KMRodado;
+    private StatusVeiculo statusVeiculo = StatusVeiculo.INDISPONIVEL;
+    private Double valorKM;
 
     public Veiculo() {
     }
 
-    public Veiculo(String placa, String renavam, Modelo modelo, int anoFabricacao, int anoModelo, Double quilometragemRodada) {
-        this.placa = placa;
-        this.renavam = renavam;
-        this.modelo = modelo;
-        this.anoFabricacao = anoFabricacao;
-        this.anoModelo = anoModelo;
-        this.quilometragemRodada = quilometragemRodada;
-    }
-
-    public Veiculo(Integer id, String placa, String renavam, Modelo modelo, int anoFabricacao, int anoModelo, Double quilometragemRodada) {
+    public Veiculo(Integer id, String placa, String renavam, Double precoCompra, Modelo modelo, Integer anoFabricacao, Double KMRodado, Double valorKM) {
         this.id = id;
         this.placa = placa;
         this.renavam = renavam;
+        this.precoCompra = precoCompra;
         this.modelo = modelo;
         this.anoFabricacao = anoFabricacao;
-        this.anoModelo = anoModelo;
-        this.quilometragemRodada = quilometragemRodada;
+        this.KMRodado = KMRodado;
+        this.valorKM = valorKM;
     }
 
     public Veiculo(String[] csv) {
@@ -47,12 +39,12 @@ public class Veiculo {
         placa = csv[1];
         renavam = csv[2];
         precoCompra = Utilities.tryParseToDouble(csv[3]);
-        anoFabricacao = Utilities.tryParseToInteger(csv[4]);
-        anoModelo = Utilities.tryParseToInteger(csv[5]);
-        quilometragemRodada = Utilities.tryParseToDouble(csv[6]);
+        Integer idModelo = Utilities.tryParseToInteger(csv[4]);
+        modelo = DAOFactory.createModeloService().buscar(idModelo);
+        anoFabricacao = Utilities.tryParseToInteger(csv[5]);
+        KMRodado = Utilities.tryParseToDouble(csv[6]);
         statusVeiculo = StatusVeiculo.valueOf(csv[7]);
-        Integer idModelo = Utilities.tryParseToInteger(csv[8]);
-        modelo = PersistenceFactory.createModeloService().buscar(idModelo);
+        valorKM = Utilities.tryParseToDouble(csv[8]);
     }
 
     public Integer getId() {
@@ -79,20 +71,20 @@ public class Veiculo {
         this.renavam = renavam;
     }
 
-    public Modelo getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(Modelo modelo) {
-        this.modelo = modelo;
-    }
-
     public Double getPrecoCompra() {
         return precoCompra;
     }
 
     public void setPrecoCompra(Double precoCompra) {
         this.precoCompra = precoCompra;
+    }
+
+    public Modelo getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
     }
 
     public Integer getAnoFabricacao() {
@@ -103,16 +95,12 @@ public class Veiculo {
         this.anoFabricacao = anoFabricacao;
     }
 
-    public Integer getAnoModelo() {
-        return anoModelo;
+    public Double getKMRodado() {
+        return KMRodado;
     }
 
-    public void setAnoModelo(Integer anoModelo) {
-        this.anoModelo = anoModelo;
-    }
-
-    public Double getQuilometragemRodada() {
-        return quilometragemRodada;
+    public void setKMRodado(Double KMRodado) {
+        this.KMRodado = KMRodado;
     }
 
     public StatusVeiculo getStatusVeiculo() {
@@ -123,8 +111,16 @@ public class Veiculo {
         this.statusVeiculo = statusVeiculo;
     }
 
-    public void adicionarQuilometragem(double quilometragem) {
-        quilometragemRodada += quilometragem;
+    public Double getValorKM() {
+        return valorKM;
+    }
+
+    public void setValorKM(Double valorKM) {
+        this.valorKM = valorKM;
+    }
+
+    public void addKM(double km) {
+        KMRodado += km;
     }
 
     public String toCSV() {
@@ -132,11 +128,11 @@ public class Veiculo {
                 + placa + ";"
                 + renavam + ";"
                 + precoCompra + ";"
+                + modelo.getId() + ";"
                 + anoFabricacao + ";"
-                + anoModelo + ";"
-                + quilometragemRodada + ";"
-                + statusVeiculo.toString() + ";"
-                + modelo.getId();
+                + KMRodado + ";"
+                + statusVeiculo.toCSV() + ";"
+                + valorKM;
     }
 
 }

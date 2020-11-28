@@ -1,14 +1,14 @@
 package ui.panels;
 
-import model.services.persistence.PersistenceFactory;
+import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Veiculo;
-import model.services.persistence.VeiculoPersistenceService;
 import ui.FrameLoader;
 import ui.dialogs.DialogVeiculoForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
+import model.servicos.persistencia.VeiculoDAO;
 
 /**
  *
@@ -16,7 +16,7 @@ import util.Utilities;
  */
 public final class PanelVeiculosList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final VeiculoPersistenceService persistenceService = PersistenceFactory.createVeiculoService();
+    private final VeiculoDAO persistenceService = DAOFactory.createVeiculoService();
 
     public PanelVeiculosList() {
         initComponents();
@@ -36,8 +36,8 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
                 veiculo.getRenavam(),
                 veiculo.getModelo(),
                 veiculo.getAnoFabricacao(),
-                veiculo.getAnoModelo(),
-                veiculo.getQuilometragemRodada(),
+                veiculo.getModelo().getAno(),
+                veiculo.getKMRodado(),
                 veiculo.getStatusVeiculo()
             };
 

@@ -2,8 +2,8 @@ package ui.dialogs;
 
 import model.entidades.Endereco;
 import model.entidades.PessoaFisica;
-import model.services.persistence.PersistenceFactory;
-import model.services.persistence.exceptions.PersistenceException;
+import model.servicos.persistencia.DAOFactory;
+import model.exceptions.PersistenciaException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
@@ -13,14 +13,14 @@ import model.entidades.Cliente;
 import model.entidades.Pessoa;
 import model.entidades.PessoaJuridica;
 import model.entidades.enums.TipoCliente;
-import model.exceptions.ValidationException;
-import model.services.persistence.ClientePersistenceService;
+import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
 import ui.panels.PanelFormEndereco;
 import ui.panels.PanelFormPessoaFisica;
 import ui.panels.PanelFormPessoaJuridica;
 import util.DateUtilities;
 import util.PanelUtilities;
+import model.servicos.persistencia.ClienteDAO;
 
 /**
  *
@@ -29,7 +29,7 @@ import util.PanelUtilities;
 public class DialogClienteForm extends javax.swing.JDialog {
 
     private Cliente cliente;
-    private final ClientePersistenceService persistenceService = PersistenceFactory.createClienteService();
+    private final ClienteDAO persistenceService = DAOFactory.createClienteService();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
@@ -62,7 +62,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
         PanelUtilities.loadPanelToPanel(panelFormEndereco, panelCenterTab2);
     }
 
-    private void persistEntity() throws PersistenceException, ValidationException {
+    private void persistEntity() throws PersistenciaException, ValidacaoException {
         cliente = getFormData();
         if (cliente.getId() == null) {
             persistenceService.inserir(cliente);
@@ -71,12 +71,12 @@ public class DialogClienteForm extends javax.swing.JDialog {
         }
     }
 
-    public Cliente getFormData() throws ValidationException {
+    public Cliente getFormData() throws ValidacaoException {
         Pessoa pessoa = null;
         if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
             pessoa = panelFormPessoaFisica.getFormData();
             if (DateUtilities.getAge(((PessoaFisica) pessoa).getDataNascimento()) < Cliente.IDADE_MINIMA) {
-                ValidationException exception = new ValidationException("PanelFormPessoaFisica");
+                ValidacaoException exception = new ValidacaoException("PanelFormPessoaFisica");
                 exception.addError("dataNascimento", "Idade mínima " + Cliente.IDADE_MINIMA + " anos");
                 throw exception;
             }
@@ -319,7 +319,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
             persistEntity();
             this.dispose();
             notifyListeners();
-        } catch (ValidationException ex) {
+        } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormPessoaFisica")) {
                 tabbedPane.setIconAt(0, iconError);
@@ -333,7 +333,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
                 tabbedPane.setIconAt(1, iconError);
                 panelFormEndereco.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed

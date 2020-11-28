@@ -1,5 +1,6 @@
 package model.entidades;
 
+import java.io.File;
 import model.entidades.enums.CategoriaCNH;
 import java.util.Date;
 import java.util.Objects;
@@ -14,7 +15,9 @@ public class CNH {
     private Integer numeroRegistro;
     private CategoriaCNH categoria;
     private Date dataValidade;
+    private File foto;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public CNH() {
     }
 
@@ -29,7 +32,9 @@ public class CNH {
         this.categoria = categoria;
         this.dataValidade = dataValidade;
     }
+    // </editor-fold> 
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setter">  
     public Integer getNumeroRegistro() {
         return numeroRegistro;
     }
@@ -54,6 +59,15 @@ public class CNH {
         this.dataValidade = dataValidade;
     }
 
+    public File getFoto() {
+        return foto;
+    }
+
+    public void setFoto(File foto) {
+        this.foto = foto;
+    }
+
+    // </editor-fold>
     public String toCSV() {
         return "" + numeroRegistro + ";"
                 + categoria.toString() + ";"

@@ -3,7 +3,7 @@ package ui.panels;
 import java.util.Map;
 import java.util.Set;
 import model.entidades.PessoaFisica;
-import model.exceptions.ValidationException;
+import model.exceptions.ValidacaoException;
 import util.Utilities;
 
 /**
@@ -34,11 +34,11 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         }
     }
 
-    public PessoaFisica getFormData() throws ValidationException {
+    public PessoaFisica getFormData() throws ValidacaoException {
         if (pessoa == null) {
             pessoa = new PessoaFisica();
         }
-        ValidationException exception = new ValidationException(getClass().getSimpleName());
+        ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldNome)) {
             exception.addError("nome", "Nome não informado");
         }

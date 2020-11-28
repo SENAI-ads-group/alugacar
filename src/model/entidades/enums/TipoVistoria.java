@@ -2,9 +2,9 @@ package model.entidades.enums;
 
 /**
  *
- * @author Patrick-Ribeiro
+ * @author patrick-ribeiro
  */
 public enum TipoVistoria {
-    ENTREGA,
-    DEVOLUCAO;
+    DEVOLUCAO,
+    RETIRADA;
 }

@@ -1,6 +1,6 @@
 package ui.panels;
 
-import model.services.persistence.PersistenceFactory;
+import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -8,11 +8,11 @@ import model.entidades.Cliente;
 import model.entidades.PessoaFisica;
 import model.entidades.PessoaJuridica;
 import model.entidades.enums.TipoCliente;
-import model.services.persistence.ClientePersistenceService;
 import ui.FrameLoader;
 import ui.dialogs.DialogClienteForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
+import model.servicos.persistencia.ClienteDAO;
 
 /**
  *
@@ -20,7 +20,7 @@ import util.Utilities;
  */
 public final class PanelClientesList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final ClientePersistenceService persistenceService = PersistenceFactory.createClienteService();
+    private final ClienteDAO persistenceService = DAOFactory.createClienteService();
 
     public PanelClientesList() {
         initComponents();

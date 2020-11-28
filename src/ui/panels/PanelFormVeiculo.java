@@ -9,8 +9,8 @@ import javax.swing.DefaultComboBoxModel;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
 import model.entidades.enums.StatusVeiculo;
-import model.exceptions.ValidationException;
-import model.services.persistence.PersistenceFactory;
+import model.exceptions.ValidacaoException;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 
 /**
@@ -32,7 +32,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
     }
 
     public void initCombobox() {
-        Object[] itemsModelo = PersistenceFactory.createModeloService().buscarTodos().toArray();
+        Object[] itemsModelo = DAOFactory.createModeloService().buscarTodos().toArray();
         comboBoxModelo.setModel(new DefaultComboBoxModel(itemsModelo));
         comboBoxStatus.setModel(new DefaultComboBoxModel(StatusVeiculo.values()));
     }
@@ -40,24 +40,24 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
     public void updateFormData() {
         textFieldPlaca.setText(veiculo.getPlaca());
         textFieldRenavam.setText(veiculo.getRenavam());
-        if (veiculo.getQuilometragemRodada() != null) {
-            textFieldKMAtual.setText("" + veiculo.getQuilometragemRodada());
+        if (veiculo.getKMRodado() != null) {
+            textFieldKMAtual.setText("" + veiculo.getKMRodado());
         }
         if (veiculo.getPrecoCompra() != null) {
             textFieldPrecoCompra.setText("" + veiculo.getPrecoCompra());
         }
         comboBoxModelo.setSelectedItem(veiculo.getModelo());
         comboBoxStatus.setSelectedItem(veiculo.getStatusVeiculo());
-        if (veiculo.getAnoModelo() != null) {
+        if (veiculo.getModelo().getAno() != null) {
             yearChooserFabricacao.setYear(veiculo.getAnoFabricacao());
         }
         if (veiculo.getAnoFabricacao() != null) {
-            yearChooserModelo.setYear(veiculo.getAnoModelo());
+            yearChooserModelo.setYear(veiculo.getAnoFabricacao());
         }
     }
 
-    public Veiculo getFormData() throws ValidationException {
-        ValidationException exception = new ValidationException(getClass().getSimpleName());
+    public Veiculo getFormData() throws ValidacaoException {
+        ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldPlaca)) {
             exception.addError("placa", "Placa não informada");
         }
@@ -80,7 +80,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         veiculo.setRenavam(textFieldRenavam.getText());
         veiculo.setPrecoCompra(Utilities.tryParseToDouble(textFieldPrecoCompra.getText()));
         veiculo.setAnoFabricacao(yearChooserFabricacao.getYear());
-        veiculo.setAnoModelo(yearChooserModelo.getYear());
+        veiculo.getModelo().setAno(yearChooserModelo.getYear());
         veiculo.setStatusVeiculo((StatusVeiculo) comboBoxStatus.getSelectedItem());
         veiculo.setModelo((Modelo) comboBoxModelo.getSelectedItem());
         clearErrors();

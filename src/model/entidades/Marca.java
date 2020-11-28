@@ -12,12 +12,11 @@ public class Marca {
     private Integer id;
     private String descricao;
 
-    public Marca(Integer id, String descricao) {
-        this.id = id;
-        this.descricao = descricao;
+    public Marca() {
     }
 
-    public Marca(String descricao) {
+    public Marca(Integer id, String descricao) {
+        this.id = id;
         this.descricao = descricao;
     }
 

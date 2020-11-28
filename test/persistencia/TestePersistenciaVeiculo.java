@@ -4,12 +4,11 @@ import model.entidades.Categoria;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
-import model.services.persistence.VeiculoPersistenceService;
-import model.services.persistence.csv.CategoriaPersistenceServiceCSV;
-import model.services.persistence.csv.ModeloPersistenceServiceCSV;
-import model.services.persistence.csv.VeiculoPersistenceServiceCSV;
-import model.services.persistence.exceptions.DBConnectionException;
-import model.services.persistence.exceptions.PersistenceException;
+import model.entidades.enums.Combustivel;
+import model.servicos.persistencia.implementacaoCSV.VeiculoCSV;
+import model.exceptions.DBException;
+import model.exceptions.PersistenciaException;
+import model.servicos.persistencia.VeiculoDAO;
 
 /**
  *
@@ -19,15 +18,15 @@ public class TestePersistenciaVeiculo {
 
     public static void main(String[] args) {
 
-        VeiculoPersistenceService persistenceService = new VeiculoPersistenceServiceCSV();
+        VeiculoDAO persistenceService = new VeiculoCSV();
 
         try {
             System.out.println("INSERIR");
 
-            Categoria cat = new CategoriaPersistenceServiceCSV().buscar(10);
-            Marca marc = new Marca(4332, "gol");
-            Modelo mod = new ModeloPersistenceServiceCSV().buscar(1);
-            Veiculo veiculo = new Veiculo("KFCS-765", "renavam", mod, 2019, 2020, 32.43);
+            Marca marca = new Marca(1, "descricao");
+            Categoria categoria = new Categoria(1, "descricao", 1500.0, 100.0);
+            Modelo modelo = new Modelo(1, "codigoFipe", "descricao", marca, categoria, Combustivel.DIESEL, 2020);
+            Veiculo veiculo = new Veiculo(1, "placa", "renavam", 25000.0, modelo, 2020, 0.0, 5.0);
 
             persistenceService.inserir(veiculo);
 
@@ -46,9 +45,9 @@ public class TestePersistenciaVeiculo {
             for (Veiculo v : persistenceService.buscarTodos()) {
                 System.out.println(v.toCSV());
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenciaException ex) {
             System.out.println("Erro de persistencia: " + ex.getMessage());
-        } catch (DBConnectionException ex) {
+        } catch (DBException ex) {
             System.out.println("Erro de conexão: " + ex.getMessage());
         }
     }

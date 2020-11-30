@@ -1,4 +1,4 @@
-package ui.panels;
+package ui.panels.formularios;
 
 import java.util.Map;
 import java.util.Set;

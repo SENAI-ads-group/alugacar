@@ -71,4 +71,9 @@ public class Marca {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return id + " - " + descricao;
+    }
+
 }

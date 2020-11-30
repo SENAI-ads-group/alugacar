@@ -1,6 +1,7 @@
 package ui.listeners;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
@@ -11,10 +12,10 @@ import javax.swing.JPanel;
  */
 public class MouseListenerPanelButtonMenu implements MouseListener {
 
-    private JPanel panel;
+    private Component component;
 
-    public MouseListenerPanelButtonMenu(JPanel panel) {
-        this.panel = panel;
+    public MouseListenerPanelButtonMenu(Component component) {
+        this.component = component;
     }
 
     @Override
@@ -31,12 +32,12 @@ public class MouseListenerPanelButtonMenu implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        panel.setBackground(new Color(200, 200, 200));
+        component.setBackground(new Color(200, 200, 200));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        panel.setBackground(new Color(240, 240, 240));
+        component.setBackground(new Color(240, 240, 240));
     }
 
 }

@@ -77,8 +77,7 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
         buttonNovo = new javax.swing.JButton();
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        buttonOutros = new javax.swing.JButton();
+        labelTitleList = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -124,16 +123,9 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Veículos");
-
-        buttonOutros.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonOutros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-options-24x24.png"))); // NOI18N
-        buttonOutros.setText("Outros");
-        buttonOutros.setBorderPainted(false);
-        buttonOutros.setFocusPainted(false);
-        buttonOutros.setFocusable(false);
-        buttonOutros.setPreferredSize(new java.awt.Dimension(96, 35));
+        labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-veiculo-28x28.png"))); // NOI18N
+        labelTitleList.setText("Veículos");
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -141,10 +133,8 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 716, Short.MAX_VALUE)
-                .addComponent(buttonOutros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelTitleList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 762, Short.MAX_VALUE)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -156,12 +146,12 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap(34, Short.MAX_VALUE)
-                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(buttonOutros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelTitleList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -170,6 +160,7 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
         scrollPane.setFocusable(false);
 
         table.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        table.getTableHeader().setFont(new java.awt.Font("Tahoma", 0, 13));
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -194,10 +185,12 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
             }
         });
         table.setFocusable(false);
+        table.setRowHeight(25);
         table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(0).setPreferredWidth(10);
+            table.getColumnModel().getColumn(0).setPreferredWidth(50);
+            table.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
         add(scrollPane, java.awt.BorderLayout.CENTER);
@@ -217,8 +210,7 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
-    private javax.swing.JButton buttonOutros;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel labelTitleList;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable table;

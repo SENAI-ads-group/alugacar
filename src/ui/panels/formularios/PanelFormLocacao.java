@@ -1,7 +1,8 @@
-package ui.panels;
+package ui.panels.formularios;
 
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import model.entidades.Categoria;
 import model.entidades.Marca;
@@ -15,11 +16,11 @@ import util.Utilities;
  *
  * @author patrick-ribeiro
  */
-public final class PanelFormModelo extends javax.swing.JPanel {
+public final class PanelFormLocacao extends javax.swing.JPanel {
 
     private Modelo modelo;
 
-    public PanelFormModelo(Modelo modelo) {
+    public PanelFormLocacao(Modelo modelo) {
         initComponents();
         this.modelo = modelo;
         initCombobox();
@@ -34,6 +35,7 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         Object[] itemsCategoria = DAOFactory.createCategoriaService().buscarTodos().toArray();
         comboBoxMarca.setModel(new DefaultComboBoxModel(itemsMarca));
         comboBoxCategoria.setModel(new DefaultComboBoxModel(itemsCategoria));
+        comboBoxCombustivel.setModel(new DefaultComboBoxModel<>(Combustivel.values()));
     }
 
     public void updateFormData() {
@@ -45,7 +47,14 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         comboBoxMarca.setSelectedItem(modelo.getCategoria());
         textFieldCodigoFipe.setText(modelo.getCodigoFipe());
         textFieldDescricao.setText(modelo.getDescricao());
-        yearChooserModelo.setYear(modelo.getAno());
+        if (modelo.getAno() != null) {
+            yearChooserModelo.setYear(modelo.getAno());
+        }
+        if (modelo.getCodigoFipe() != null) {
+            textFieldCodigoFipe.setEditable(false);
+        } else {
+            textFieldCodigoFipe.setEditable(true);
+        }
     }
 
     public Modelo getFormData() throws ValidacaoException {
@@ -74,14 +83,8 @@ public final class PanelFormModelo extends javax.swing.JPanel {
 
     public void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        if (Utilities.textFieldIsEmpty(textFieldCodigoFipe)) {
-
-        }
         if (Utilities.textFieldIsEmpty(textFieldDescricao)) {
-
-        }
-        if (Utilities.textFieldIsEmpty(textFieldDescricao)) {
-
+            exception.addError("descricao", "Descrição não informada");
         }
 
         if (exception.getErrors().size() > 0) {
@@ -90,6 +93,11 @@ public final class PanelFormModelo extends javax.swing.JPanel {
     }
 
     public void setErrorsMessages(Map<String, String> errors) {
+        Set<String> fields = errors.keySet();
+
+        if (fields.contains("descricao")) {
+            labelErroDescricao.setText(errors.get("descricao"));
+        }
 
     }
 

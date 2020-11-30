@@ -1,4 +1,4 @@
-package ui.panels;
+package ui.panels.formularios;
 
 import java.util.Map;
 import java.util.Set;
@@ -11,18 +11,18 @@ import util.Utilities;
  * @author Patrick-Ribeiro
  */
 public class PanelFormPessoaJuridica extends javax.swing.JPanel {
-    
+
     private PessoaJuridica pessoa;
-    
+
     public PanelFormPessoaJuridica(PessoaJuridica pessoa) {
         initComponents();
         this.pessoa = pessoa;
     }
-    
+
     public void setPessoa(PessoaJuridica pessoa) {
         this.pessoa = pessoa;
     }
-    
+
     public void updateFormData() {
         if (pessoa != null) {
             textFieldNome.setText(pessoa.getNome());
@@ -30,10 +30,10 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
             textFieldCNPJ.setText(pessoa.getCnpj());
             textFieldTelefone.setText(pessoa.getTelefone());
             textFieldInscricaoEstadual.setText(pessoa.getInscricaoEstadual());
-            textFieldRazaoSocial.setText(pessoa.getTelefone());
+            textFieldRazaoSocial.setText(pessoa.getRazaoSocial());
         }
     }
-    
+
     public PessoaJuridica getFormData() throws ValidacaoException {
         if (pessoa == null) {
             pessoa = new PessoaJuridica();
@@ -60,17 +60,17 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         pessoa.setInscricaoEstadual(textFieldInscricaoEstadual.getText());
         pessoa.setEmail(textFieldEmail.getText());
         pessoa.setRazaoSocial(textFieldRazaoSocial.getText());
-        
+
         clearErrors();
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
         return pessoa;
     }
-    
+
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-        
+
         if (fields.contains("nome")) {
             labelErroNome.setText(errors.get("nome"));
         }
@@ -87,7 +87,7 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
             labelErroRazaoSocial.setText(errors.get("razaoSocial"));
         }
     }
-    
+
     private void clearErrors() {
         labelErroNome.setText("");
         labelErroCNPJ.setText("");
@@ -95,7 +95,7 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         labelErroRazaoSocial.setText("");
         labelErroTelefone.setText("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

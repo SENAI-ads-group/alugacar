@@ -87,12 +87,12 @@ public class ContratoDiaria implements ContratoService {
         if (this.locacao == null) {
             throw new IllegalStateException("A locação está nula");
         }
-        Calendar calendarRetirada = new GregorianCalendar();
+        Calendar calendarEntrega = new GregorianCalendar();
         Calendar calendarDevolucao = new GregorianCalendar();
-        calendarRetirada.setTime(locacao.getVistoriaRetirada().getData());
-        calendarDevolucao.setTime(locacao.getVistoriaDevolucao().getData());
+        calendarEntrega.setTime(locacao.getDataEntrega());
+        calendarDevolucao.setTime(locacao.getDataDevolucao());
 
-        int diasPercorridos = calendarDevolucao.get(Calendar.DAY_OF_YEAR) - calendarRetirada.get(Calendar.DAY_OF_YEAR);
+        int diasPercorridos = calendarDevolucao.get(Calendar.DAY_OF_YEAR) - calendarEntrega.get(Calendar.DAY_OF_YEAR);
         double valorDiaria = locacao.getVeiculo().getModelo().getCategoria().getValorDiaria();
         return valorDiaria * diasPercorridos;
     }

@@ -83,10 +83,10 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Informa&#xe7;&#xf5;es" toolTip="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista">
-                <Property name="tabTitle" type="java.lang.String" value="Informa&#xe7;&#xf5;es"/>
+              <JTabbedPaneConstraints tabName="Ve&#xed;culo" toolTip="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista">
+                <Property name="tabTitle" type="java.lang.String" value="Ve&#xed;culo"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/ui/media/icons/icon-pessoafisica-24x24.png"/>
+                  <Image iconType="3" name="/ui/media/icons/icon-veiculo-28x28.png"/>
                 </Property>
                 <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista"/>
               </JTabbedPaneConstraints>
@@ -138,7 +138,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="272" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="274" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -186,7 +186,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="272" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="274" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>

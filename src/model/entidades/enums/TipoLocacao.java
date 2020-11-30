@@ -13,11 +13,15 @@ public enum TipoLocacao {
     KM("KM Rodado", new ContratoKM());
 
     private final String NOME_FORMATADO;
-    private final ContratoService CONTRATO_SERVICE;
+    private final ContratoService CONTRATO;
 
-    private TipoLocacao(String NOME_FORMATADO, ContratoService contratoService) {
+    private TipoLocacao(String NOME_FORMATADO, ContratoService CONTRATO) {
         this.NOME_FORMATADO = NOME_FORMATADO;
-        this.CONTRATO_SERVICE = contratoService;
+        this.CONTRATO = CONTRATO;
+    }
+
+    public ContratoService getContrato() {
+        return CONTRATO;
     }
 
     @Override
@@ -27,10 +31,6 @@ public enum TipoLocacao {
 
     public String toCSV() {
         return name();
-    }
-
-    public ContratoService getContratoService() {
-        return CONTRATO_SERVICE;
     }
 
 }

@@ -1,50 +1,45 @@
 package ui.panels;
 
-import model.entidades.Motorista;
+import java.awt.Font;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import ui.FrameLoader;
-import ui.dialogs.DialogMotoristaForm;
+import model.entidades.Marca;
+import model.exceptions.DBException;
+import model.exceptions.PersistenciaException;
+import model.servicos.persistencia.MarcaDAO;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
-import model.servicos.persistencia.MotoristaDAO;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
+public final class PanelMarcasList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MotoristaDAO persistenceService = DAOFactory.createMotoristaService();
+    private final MarcaDAO DAO = DAOFactory.createMarcaService();
 
-    public PanelMotoristasList() {
+    public PanelMarcasList() {
         initComponents();
         updateTable();
     }
 
     public void updateTable() {
-        List<Motorista> motoristas = persistenceService.buscarTodos();
-
+        List<Marca> marcas = DAO.buscarTodos();
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
-
-        for (Motorista motorista : motoristas) {
+        for (Marca marca : marcas) {
             Object[] row = {
-                motorista.getId(),
-                motorista.getPessoa().getNome(),
-                motorista.getPessoa().getEmail(),
-                motorista.getPessoa().getTelefone(),
-                motorista.getPessoa().getCpf(),
-                motorista.getPessoa().getRegistroGeral(),
-                motorista.getCnh().getNumeroRegistro(),
-                motorista.getCnh().getCategoria().toString(),
-                motorista.isAtivo()
+                marca.getId(),
+                marca.getDescricao()
             };
             tableModel.addRow(row);
         }
         table.setModel(tableModel);
-        if (tableModel.getRowCount() > 0) {
+
+        if (tableModel.getRowCount()
+                > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
@@ -54,11 +49,20 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         }
     }
 
-    public void createMotoristaForm(Motorista motorista) {
-        DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
-        dialogForm.subscribeListener(this);
-        dialogForm.updateFormData();
-        dialogForm.setVisible(true);
+    public void persistEntity(Marca marca) throws PersistenciaException {
+        if (marca.getId() == null) {
+            DAO.inserir(marca);
+        } else {
+            DAO.atualizar(marca);
+        }
+    }
+
+    public void createMarcaForm(Marca marca) throws PersistenciaException {
+        String descricao = String.valueOf(JOptionPane.showInputDialog(this, "Descrição", "Formulário de marcas", JOptionPane.QUESTION_MESSAGE, null, null, marca.getDescricao()));
+        if (descricao != null && descricao.trim().length() > 0) {
+            marca.setDescricao(descricao);
+            persistEntity(marca);
+        }
     }
 
     @Override
@@ -121,8 +125,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-motorista-28x28.png"))); // NOI18N
-        labelTitleList.setText("Motoristas");
+        labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-marcas-28x28.png"))); // NOI18N
+        labelTitleList.setText("Marcas de veículos");
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -131,8 +135,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 745, Short.MAX_VALUE)
-                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 649, Short.MAX_VALUE)
+                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -163,14 +167,14 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
             },
             new String [] {
-                "Id", "Nome", "Email", "Telefone", "CPF", "RG", "CNH", "Categoria CNH", "Ativo"
+                "Id", "Descrição"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -188,26 +192,28 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setPreferredWidth(50);
             table.getColumnModel().getColumn(0).setMaxWidth(50);
-            table.getColumnModel().getColumn(1).setPreferredWidth(200);
-            table.getColumnModel().getColumn(2).setPreferredWidth(200);
-            table.getColumnModel().getColumn(3).setPreferredWidth(80);
-            table.getColumnModel().getColumn(4).setPreferredWidth(100);
-            table.getColumnModel().getColumn(5).setPreferredWidth(80);
-            table.getColumnModel().getColumn(6).setPreferredWidth(100);
-            table.getColumnModel().getColumn(7).setPreferredWidth(50);
-            table.getColumnModel().getColumn(8).setPreferredWidth(20);
         }
 
         add(scrollPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        createMotoristaForm(new Motorista());
+        try {
+            createMarcaForm(new Marca());
+            updateTable();
+        } catch (PersistenciaException | DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        createMotoristaForm(persistenceService.buscar(idSelecionado));
+        try {
+            createMarcaForm(DAO.buscar(idSelecionado));
+            updateTable();
+        } catch (PersistenciaException | DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buttonEditarActionPerformed
 
 

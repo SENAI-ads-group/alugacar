@@ -6,5 +6,5 @@ package model.entidades.enums;
  */
 public enum TipoVistoria {
     DEVOLUCAO,
-    RETIRADA;
+    ENTREGA;
 }

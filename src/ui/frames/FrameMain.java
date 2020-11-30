@@ -1,8 +1,11 @@
 package ui.frames;
 
-import java.awt.Dimension;
+import java.awt.Component;
 import ui.listeners.MouseListenerPanelButtonMenu;
+import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
+import ui.panels.PanelMarcasList;
+import ui.panels.PanelModelosList;
 import ui.panels.PanelMotoristasList;
 import ui.panels.PanelVeiculosList;
 import util.PanelUtilities;
@@ -16,12 +19,9 @@ public class FrameMain extends javax.swing.JFrame {
     public FrameMain() {
         initComponents();
 
-        panelMenuItemDashboard.addMouseListener(new MouseListenerPanelButtonMenu(panelMenuItemDashboard));
-        panelMenuItemClientes.addMouseListener(new MouseListenerPanelButtonMenu(panelMenuItemClientes));
-        panelMenuItemMotoristas.addMouseListener(new MouseListenerPanelButtonMenu(panelMenuItemMotoristas));
-        panelMenuItemVeiculos.addMouseListener(new MouseListenerPanelButtonMenu(panelMenuItemVeiculos));
-        panelMenuItemRelatorios.addMouseListener(new MouseListenerPanelButtonMenu(panelMenuItemRelatorios));
-        panelMenuItemConfiguracoes.addMouseListener(new MouseListenerPanelButtonMenu(panelMenuItemConfiguracoes));
+        for (Component component : panelMenu.getComponents()) {
+            component.addMouseListener(new MouseListenerPanelButtonMenu(component));
+        }
     }
 
     /**
@@ -33,6 +33,7 @@ public class FrameMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelLeft = new javax.swing.JPanel();
         panelMenu = new javax.swing.JPanel();
         panelMenuItemDashboard = new javax.swing.JPanel();
         labelIconDashboard = new javax.swing.JLabel();
@@ -46,6 +47,15 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemVeiculos = new javax.swing.JPanel();
         labelIconVeiculos = new javax.swing.JLabel();
         labelMenuVeiculos = new javax.swing.JLabel();
+        panelMenuItemModelos = new javax.swing.JPanel();
+        labelIconModelos = new javax.swing.JLabel();
+        labelMenuModelos = new javax.swing.JLabel();
+        panelMenuItemMarcas = new javax.swing.JPanel();
+        labelIconMarcas = new javax.swing.JLabel();
+        labelMenuMarcas = new javax.swing.JLabel();
+        panelMenuItemCategorias = new javax.swing.JPanel();
+        labelIconCategorias = new javax.swing.JLabel();
+        labelMenuCategorias = new javax.swing.JLabel();
         panelMenuItemRelatorios = new javax.swing.JPanel();
         labelIconRelatorios = new javax.swing.JLabel();
         labelMenuRelatorios = new javax.swing.JLabel();
@@ -62,15 +72,15 @@ public class FrameMain extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(1366, 768));
 
-        panelMenu.setMinimumSize(new java.awt.Dimension(300, 100));
-        panelMenu.setPreferredSize(new java.awt.Dimension(150, 768));
-        panelMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelLeft.setMinimumSize(new java.awt.Dimension(300, 100));
+        panelLeft.setPreferredSize(new java.awt.Dimension(150, 768));
+        panelLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelMenu.setPreferredSize(new java.awt.Dimension(150, 315));
+        panelMenu.setLayout(new javax.swing.BoxLayout(panelMenu, javax.swing.BoxLayout.Y_AXIS));
 
         panelMenuItemDashboard.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMenuItemDashboardMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 panelMenuItemDashboardMousePressed(evt);
             }
@@ -86,7 +96,7 @@ public class FrameMain extends javax.swing.JFrame {
         labelMenuDashboard.setText("Dashboard");
         panelMenuItemDashboard.add(labelMenuDashboard, java.awt.BorderLayout.CENTER);
 
-        panelMenu.add(panelMenuItemDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 99, -1, -1));
+        panelMenu.add(panelMenuItemDashboard);
 
         panelMenuItemClientes.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -105,7 +115,7 @@ public class FrameMain extends javax.swing.JFrame {
         labelMenuClientes.setText("Clientes");
         panelMenuItemClientes.add(labelMenuClientes, java.awt.BorderLayout.CENTER);
 
-        panelMenu.add(panelMenuItemClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 135, -1, -1));
+        panelMenu.add(panelMenuItemClientes);
 
         panelMenuItemMotoristas.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemMotoristas.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -125,7 +135,7 @@ public class FrameMain extends javax.swing.JFrame {
         labelMenuMotoristas.setText("Motoristas");
         panelMenuItemMotoristas.add(labelMenuMotoristas, java.awt.BorderLayout.CENTER);
 
-        panelMenu.add(panelMenuItemMotoristas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, -1, -1));
+        panelMenu.add(panelMenuItemMotoristas);
 
         panelMenuItemVeiculos.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemVeiculos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -145,7 +155,67 @@ public class FrameMain extends javax.swing.JFrame {
         labelMenuVeiculos.setText("Veículos");
         panelMenuItemVeiculos.add(labelMenuVeiculos, java.awt.BorderLayout.CENTER);
 
-        panelMenu.add(panelMenuItemVeiculos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 205, -1, -1));
+        panelMenu.add(panelMenuItemVeiculos);
+
+        panelMenuItemModelos.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemModelos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemModelosMousePressed(evt);
+            }
+        });
+        panelMenuItemModelos.setLayout(new java.awt.BorderLayout());
+
+        labelIconModelos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconModelos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-28x28.png"))); // NOI18N
+        labelIconModelos.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemModelos.add(labelIconModelos, java.awt.BorderLayout.LINE_START);
+
+        labelMenuModelos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuModelos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuModelos.setText("Modelos");
+        panelMenuItemModelos.add(labelMenuModelos, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemModelos);
+
+        panelMenuItemMarcas.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemMarcas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemMarcasMousePressed(evt);
+            }
+        });
+        panelMenuItemMarcas.setLayout(new java.awt.BorderLayout());
+
+        labelIconMarcas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconMarcas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-marcas-28x28.png"))); // NOI18N
+        labelIconMarcas.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemMarcas.add(labelIconMarcas, java.awt.BorderLayout.LINE_START);
+
+        labelMenuMarcas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuMarcas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuMarcas.setText("Marcas");
+        panelMenuItemMarcas.add(labelMenuMarcas, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemMarcas);
+
+        panelMenuItemCategorias.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemCategorias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemCategoriasMousePressed(evt);
+            }
+        });
+        panelMenuItemCategorias.setLayout(new java.awt.BorderLayout());
+
+        labelIconCategorias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconCategorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-28x28.png"))); // NOI18N
+        labelIconCategorias.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemCategorias.add(labelIconCategorias, java.awt.BorderLayout.LINE_START);
+
+        labelMenuCategorias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuCategorias.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuCategorias.setText("Categorias");
+        panelMenuItemCategorias.add(labelMenuCategorias, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemCategorias);
 
         panelMenuItemRelatorios.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -165,7 +235,7 @@ public class FrameMain extends javax.swing.JFrame {
         labelMenuRelatorios.setText("Relatórios");
         panelMenuItemRelatorios.add(labelMenuRelatorios, java.awt.BorderLayout.CENTER);
 
-        panelMenu.add(panelMenuItemRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, -1, -1));
+        panelMenu.add(panelMenuItemRelatorios);
 
         panelMenuItemConfiguracoes.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -185,9 +255,11 @@ public class FrameMain extends javax.swing.JFrame {
         labelMenuConfiguracoes.setText("Configurações");
         panelMenuItemConfiguracoes.add(labelMenuConfiguracoes, java.awt.BorderLayout.CENTER);
 
-        panelMenu.add(panelMenuItemConfiguracoes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 275, -1, -1));
+        panelMenu.add(panelMenuItemConfiguracoes);
 
-        getContentPane().add(panelMenu, java.awt.BorderLayout.LINE_START);
+        panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
+
+        getContentPane().add(panelLeft, java.awt.BorderLayout.LINE_START);
 
         scrollPaneCenter.setBorder(null);
         scrollPaneCenter.setFocusable(false);
@@ -199,6 +271,7 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelLoader.setBackground(new java.awt.Color(255, 255, 255));
         panelLoader.setPreferredSize(new java.awt.Dimension(1200, 768));
+        panelLoader.setLayout(new javax.swing.BoxLayout(panelLoader, javax.swing.BoxLayout.LINE_AXIS));
         panelCenter.add(panelLoader, java.awt.BorderLayout.CENTER);
 
         scrollPaneCenter.setViewportView(panelCenter);
@@ -207,10 +280,6 @@ public class FrameMain extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void panelMenuItemDashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDashboardMouseClicked
-
-    }//GEN-LAST:event_panelMenuItemDashboardMouseClicked
 
     private void panelMenuItemRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemRelatoriosMouseClicked
         // TODO add your handling code here:
@@ -225,61 +294,71 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemDashboardMousePressed
 
     private void panelMenuItemMotoristasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMousePressed
-        PanelMotoristasList panelLoaded = new PanelMotoristasList();
-        panelLoader.removeAll();
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoader.add(panelLoaded);
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
-        panelLoaded.updateTable();
+        PanelMotoristasList listMotoristas = new PanelMotoristasList();
+        PanelUtilities.loadPanelToPanel(listMotoristas, panelLoader);
+        listMotoristas.updateTable();
     }//GEN-LAST:event_panelMenuItemMotoristasMousePressed
 
     private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed
-        PanelClientesList panelLoaded = new PanelClientesList();
-        //PanelUtilities.loadPanelToPanel(panelLoaded, panelLoader);
-        panelLoader.removeAll();
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoader.add(panelLoaded);
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+        PanelClientesList listClientes = new PanelClientesList();
+        PanelUtilities.loadPanelToPanel(listClientes, panelLoader);
+        listClientes.updateTable();
     }//GEN-LAST:event_panelMenuItemClientesMousePressed
 
     private void panelMenuItemVeiculosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMousePressed
-        PanelVeiculosList panelLoaded = new PanelVeiculosList();
-        //PanelUtilities.loadPanelToPanel(panelLoaded, panelLoader);
-        panelLoader.removeAll();
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoader.add(panelLoaded);
-        panelLoader.revalidate();
-        panelLoader.repaint();
-        panelLoaded.setPreferredSize(new Dimension(panelLoader.getWidth(), panelLoader.getHeight()));
+        PanelVeiculosList listVeiculos = new PanelVeiculosList();
+        PanelUtilities.loadPanelToPanel(listVeiculos, panelLoader);
+        listVeiculos.updateTable();
     }//GEN-LAST:event_panelMenuItemVeiculosMousePressed
+
+    private void panelMenuItemModelosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemModelosMousePressed
+        PanelModelosList listModelos = new PanelModelosList();
+        PanelUtilities.loadPanelToPanel(listModelos, panelLoader);
+        listModelos.updateTable();
+    }//GEN-LAST:event_panelMenuItemModelosMousePressed
+
+    private void panelMenuItemMarcasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMarcasMousePressed
+        PanelMarcasList listMarcas = new PanelMarcasList();
+        PanelUtilities.loadPanelToPanel(listMarcas, panelLoader);
+        listMarcas.updateTable();
+    }//GEN-LAST:event_panelMenuItemMarcasMousePressed
+
+    private void panelMenuItemCategoriasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemCategoriasMousePressed
+        PanelCategoriaList listCategorias = new PanelCategoriaList();
+        PanelUtilities.loadPanelToPanel(listCategorias, panelLoader);
+        listCategorias.updateTable();
+    }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel labelIconCategorias;
     private javax.swing.JLabel labelIconClientes;
     private javax.swing.JLabel labelIconConfiguracoes;
     private javax.swing.JLabel labelIconDashboard;
+    private javax.swing.JLabel labelIconMarcas;
+    private javax.swing.JLabel labelIconModelos;
     private javax.swing.JLabel labelIconMotoristas;
     private javax.swing.JLabel labelIconRelatorios;
     private javax.swing.JLabel labelIconVeiculos;
+    private javax.swing.JLabel labelMenuCategorias;
     private javax.swing.JLabel labelMenuClientes;
     private javax.swing.JLabel labelMenuConfiguracoes;
     private javax.swing.JLabel labelMenuDashboard;
+    private javax.swing.JLabel labelMenuMarcas;
+    private javax.swing.JLabel labelMenuModelos;
     private javax.swing.JLabel labelMenuMotoristas;
     private javax.swing.JLabel labelMenuRelatorios;
     private javax.swing.JLabel labelMenuVeiculos;
     private javax.swing.JPanel panelCenter;
+    private javax.swing.JPanel panelLeft;
     private javax.swing.JPanel panelLoader;
     private javax.swing.JPanel panelMenu;
+    private javax.swing.JPanel panelMenuItemCategorias;
     private javax.swing.JPanel panelMenuItemClientes;
     private javax.swing.JPanel panelMenuItemConfiguracoes;
     private javax.swing.JPanel panelMenuItemDashboard;
+    private javax.swing.JPanel panelMenuItemMarcas;
+    private javax.swing.JPanel panelMenuItemModelos;
     private javax.swing.JPanel panelMenuItemMotoristas;
     private javax.swing.JPanel panelMenuItemRelatorios;
     private javax.swing.JPanel panelMenuItemVeiculos;

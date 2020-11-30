@@ -2,9 +2,9 @@ package model.servicos.contrato;
 
 import java.util.List;
 import model.entidades.Desconto;
-import model.entidades.ItemVistoria;
 import model.entidades.Locacao;
 import model.entidades.Taxa;
+import model.entidades.enums.StatusLocacao;
 
 /**
  *
@@ -40,20 +40,15 @@ public interface ContratoService {
     }
 
     default void checarVistorias() {
-        List<ItemVistoria> itensRetirada = getLocacao().getVistoriaRetirada().getItens();
-        List<ItemVistoria> itensDevolucao = getLocacao().getVistoriaDevolucao().getItens();
-
-        for (int i = 0; i < itensRetirada.size(); i++) {
-            ItemVistoria itemRetirada = itensRetirada.get(i);
-            ItemVistoria itemDevolucao = itensDevolucao.get(i);
-
-            if (itemRetirada.isAdequado()) {
-                if (!itemDevolucao.isAdequado()) {
-                    addTaxa(Taxa.getTaxaItemVistoria());
-                }
-            } else {
-                addDesconto(Desconto.getDescontoItemVistoria());
+        if (getLocacao().getStatus() != StatusLocacao.FINALIZADA) {
+            throw new IllegalStateException("A locação deve ser finalizada para o processamento");
+        }
+        if (getLocacao().getVistoriaEntrega().isVeiculoAdequado()) {
+            if (getLocacao().getVistoriaDevolucao().isVeiculoAdequado()) {
+                addTaxa(Taxa.getTaxaItemVistoria());
             }
+        } else {
+            addDesconto(Desconto.getDescontoItemVistoria());
         }
     }
 }

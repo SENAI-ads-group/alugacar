@@ -1,4 +1,4 @@
-package ui.panels;
+package ui.panels.formularios;
 
 import java.util.Map;
 import java.util.Set;
@@ -32,9 +32,11 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
             textFieldTelefone.setText(pessoa.getTelefone());
             dateChooserNascimento.setDate(pessoa.getDataNascimento());
         }
+
     }
 
     public PessoaFisica getFormData() throws ValidacaoException {
+        System.out.println(String.valueOf(jFormattedTextField1.getValue()));
         if (pessoa == null) {
             pessoa = new PessoaFisica();
         }
@@ -118,6 +120,7 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelErroTelefone = new javax.swing.JLabel();
         labelErroRG = new javax.swing.JLabel();
         labelErroEmail = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(360, 280));
@@ -223,11 +226,15 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelErroEmail.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroEmail.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 175, 170, -1));
+
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat(""))));
+        add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 120, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateChooserNascimento;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel labelCPF;
     private javax.swing.JLabel labelDataNascimento;
     private javax.swing.JLabel labelEmail;

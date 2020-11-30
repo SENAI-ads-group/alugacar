@@ -1,50 +1,48 @@
 package ui.panels;
 
-import model.entidades.Motorista;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import model.entidades.Modelo;
+import model.servicos.persistencia.ModeloDAO;
 import ui.FrameLoader;
-import ui.dialogs.DialogMotoristaForm;
+import ui.dialogs.DialogModeloForm;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
-import model.servicos.persistencia.MotoristaDAO;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
+public final class PanelModelosList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MotoristaDAO persistenceService = DAOFactory.createMotoristaService();
+    private final ModeloDAO DAO = DAOFactory.createModeloService();
 
-    public PanelMotoristasList() {
+    public PanelModelosList() {
         initComponents();
         updateTable();
     }
 
     public void updateTable() {
-        List<Motorista> motoristas = persistenceService.buscarTodos();
-
+        List<Modelo> modelos = DAO.buscarTodos();
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
-
-        for (Motorista motorista : motoristas) {
+        for (Modelo modelo : modelos) {
             Object[] row = {
-                motorista.getId(),
-                motorista.getPessoa().getNome(),
-                motorista.getPessoa().getEmail(),
-                motorista.getPessoa().getTelefone(),
-                motorista.getPessoa().getCpf(),
-                motorista.getPessoa().getRegistroGeral(),
-                motorista.getCnh().getNumeroRegistro(),
-                motorista.getCnh().getCategoria().toString(),
-                motorista.isAtivo()
+                modelo.getId(),
+                modelo.getCodigoFipe(),
+                modelo.getDescricao(),
+                modelo.getMarca().toString(),
+                modelo.getAno(),
+                modelo.getCategoria().toString(),
+                modelo.getCombustivel().toString()
             };
             tableModel.addRow(row);
         }
         table.setModel(tableModel);
-        if (tableModel.getRowCount() > 0) {
+
+        if (tableModel.getRowCount()
+                > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
@@ -54,8 +52,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         }
     }
 
-    public void createMotoristaForm(Motorista motorista) {
-        DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
+    public void createModeloForm(Modelo modelo) {
+        DialogModeloForm dialogForm = new DialogModeloForm(FrameLoader.getFrameMain(), true, modelo);
         dialogForm.subscribeListener(this);
         dialogForm.updateFormData();
         dialogForm.setVisible(true);
@@ -121,8 +119,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-motorista-28x28.png"))); // NOI18N
-        labelTitleList.setText("Motoristas");
+        labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-28x28.png"))); // NOI18N
+        labelTitleList.setText("Modelos de veículos");
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -131,8 +129,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 745, Short.MAX_VALUE)
-                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 631, Short.MAX_VALUE)
+                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -141,14 +139,14 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
+            .addGroup(panelHeaderLayout.createSequentialGroup()
                 .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelTitleList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelTitleList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -163,14 +161,14 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
             },
             new String [] {
-                "Id", "Nome", "Email", "Telefone", "CPF", "RG", "CNH", "Categoria CNH", "Ativo"
+                "Id", "Código FIPE", "Descrição", "Marca", "Ano", "Categoria", "Combustível"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -188,26 +186,18 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setPreferredWidth(50);
             table.getColumnModel().getColumn(0).setMaxWidth(50);
-            table.getColumnModel().getColumn(1).setPreferredWidth(200);
-            table.getColumnModel().getColumn(2).setPreferredWidth(200);
-            table.getColumnModel().getColumn(3).setPreferredWidth(80);
-            table.getColumnModel().getColumn(4).setPreferredWidth(100);
-            table.getColumnModel().getColumn(5).setPreferredWidth(80);
-            table.getColumnModel().getColumn(6).setPreferredWidth(100);
-            table.getColumnModel().getColumn(7).setPreferredWidth(50);
-            table.getColumnModel().getColumn(8).setPreferredWidth(20);
         }
 
         add(scrollPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        createMotoristaForm(new Motorista());
+        createModeloForm(new Modelo());
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        createMotoristaForm(persistenceService.buscar(idSelecionado));
+        createModeloForm(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
 

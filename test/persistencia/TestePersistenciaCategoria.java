@@ -16,7 +16,7 @@ public class TestePersistenciaCategoria {
         CategoriaDAO persistenceService = DAOFactory.createCategoriaService();
         try {
             System.out.println("INSERIR");
-            Categoria categoria = new Categoria(1, "descricao", 1500.0, 100.0);
+            Categoria categoria = new Categoria(1, "descricao", 1500.0, 100.0, 500.0);
             persistenceService.inserir(categoria);
 
             System.out.println("BUSCAR");

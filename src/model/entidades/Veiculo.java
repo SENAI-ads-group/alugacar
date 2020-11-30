@@ -13,17 +13,16 @@ public class Veiculo {
     private Integer id;
     private String placa;
     private String renavam;
-    private Double precoCompra;
+    private Double precoCompra = 0.0;
     private Modelo modelo;
     private Integer anoFabricacao;
-    private Double KMRodado;
+    private Double KMRodado = 0.0;
     private StatusVeiculo statusVeiculo = StatusVeiculo.INDISPONIVEL;
-    private Double valorKM;
 
     public Veiculo() {
     }
 
-    public Veiculo(Integer id, String placa, String renavam, Double precoCompra, Modelo modelo, Integer anoFabricacao, Double KMRodado, Double valorKM) {
+    public Veiculo(Integer id, String placa, String renavam, Double precoCompra, Modelo modelo, Integer anoFabricacao, Double KMRodado) {
         this.id = id;
         this.placa = placa;
         this.renavam = renavam;
@@ -31,7 +30,6 @@ public class Veiculo {
         this.modelo = modelo;
         this.anoFabricacao = anoFabricacao;
         this.KMRodado = KMRodado;
-        this.valorKM = valorKM;
     }
 
     public Veiculo(String[] csv) {
@@ -44,7 +42,6 @@ public class Veiculo {
         anoFabricacao = Utilities.tryParseToInteger(csv[5]);
         KMRodado = Utilities.tryParseToDouble(csv[6]);
         statusVeiculo = StatusVeiculo.valueOf(csv[7]);
-        valorKM = Utilities.tryParseToDouble(csv[8]);
     }
 
     public Integer getId() {
@@ -111,14 +108,6 @@ public class Veiculo {
         this.statusVeiculo = statusVeiculo;
     }
 
-    public Double getValorKM() {
-        return valorKM;
-    }
-
-    public void setValorKM(Double valorKM) {
-        this.valorKM = valorKM;
-    }
-
     public void addKM(double km) {
         KMRodado += km;
     }
@@ -131,8 +120,7 @@ public class Veiculo {
                 + modelo.getId() + ";"
                 + anoFabricacao + ";"
                 + KMRodado + ";"
-                + statusVeiculo.toCSV() + ";"
-                + valorKM;
+                + statusVeiculo.toCSV();
     }
 
 }

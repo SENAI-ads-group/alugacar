@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import model.entidades.Veiculo;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
-import ui.panels.PanelFormVeiculo;
+import ui.panels.formularios.PanelFormVeiculo;
 import util.PanelUtilities;
 import model.servicos.persistencia.VeiculoDAO;
 
@@ -125,7 +125,7 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
         );
         panelBorderLeftTab1Layout.setVerticalGroup(
             panelBorderLeftTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderLeftTab1, java.awt.BorderLayout.LINE_START);
@@ -147,12 +147,12 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
         );
         panelBorderRightTab1Layout.setVerticalGroup(
             panelBorderRightTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 274, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Informações", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Veículo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-veiculo-28x28.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

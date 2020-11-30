@@ -41,7 +41,7 @@ public class Modelo {
         Integer idCategoria = Utilities.tryParseToInteger(csv[4]);
         categoria = DAOFactory.createCategoriaService().buscar(idCategoria);
         ano = Utilities.tryParseToInteger(csv[5]);
-        combustivel = Combustivel.valueOf(csv[6]);
+        combustivel = Combustivel.valueOf(csv[6]);        
     }
     // </editor-fold>  
 
@@ -59,6 +59,9 @@ public class Modelo {
     }
 
     public void setMarca(Marca marca) {
+        if(marca == null) {
+            throw new IllegalStateException("A marca está nula");
+        }
         this.marca = marca;
     }
 

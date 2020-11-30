@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
-import ui.panels.PanelFormEndereco;
-import ui.panels.PanelFormPessoaFisica;
+import ui.panels.formularios.PanelFormEndereco;
+import ui.panels.formularios.PanelFormPessoaFisica;
 import util.DateUtilities;
 import util.PanelUtilities;
 import util.Utilities;
@@ -114,10 +114,11 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             textFieldNumeroRegistro.setText("" + motorista.getCnh().getNumeroRegistro());
             comboBoxCategoriaCNH.setSelectedIndex(motorista.getCnh().getCategoria().ordinal());
             dateChooserValidadeCNH.setDate(motorista.getCnh().getDataValidade());
-        }
-        if (motorista.getCnh().getFoto() != null) {
-            textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
-            showImageOnLabel(motorista.getCnh().getFoto());
+
+            if (motorista.getCnh().getFoto() != null) {
+                textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
+                showImageOnLabel(motorista.getCnh().getFoto());
+            }
         }
         checkBoxAtivo.setSelected(motorista.isAtivo());
         panelFormEndereco.updateFormData();

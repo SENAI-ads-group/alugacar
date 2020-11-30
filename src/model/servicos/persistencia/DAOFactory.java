@@ -3,6 +3,8 @@ package model.servicos.persistencia;
 import model.servicos.persistencia.implementacaoCSV.CnhCSV;
 import model.servicos.persistencia.implementacaoCSV.CategoriaCSV;
 import model.servicos.persistencia.implementacaoCSV.ClienteCSV;
+import model.servicos.persistencia.implementacaoCSV.LocacaoCSV;
+
 import model.servicos.persistencia.implementacaoCSV.MarcaCSV;
 import model.servicos.persistencia.implementacaoCSV.ModeloCSV;
 import model.servicos.persistencia.implementacaoCSV.MotoristaCSV;
@@ -43,11 +45,12 @@ public class DAOFactory {
         return new CnhCSV();
     }
 
-    /*public static EnderecoPersistenseService createEnderecoService() {
-        return new EnderecoPersistenceServiceCSV();
-    }*/
-    
     public static VeiculoDAO createVeiculoService() {
         return new VeiculoCSV();
     }
+
+    public static LocacaoDAO createLocacaoService() {
+        return new LocacaoCSV();
+    }
+
 }

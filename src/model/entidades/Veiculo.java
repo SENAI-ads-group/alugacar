@@ -123,4 +123,9 @@ public class Veiculo {
                 + statusVeiculo.toCSV();
     }
 
+    @Override
+    public String toString() {
+        return id + " - " + placa;
+    }
+
 }

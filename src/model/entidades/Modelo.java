@@ -104,7 +104,7 @@ public class Modelo {
     public void setAno(Integer ano) {
         this.ano = ano;
     }
-    // </editor-fold> 
+    // </editor-fold>
 
     public String toCSV() {
         //id;codigoFipe;descricao;idMarca;idCategoria;ano;combustivel

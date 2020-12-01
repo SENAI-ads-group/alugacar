@@ -44,6 +44,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
     }
 
     private void persistEntity() throws PersistenciaException, ValidacaoException {
+        getFormData();
         if (modelo.getId() == null) {
             DAO.inserir(modelo);
         } else {

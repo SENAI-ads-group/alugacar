@@ -6,6 +6,7 @@ import com.alee.managers.CoreManagers;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import model.exceptions.DBException;
 
 /**
  *
@@ -20,18 +21,21 @@ public class FrameLoader {
     }
 
     public static void main(String args[]) {
+        try {
+            SwingUtilities.invokeLater(() -> {
+                // Install WebLaF as application L&F
+                WebLookAndFeel.install();
+                WebLookAndFeel.initializeManagers();
+                CoreManagers.initialize();
 
-        SwingUtilities.invokeLater(() -> {
-            // Install WebLaF as application L&F
-            WebLookAndFeel.install();
-            WebLookAndFeel.initializeManagers();
-            CoreManagers.initialize();
-
-            JFrame.setDefaultLookAndFeelDecorated(true);
-            JDialog.setDefaultLookAndFeelDecorated(true);
-            frameMain = new FrameMain();
-            frameMain.setExtendedState(FrameMain.MAXIMIZED_BOTH);
-            frameMain.setVisible(true);
-        });
+                JFrame.setDefaultLookAndFeelDecorated(true);
+                JDialog.setDefaultLookAndFeelDecorated(true);
+                frameMain = new FrameMain();
+                frameMain.setExtendedState(FrameMain.MAXIMIZED_BOTH);
+                frameMain.setVisible(true);
+            });
+        } catch (DBException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

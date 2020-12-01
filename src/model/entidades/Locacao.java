@@ -28,6 +28,9 @@ public class Locacao {
     private Vistoria vistoriaDevolucao;
     private ContratoService contratoService;
 
+    public Locacao() {
+    }
+
     public Locacao(TipoLocacao tipo, Date dataEntrega, Date dataDevolucao, Veiculo veiculo, Cliente cliente, Motorista motorista) {
         this.tipo = tipo;
         this.dataEntrega = dataEntrega;
@@ -47,6 +50,40 @@ public class Locacao {
         } else {
             instanciarLocacaoFinalizada(csv);
         }
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setStatus(StatusLocacao status) {
+        this.status = status;
+    }
+
+    public void setTipo(TipoLocacao tipo) {
+        contratoService = tipo.getContrato();
+        contratoService.setLocacao(this);
+        this.tipo = tipo;
+    }
+
+    public void setDataEntrega(Date dataEntrega) {
+        this.dataEntrega = dataEntrega;
+    }
+
+    public void setDataDevolucao(Date dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
     }
 
     public Integer getId() {

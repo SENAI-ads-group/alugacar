@@ -17,19 +17,19 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class PanelFormModelo extends javax.swing.JPanel {
-
+    
     private Modelo modelo;
-
+    
     public PanelFormModelo(Modelo modelo) {
         initComponents();
         this.modelo = modelo;
         initCombobox();
     }
-
+    
     public void setVeiculo(Modelo modelo) {
         this.modelo = modelo;
     }
-
+    
     public void initCombobox() {
         Object[] itemsMarca = DAOFactory.createMarcaService().buscarTodos().toArray();
         Object[] itemsCategoria = DAOFactory.createCategoriaService().buscarTodos().toArray();
@@ -37,7 +37,7 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         comboBoxCategoria.setModel(new DefaultComboBoxModel(itemsCategoria));
         comboBoxCombustivel.setModel(new DefaultComboBoxModel<>(Combustivel.values()));
     }
-
+    
     public void updateFormData() {
         if (modelo == null) {
             throw new IllegalStateException("O modelo está nulo");
@@ -56,7 +56,7 @@ public final class PanelFormModelo extends javax.swing.JPanel {
             textFieldCodigoFipe.setEditable(true);
         }
     }
-
+    
     public Modelo getFormData() throws ValidacaoException {
         if (modelo == null) {
             modelo = new Modelo();
@@ -68,11 +68,11 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         Marca marca = comboBoxMarca.getItemAt(comboBoxMarca.getSelectedIndex());
         modelo.setMarca(marca);
         System.out.println(marca.toCSV());
-        modelo.setCategoria((Categoria) comboBoxCategoria.getSelectedItem());
-        modelo.setCombustivel((Combustivel) comboBoxCategoria.getSelectedItem());
+        modelo.setCategoria(comboBoxCategoria.getItemAt(comboBoxCategoria.getSelectedIndex()));
+        modelo.setCombustivel(comboBoxCombustivel.getItemAt(comboBoxCombustivel.getSelectedIndex()));
         return modelo;
     }
-
+    
     public void clearErrors() {
         labelErroAnoModelo.setText("");
         labelErroCombustivel.setText("");
@@ -82,27 +82,27 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         labelErroDescricao.setText("");
         labelErroCategoria.setText("");
     }
-
+    
     public void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldDescricao)) {
             exception.addError("descricao", "Descrição não informada");
         }
-
+        
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
     }
-
+    
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-
+        
         if (fields.contains("descricao")) {
             labelErroDescricao.setText(errors.get("descricao"));
         }
-
+        
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

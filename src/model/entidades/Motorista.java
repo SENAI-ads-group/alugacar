@@ -103,6 +103,11 @@ public class Motorista {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return id + " - " + pessoa.getNome();
+    }
+
     private PessoaFisica instanciarPessoa(String[] csv) {
         String nome = csv[3];
         String telefone = csv[4];

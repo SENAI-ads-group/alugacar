@@ -1,10 +1,5 @@
 package ui.panels;
 
-import com.sbix.jnotify.NPosition;
-import com.sbix.jnotify.NoticeType;
-import com.sbix.jnotify.NoticeWindow;
-import java.awt.Color;
-import java.awt.Dimension;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -12,7 +7,6 @@ import javax.swing.table.DefaultTableModel;
 import model.entidades.Marca;
 import model.exceptions.DBException;
 import model.servicos.persistencia.MarcaDAO;
-import rojerusan.RSNotifyFade;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
 

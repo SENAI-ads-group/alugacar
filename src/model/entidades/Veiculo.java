@@ -38,7 +38,7 @@ public class Veiculo {
         renavam = csv[2];
         precoCompra = Utilities.tryParseToDouble(csv[3]);
         Integer idModelo = Utilities.tryParseToInteger(csv[4]);
-        modelo = DAOFactory.createModeloService().buscar(idModelo);
+        modelo = DAOFactory.createModeloDAO().buscar(idModelo);
         anoFabricacao = Utilities.tryParseToInteger(csv[5]);
         KMRodado = Utilities.tryParseToDouble(csv[6]);
         statusVeiculo = StatusVeiculo.valueOf(csv[7]);

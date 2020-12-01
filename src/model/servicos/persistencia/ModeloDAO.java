@@ -2,8 +2,8 @@ package model.servicos.persistencia;
 
 import model.entidades.Marca;
 import model.entidades.Modelo;
-import model.exceptions.PersistenciaException;
 import java.util.List;
+import model.exceptions.DBException;
 
 /**
  *
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ModeloDAO {
 
-    void inserir(Modelo modelo) throws PersistenciaException;
+    void inserir(Modelo modelo) throws DBException;
 
     void atualizar(Modelo modelo);
 

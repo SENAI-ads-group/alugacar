@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Locacao;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
@@ -30,12 +30,12 @@ public class LocacaoCSV implements LocacaoDAO {
     }
 
     @Override
-    public void inserir(Locacao locacao) throws PersistenciaException {
+    public void inserir(Locacao locacao) throws DBException {
         if (locacao.getId() == null) {
             locacao.setId(getUltimoID() + 1);
         }
         if (buscar(locacao.getId()) != null) {
-            throw new PersistenciaException("A locação " + locacao.getId() + " já existe");
+            throw new DBException("A locação " + locacao.getId() + " já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 

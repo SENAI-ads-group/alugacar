@@ -63,18 +63,18 @@ public class TesteLocacao {
         Vistoria vistoriaEntrega = new Vistoria(veiculo.getKMRodado(), true);
 
         Locacao locacao = new Locacao(TipoLocacao.DIARIA, new Date(), new Date(2020, 11, 14), veiculo, cliente, motorista);
-        locacao.iniciar(vistoriaEntrega);
+        locacao.entregarVeiculo(vistoriaEntrega);
         System.out.println(locacao.toCSV());
 
         Vistoria vistoriaDevolucao = new Vistoria(50.0, false);
-        locacao.finalizar(vistoriaDevolucao);
+        locacao.devolverVeiculo(vistoriaDevolucao);
         System.out.println(locacao.toCSV());
     }
 
     public static void instanciarBaseDados() {
-        Veiculo veiculo = DAOFactory.createVeiculoService().buscar(1);
-        Motorista motorista = DAOFactory.createMotoristaService().buscar(1);
-        Cliente cliente = DAOFactory.createClienteService().buscar(1);
+        Veiculo veiculo = DAOFactory.createVeiculoDAO().buscar(1);
+        Motorista motorista = DAOFactory.createMotoristaDAO().buscar(1);
+        Cliente cliente = DAOFactory.createClienteDAO().buscar(1);
 
         System.out.println(veiculo.toCSV());
         System.out.println(veiculo.getModelo().toCSV());
@@ -85,12 +85,12 @@ public class TesteLocacao {
         Vistoria vistoriaEntrega = new Vistoria(veiculo.getKMRodado(), true);
 
         Locacao locacao = new Locacao(TipoLocacao.DIARIA, new Date(), new Date(2020, 11, 14), veiculo, cliente, motorista);
-        locacao.iniciar(vistoriaEntrega);
+        locacao.entregarVeiculo(vistoriaEntrega);
         System.out.println(locacao.toCSV());
 
         System.out.println();
         Vistoria vistoriaDevolucao = new Vistoria(50.0, false);
-        locacao.finalizar(vistoriaDevolucao);
+        locacao.devolverVeiculo(vistoriaDevolucao);
         System.out.println("id;status;data registro; data entrega; data devolucao; veiculo id; motorista id; km entrega; veiculo adequado entrega; valor total");
         System.out.println(locacao.toCSV());
     }

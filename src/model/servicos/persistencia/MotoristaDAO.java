@@ -1,8 +1,8 @@
 package model.servicos.persistencia;
 
 import model.entidades.Motorista;
-import model.exceptions.PersistenciaException;
 import java.util.List;
+import model.exceptions.DBException;
 
 /**
  *
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface MotoristaDAO {
 
-    void inserir(Motorista motorista) throws PersistenciaException;
+    void inserir(Motorista motorista) throws DBException;
 
     void atualizar(Motorista motorista);
 

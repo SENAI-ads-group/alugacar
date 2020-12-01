@@ -1,8 +1,8 @@
 package model.servicos.persistencia;
 
 import model.entidades.Marca;
-import model.exceptions.PersistenciaException;
 import java.util.List;
+import model.exceptions.DBException;
 
 /**
  *
@@ -10,9 +10,11 @@ import java.util.List;
  */
 public interface MarcaDAO {
 
-    void inserir(Marca marca) throws PersistenciaException;
+    void inserir(Marca marca) throws DBException;
 
     void atualizar(Marca marca);
+
+    void excluir(int id) throws DBException;
 
     Marca buscar(Integer id);
 

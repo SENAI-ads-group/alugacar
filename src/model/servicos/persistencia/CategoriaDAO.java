@@ -1,7 +1,7 @@
 package model.servicos.persistencia;
 
 import model.entidades.Categoria;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface CategoriaDAO {
 
-    void inserir(Categoria categoria) throws PersistenciaException;
+    void inserir(Categoria categoria) throws DBException;
 
     void atualizar(Categoria categoria);
 

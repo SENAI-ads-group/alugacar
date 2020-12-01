@@ -16,7 +16,7 @@ import util.Utilities;
  */
 public final class PanelCategoriaList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final CategoriaDAO DAO = DAOFactory.createCategoriaService();
+    private final CategoriaDAO DAO = DAOFactory.createCategoriaDAO();
 
     public PanelCategoriaList() {
         initComponents();

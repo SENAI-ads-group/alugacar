@@ -1,7 +1,7 @@
 package ui.dialogs;
 
 import model.servicos.persistencia.DAOFactory;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
@@ -22,7 +22,7 @@ import util.PanelUtilities;
 public class DialogLocacaoForm extends javax.swing.JDialog {
 
     private Locacao locacao;
-    private final LocacaoDAO DAO = DAOFactory.createLocacaoService();
+    private final LocacaoDAO DAO = DAOFactory.createLocacaoDAO();
 
     private PanelFormLocacao formLocacao;
 
@@ -44,9 +44,9 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
         PanelUtilities.loadPanelToPanel(formLocacao, panelCenterTab1);
     }
 
-    private void persistEntity() throws PersistenciaException, ValidacaoException {
+    private void persistEntity() throws DBException, ValidacaoException {
         getFormData();
-        locacao.iniciar(new Vistoria(locacao.getVeiculo().getKMRodado(), true));
+        locacao.entregarVeiculo(new Vistoria(locacao.getVeiculo().getKMRodado(), true));
         if (locacao.getId() == null) {
             DAO.inserir(locacao);
         } else {
@@ -219,7 +219,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
                 tabbedPane.setIconAt(0, iconError);
                 formLocacao.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenciaException ex) {
+        } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed

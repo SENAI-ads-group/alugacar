@@ -6,7 +6,7 @@ import model.entidades.Motorista;
 import model.entidades.PessoaFisica;
 import model.entidades.enums.CategoriaCNH;
 import model.servicos.persistencia.DAOFactory;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import model.servicos.persistencia.MotoristaDAO;
 public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
-    private final MotoristaDAO MotoristaPersistenceService = DAOFactory.createMotoristaService();
+    private final MotoristaDAO MotoristaPersistenceService = DAOFactory.createMotoristaDAO();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
@@ -66,7 +66,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         comboBoxCategoriaCNH.setModel(new DefaultComboBoxModel(CategoriaCNH.values()));
     }
 
-    private void persistEntity() throws PersistenciaException, ValidacaoException {
+    private void persistEntity() throws DBException, ValidacaoException {
         motorista = getFormData();
         if (motorista.getId() == null) {
             MotoristaPersistenceService.inserir(motorista);
@@ -543,7 +543,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 tabbedPane.setIconAt(2, iconError);
                 panelFormEndereco.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenciaException ex) {
+        } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed

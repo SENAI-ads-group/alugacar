@@ -7,7 +7,7 @@ import model.entidades.Usuario;
 import java.util.List;
 import model.servicos.persistencia.UsuarioDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import util.Utilities;
 
 /**
@@ -29,9 +29,9 @@ public class UsuarioCSV implements UsuarioDAO {
     }
 
     @Override
-    public void inserir(Usuario usuario) throws PersistenciaException {
+    public void inserir(Usuario usuario) throws DBException {
         if (buscar(usuario.getId()) != null) {
-            throw new PersistenciaException("O usuário já existe");
+            throw new DBException("O usuário já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 

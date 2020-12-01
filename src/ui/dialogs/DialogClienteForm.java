@@ -3,7 +3,7 @@ package ui.dialogs;
 import model.entidades.Endereco;
 import model.entidades.PessoaFisica;
 import model.servicos.persistencia.DAOFactory;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
@@ -29,7 +29,7 @@ import model.servicos.persistencia.ClienteDAO;
 public class DialogClienteForm extends javax.swing.JDialog {
 
     private Cliente cliente;
-    private final ClienteDAO persistenceService = DAOFactory.createClienteService();
+    private final ClienteDAO persistenceService = DAOFactory.createClienteDAO();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
@@ -62,7 +62,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
         PanelUtilities.loadPanelToPanel(panelFormEndereco, panelCenterTab2);
     }
 
-    private void persistEntity() throws PersistenciaException, ValidacaoException {
+    private void persistEntity() throws DBException, ValidacaoException {
         cliente = getFormData();
         if (cliente.getId() == null) {
             persistenceService.inserir(cliente);
@@ -333,7 +333,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
                 tabbedPane.setIconAt(1, iconError);
                 panelFormEndereco.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenciaException ex) {
+        } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed

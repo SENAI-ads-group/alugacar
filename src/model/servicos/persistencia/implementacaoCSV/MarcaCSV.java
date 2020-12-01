@@ -6,7 +6,8 @@ import model.entidades.Marca;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 import model.servicos.persistencia.MarcaDAO;
 
@@ -29,12 +30,12 @@ public class MarcaCSV implements MarcaDAO {
     }
 
     @Override
-    public void inserir(Marca marca) throws PersistenciaException {
+    public void inserir(Marca marca) throws DBException {
         if (marca.getId() == null) {
             marca.setId(getUltimoID() + 1);
         }
         if (buscar(marca.getId()) != null) {
-            throw new PersistenciaException("A marca já existe");
+            throw new DBException("A marca já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 
@@ -73,15 +74,45 @@ public class MarcaCSV implements MarcaDAO {
     }
 
     @Override
+    public void excluir(int id) throws DBException {
+        if (buscar(id) == null) {
+            throw new DBException("A marca não existe");
+        }
+        if (DAOFactory.createModeloDAO().buscar(buscar(id)).size() > 0) {
+            throw new DBException("A marca não pode ser excluída pois está associada a uma ou mais modelos");
+        }
+        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Marca marcaEncontrada = new Marca(linha.split(";"));
+            if (!marcaEncontrada.getId().equals(id)) {
+                conexaoTemp.writer().write(marcaEncontrada.toCSV());
+                conexaoTemp.writer().flush();
+                conexaoTemp.writer().newLine();
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
+    }
+
+    @Override
     public Marca buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
         CONEXAO.open(ARQUIVO_DB);
-        System.out.println(ARQUIVO_DB.toString());
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
-            String[] csv = linha.split(";");
+            String[] csv        = linha.split(";");
             Marca marcaEncontrada = new Marca(csv);
 
             if (marcaEncontrada.getId().equals(id)) {

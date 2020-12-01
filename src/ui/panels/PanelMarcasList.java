@@ -1,13 +1,11 @@
 package ui.panels;
 
-import java.awt.Font;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Marca;
 import model.exceptions.DBException;
-import model.exceptions.PersistenciaException;
 import model.servicos.persistencia.MarcaDAO;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
@@ -18,7 +16,7 @@ import util.Utilities;
  */
 public final class PanelMarcasList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MarcaDAO DAO = DAOFactory.createMarcaService();
+    private final MarcaDAO DAO = DAOFactory.createMarcaDAO();
 
     public PanelMarcasList() {
         initComponents();
@@ -49,7 +47,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         }
     }
 
-    public void persistEntity(Marca marca) throws PersistenciaException {
+    public void persistEntity(Marca marca) throws DBException {
         if (marca.getId() == null) {
             DAO.inserir(marca);
         } else {
@@ -57,7 +55,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         }
     }
 
-    public void createMarcaForm(Marca marca) throws PersistenciaException {
+    public void createMarcaForm(Marca marca) throws DBException {
         String descricao = String.valueOf(JOptionPane.showInputDialog(this, "Descrição", "Formulário de marcas", JOptionPane.QUESTION_MESSAGE, null, null, marca.getDescricao()));
         if (descricao != null && descricao.trim().length() > 0) {
             marca.setDescricao(descricao);
@@ -123,6 +121,11 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         buttonExcluir.setFocusPainted(false);
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-marcas-28x28.png"))); // NOI18N
@@ -201,7 +204,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         try {
             createMarcaForm(new Marca());
             updateTable();
-        } catch (PersistenciaException | DBException ex) {
+        } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonNovoActionPerformed
@@ -211,10 +214,20 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         try {
             createMarcaForm(DAO.buscar(idSelecionado));
             updateTable();
-        } catch (PersistenciaException | DBException ex) {
+        } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonEditarActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            DAO.excluir(idSelecionado);
+            updateTable();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir a marca", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

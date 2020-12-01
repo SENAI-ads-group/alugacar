@@ -16,7 +16,7 @@ import model.servicos.persistencia.MotoristaDAO;
  */
 public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MotoristaDAO persistenceService = DAOFactory.createMotoristaService();
+    private final MotoristaDAO persistenceService = DAOFactory.createMotoristaDAO();
 
     public PanelMotoristasList() {
         initComponents();

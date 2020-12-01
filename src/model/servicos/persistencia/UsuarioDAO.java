@@ -2,7 +2,7 @@ package model.servicos.persistencia;
 
 import model.entidades.Usuario;
 import java.util.List;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 
 /**
  *
@@ -10,7 +10,7 @@ import model.exceptions.PersistenciaException;
  */
 public interface UsuarioDAO {
 
-    void inserir(Usuario usuario) throws PersistenciaException;
+    void inserir(Usuario usuario) throws DBException;
 
     void atualizar(Usuario usuario);
 

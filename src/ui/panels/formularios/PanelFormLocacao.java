@@ -30,9 +30,9 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
     }
     
     public void initCombobox() {
-        Object[] itensVeiculo = DAOFactory.createVeiculoService().buscarTodos().toArray();
-        Object[] itensCliente = DAOFactory.createClienteService().buscarTodos().toArray();
-        Object[] itensMotorista = DAOFactory.createMotoristaService().buscarTodos().toArray();
+        Object[] itensVeiculo = DAOFactory.createVeiculoDAO().buscarTodos().toArray();
+        Object[] itensCliente = DAOFactory.createClienteDAO().buscarTodos().toArray();
+        Object[] itensMotorista = DAOFactory.createMotoristaDAO().buscarTodos().toArray();
         comboBoxVeiculo.setModel(new DefaultComboBoxModel(itensVeiculo));
         comboBoxMotorista.setModel(new DefaultComboBoxModel(itensMotorista));
         comboBoxCliente.setModel(new DefaultComboBoxModel(itensCliente));

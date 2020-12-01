@@ -31,8 +31,8 @@ public final class PanelFormModelo extends javax.swing.JPanel {
     }
     
     public void initCombobox() {
-        Object[] itemsMarca = DAOFactory.createMarcaService().buscarTodos().toArray();
-        Object[] itemsCategoria = DAOFactory.createCategoriaService().buscarTodos().toArray();
+        Object[] itemsMarca = DAOFactory.createMarcaDAO().buscarTodos().toArray();
+        Object[] itemsCategoria = DAOFactory.createCategoriaDAO().buscarTodos().toArray();
         comboBoxMarca.setModel(new DefaultComboBoxModel(itemsMarca));
         comboBoxCategoria.setModel(new DefaultComboBoxModel(itemsCategoria));
         comboBoxCombustivel.setModel(new DefaultComboBoxModel<>(Combustivel.values()));

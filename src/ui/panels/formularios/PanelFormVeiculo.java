@@ -30,7 +30,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
     }
 
     public void initCombobox() {
-        Object[] itemsModelo = DAOFactory.createModeloService().buscarTodos().toArray();
+        Object[] itemsModelo = DAOFactory.createModeloDAO().buscarTodos().toArray();
         comboBoxModelo.setModel(new DefaultComboBoxModel(itemsModelo));
         comboBoxStatus.setModel(new DefaultComboBoxModel(StatusVeiculo.values()));
     }

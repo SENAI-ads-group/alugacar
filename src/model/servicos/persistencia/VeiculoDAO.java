@@ -2,7 +2,7 @@ package model.servicos.persistencia;
 
 import model.entidades.Veiculo;
 import java.util.List;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 
 /**
  *
@@ -10,7 +10,7 @@ import model.exceptions.PersistenciaException;
  */
 public interface VeiculoDAO {
 
-    void inserir(Veiculo veiculo) throws PersistenciaException;
+    void inserir(Veiculo veiculo) throws DBException;
 
     void atualizar(Veiculo veiculo);
 

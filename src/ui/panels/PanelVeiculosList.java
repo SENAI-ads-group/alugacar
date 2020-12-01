@@ -16,7 +16,7 @@ import model.servicos.persistencia.VeiculoDAO;
  */
 public final class PanelVeiculosList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final VeiculoDAO persistenceService = DAOFactory.createVeiculoService();
+    private final VeiculoDAO persistenceService = DAOFactory.createVeiculoDAO();
 
     public PanelVeiculosList() {
         initComponents();

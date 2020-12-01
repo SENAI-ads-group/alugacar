@@ -4,7 +4,6 @@ import java.util.Date;
 import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.StatusVeiculo;
 import model.entidades.enums.TipoLocacao;
-import model.servicos.contrato.ContratoService;
 import model.servicos.persistencia.DAOFactory;
 import util.DateUtilities;
 import util.Utilities;
@@ -26,7 +25,9 @@ public class Locacao {
     private Motorista motorista;
     private Vistoria vistoriaEntrega;
     private Vistoria vistoriaDevolucao;
-    private ContratoService contratoService;
+
+    public Locacao() {
+    }
 
     public Locacao(TipoLocacao tipo, Date dataEntrega, Date dataDevolucao, Veiculo veiculo, Cliente cliente, Motorista motorista) {
         this.tipo = tipo;
@@ -35,8 +36,7 @@ public class Locacao {
         this.veiculo = veiculo;
         this.cliente = cliente;
         this.motorista = motorista;
-        contratoService = tipo.getContrato();
-        contratoService.setLocacao(this);
+        tipo.getContrato().setLocacao(this);
     }
 
     public Locacao(String[] csv) {
@@ -53,32 +53,65 @@ public class Locacao {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public TipoLocacao getTipo() {
         return tipo;
     }
 
-    public Date getDataRegistro() {
-        return dataRegistro;
+    public void setTipo(TipoLocacao tipo) {
+        tipo.getContrato().setLocacao(this);
+        this.tipo = tipo;
     }
 
     public Date getDataEntrega() {
         return dataEntrega;
     }
 
+    public void setDataEntrega(Date dataEntrega) {
+        this.dataEntrega = dataEntrega;
+    }
+
     public Date getDataDevolucao() {
         return dataDevolucao;
+    }
+
+    public void setDataDevolucao(Date dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
     }
 
     public Veiculo getVeiculo() {
         return veiculo;
     }
 
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
     public Cliente getCliente() {
         return cliente;
     }
 
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public Motorista getMotorista() {
         return motorista;
+    }
+
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
+    }
+
+    public StatusLocacao getStatus() {
+        return status;
+    }
+
+    public Date getDataRegistro() {
+        return dataRegistro;
     }
 
     public Vistoria getVistoriaEntrega() {
@@ -89,18 +122,14 @@ public class Locacao {
         return vistoriaDevolucao;
     }
 
-    public StatusLocacao getStatus() {
-        return status;
-    }
-
-    public void iniciar(Vistoria vistoriaEntrega) {
+    public void entregarVeiculo(Vistoria vistoriaEntrega) {
         this.vistoriaEntrega = vistoriaEntrega;
         dataRegistro = new Date();
         veiculo.setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
         status = StatusLocacao.EM_ABERTO;
     }
 
-    public void finalizar(Vistoria vistoriaDevolucao) {
+    public void devolverVeiculo(Vistoria vistoriaDevolucao) {
         if (status != StatusLocacao.EM_ABERTO) {
             throw new IllegalStateException("A locação precisa ser iniciada antes");
         }
@@ -110,17 +139,16 @@ public class Locacao {
     }
 
     public String toCSV() {
-        if (null == status) {
+        if (status != StatusLocacao.EM_ABERTO && status != StatusLocacao.FINALIZADA) {
             throw new IllegalStateException("Status inválido");
-        } else {
-            switch (status) {
-                case EM_ABERTO:
-                    return toCsvStatusAberto();
-                case FINALIZADA:
-                    return toCsvStatusFinalizado();
-                default:
-                    throw new IllegalStateException("Status inválido");
-            }
+        }
+        switch (status) {
+            case EM_ABERTO:
+                return toCsvStatusAberto();
+            case FINALIZADA:
+                return toCsvStatusFinalizado();
+            default:
+                throw new IllegalStateException("Status inválido");
         }
     }
 
@@ -134,7 +162,7 @@ public class Locacao {
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
                 + vistoriaEntrega.toCSV() + ";"
-                + contratoService.getValorBruto();
+                + tipo.getContrato().getValorBruto();
     }
 
     private String toCsvStatusFinalizado() {
@@ -148,7 +176,7 @@ public class Locacao {
                 + motorista.getId() + ";"
                 + vistoriaEntrega.toCSV() + ";"
                 + vistoriaDevolucao.toCSV() + ";"
-                + contratoService.getValorTotal();
+                + tipo.getContrato().getValorTotal();
     }
 
     private void instanciarLocacaoEmAberto(String[] csv) {
@@ -161,8 +189,8 @@ public class Locacao {
         Double kmEntrega = Utilities.tryParseToDouble(csv[8]);
         Boolean veiculoAdequado = Boolean.parseBoolean(csv[9]);
 
-        veiculo = DAOFactory.createVeiculoService().buscar(idVeiculo);
-        motorista = DAOFactory.createMotoristaService().buscar(idMotorista);
+        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
+        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
         vistoriaEntrega = new Vistoria(kmEntrega, veiculoAdequado);
     }
 
@@ -178,8 +206,8 @@ public class Locacao {
         Double kmDevolucao = Utilities.tryParseToDouble(csv[10]);
         Boolean veiculoAdequadoDevolucao = Boolean.parseBoolean(csv[11]);
 
-        veiculo = DAOFactory.createVeiculoService().buscar(idVeiculo);
-        motorista = DAOFactory.createMotoristaService().buscar(idMotorista);
+        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
+        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
         vistoriaEntrega = new Vistoria(kmEntrega, veiculoAdequadoEntrega);
         vistoriaDevolucao = new Vistoria(kmDevolucao, veiculoAdequadoDevolucao);
     }

@@ -3,7 +3,7 @@ package model.servicos.persistencia.implementacaoCSV;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import application.Configuracoes;
 import model.entidades.Categoria;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,12 @@ public class CategoriaCSV implements CategoriaDAO {
     }
 
     @Override
-    public void inserir(Categoria categoria) throws PersistenciaException {
+    public void inserir(Categoria categoria) throws DBException {
         if (categoria.getId() == null) {
             categoria.setId(getUltimoID() + 1);
         }
         if (buscar(categoria.getId()) != null) {
-            throw new PersistenciaException("A categoria já  existe !");
+            throw new DBException("A categoria já  existe !");
         }
         CONEXAO.open(ARQUIVO_DB);
 

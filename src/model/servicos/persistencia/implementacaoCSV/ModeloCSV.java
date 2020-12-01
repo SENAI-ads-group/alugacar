@@ -4,7 +4,7 @@ import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import application.Configuracoes;
 import model.entidades.Marca;
 import model.entidades.Modelo;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +30,12 @@ public class ModeloCSV implements ModeloDAO {
     }
     
     @Override
-    public void inserir(Modelo modelo) throws PersistenciaException {
+    public void inserir(Modelo modelo) throws DBException {
         if (modelo.getId() == null) {
             modelo.setId(getUltimoID() + 1);
         }
         if (buscar(modelo.getId()) != null) {
-            throw new PersistenciaException("O modelo já existe");
+            throw new DBException("O modelo já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
         

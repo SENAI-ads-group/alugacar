@@ -20,7 +20,6 @@ public class FrameLoader {
     }
 
     public static void main(String args[]) {
-
         SwingUtilities.invokeLater(() -> {
             // Install WebLaF as application L&F
             WebLookAndFeel.install();

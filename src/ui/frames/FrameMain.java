@@ -1,6 +1,8 @@
 package ui.frames;
 
 import java.awt.Component;
+import model.entidades.Locacao;
+import ui.dialogs.DialogLocacaoForm;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
@@ -15,10 +17,10 @@ import util.PanelUtilities;
  * @author Patrick-Ribeiro
  */
 public class FrameMain extends javax.swing.JFrame {
-
+    
     public FrameMain() {
         initComponents();
-
+        
         for (Component component : panelMenu.getComponents()) {
             component.addMouseListener(new MouseListenerPanelButtonMenu(component));
         }
@@ -38,6 +40,9 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemDashboard = new javax.swing.JPanel();
         labelIconDashboard = new javax.swing.JLabel();
         labelMenuDashboard = new javax.swing.JLabel();
+        panelMenuItemLocacao = new javax.swing.JPanel();
+        labelIconLocacao = new javax.swing.JLabel();
+        labelMenuLocacao = new javax.swing.JLabel();
         panelMenuItemClientes = new javax.swing.JPanel();
         labelIconClientes = new javax.swing.JLabel();
         labelMenuClientes = new javax.swing.JLabel();
@@ -76,7 +81,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelLeft.setPreferredSize(new java.awt.Dimension(150, 768));
         panelLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelMenu.setPreferredSize(new java.awt.Dimension(150, 315));
+        panelMenu.setPreferredSize(new java.awt.Dimension(150, 350));
         panelMenu.setLayout(new javax.swing.BoxLayout(panelMenu, javax.swing.BoxLayout.Y_AXIS));
 
         panelMenuItemDashboard.setPreferredSize(new java.awt.Dimension(150, 35));
@@ -97,6 +102,26 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemDashboard.add(labelMenuDashboard, java.awt.BorderLayout.CENTER);
 
         panelMenu.add(panelMenuItemDashboard);
+
+        panelMenuItemLocacao.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemLocacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelMenuItemLocacaoMouseClicked(evt);
+            }
+        });
+        panelMenuItemLocacao.setLayout(new java.awt.BorderLayout());
+
+        labelIconLocacao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconLocacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-28x28.png"))); // NOI18N
+        labelIconLocacao.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemLocacao.add(labelIconLocacao, java.awt.BorderLayout.LINE_START);
+
+        labelMenuLocacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuLocacao.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuLocacao.setText("Locação");
+        panelMenuItemLocacao.add(labelMenuLocacao, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemLocacao);
 
         panelMenuItemClientes.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -329,12 +354,18 @@ public class FrameMain extends javax.swing.JFrame {
         listCategorias.updateTable();
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
+    private void panelMenuItemLocacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemLocacaoMouseClicked
+        DialogLocacaoForm dialogLocacao = new DialogLocacaoForm(this, true, new Locacao());
+        dialogLocacao.setVisible(true);
+    }//GEN-LAST:event_panelMenuItemLocacaoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel labelIconCategorias;
     private javax.swing.JLabel labelIconClientes;
     private javax.swing.JLabel labelIconConfiguracoes;
     private javax.swing.JLabel labelIconDashboard;
+    private javax.swing.JLabel labelIconLocacao;
     private javax.swing.JLabel labelIconMarcas;
     private javax.swing.JLabel labelIconModelos;
     private javax.swing.JLabel labelIconMotoristas;
@@ -344,6 +375,7 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelMenuClientes;
     private javax.swing.JLabel labelMenuConfiguracoes;
     private javax.swing.JLabel labelMenuDashboard;
+    private javax.swing.JLabel labelMenuLocacao;
     private javax.swing.JLabel labelMenuMarcas;
     private javax.swing.JLabel labelMenuModelos;
     private javax.swing.JLabel labelMenuMotoristas;
@@ -357,6 +389,7 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelMenuItemClientes;
     private javax.swing.JPanel panelMenuItemConfiguracoes;
     private javax.swing.JPanel panelMenuItemDashboard;
+    private javax.swing.JPanel panelMenuItemLocacao;
     private javax.swing.JPanel panelMenuItemMarcas;
     private javax.swing.JPanel panelMenuItemModelos;
     private javax.swing.JPanel panelMenuItemMotoristas;

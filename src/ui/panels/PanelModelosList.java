@@ -16,7 +16,7 @@ import util.Utilities;
  */
 public final class PanelModelosList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final ModeloDAO DAO = DAOFactory.createModeloService();
+    private final ModeloDAO DAO = DAOFactory.createModeloDAO();
 
     public PanelModelosList() {
         initComponents();

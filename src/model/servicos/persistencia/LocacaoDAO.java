@@ -2,7 +2,7 @@ package model.servicos.persistencia;
 
 import java.util.List;
 import model.entidades.Locacao;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 
 /**
  *
@@ -10,7 +10,7 @@ import model.exceptions.PersistenciaException;
  */
 public interface LocacaoDAO {
 
-    void inserir(Locacao locacao) throws PersistenciaException;
+    void inserir(Locacao locacao) throws DBException;
 
     void atualizar(Locacao locacao);
 

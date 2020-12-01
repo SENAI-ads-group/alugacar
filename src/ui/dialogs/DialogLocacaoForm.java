@@ -1,17 +1,18 @@
 package ui.dialogs;
 
 import model.servicos.persistencia.DAOFactory;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import model.entidades.Modelo;
+import model.entidades.Locacao;
+import model.entidades.Vistoria;
 import model.exceptions.ValidacaoException;
+import model.servicos.persistencia.LocacaoDAO;
 import ui.listeners.DataChangeListener;
-import model.servicos.persistencia.ModeloDAO;
-import ui.panels.formularios.PanelFormModelo;
+import ui.panels.formularios.PanelFormLocacao;
 import util.PanelUtilities;
 
 /**
@@ -20,39 +21,46 @@ import util.PanelUtilities;
  */
 public class DialogLocacaoForm extends javax.swing.JDialog {
 
-    private Modelo modelo;
-    private final ModeloDAO DAO = DAOFactory.createModeloService();
+    private Locacao locacao;
+    private final LocacaoDAO DAO = DAOFactory.createLocacaoDAO();
 
-    private PanelFormModelo formModelo;
+    private PanelFormLocacao formLocacao;
 
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
-    public DialogLocacaoForm(java.awt.Frame parent, boolean modal, Modelo modelo) {
+    public DialogLocacaoForm(java.awt.Frame parent, boolean modal, Locacao locacao) {
         super(parent, modal);
-        this.modelo = modelo;
+        this.locacao = locacao;
         initComponents();
         loadPanels();
     }
 
-    public void setModelo(Modelo modelo) {
-        this.modelo = modelo;
+    public void setLocacao(Locacao locacao) {
+        this.locacao = locacao;
     }
 
     private void loadPanels() {
-        formModelo = new PanelFormModelo(modelo);
-        PanelUtilities.loadPanelToPanel(formModelo, panelCenterTab1);
+        formLocacao = new PanelFormLocacao(locacao);
+        PanelUtilities.loadPanelToPanel(formLocacao, panelCenterTab1);
     }
 
-    private void persistEntity() throws PersistenciaException, ValidacaoException {
-
+    private void persistEntity() throws DBException, ValidacaoException {
+        getFormData();
+        locacao.entregarVeiculo(new Vistoria(locacao.getVeiculo().getKMRodado(), true));
+        if (locacao.getId() == null) {
+            DAO.inserir(locacao);
+        } else {
+            DAO.atualizar(locacao);
+        }
     }
 
-    public Modelo getFormData() throws ValidacaoException {
-        return modelo;
+    public Locacao getFormData() throws ValidacaoException {
+        locacao = formLocacao.getFormData();
+        return locacao;
     }
 
     public void updateFormData() {
-        formModelo.updateFormData();
+        formLocacao.updateFormData();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -209,9 +217,9 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormModelo")) {
                 tabbedPane.setIconAt(0, iconError);
-                formModelo.setErrorsMessages(ex.getErrors());
+                formLocacao.setErrorsMessages(ex.getErrors());
             }
-        } catch (PersistenciaException ex) {
+        } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed

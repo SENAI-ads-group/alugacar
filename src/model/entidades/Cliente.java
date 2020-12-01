@@ -111,6 +111,11 @@ public class Cliente {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return id + " - " + pessoa.getNome();
+    }
+
     private PessoaJuridica instanciarPessoaJuridica(String[] csv) {
         String nome = csv[3];
         String telefone = csv[4];

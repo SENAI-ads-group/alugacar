@@ -35,7 +35,7 @@ public class Motorista {
         id = Utilities.tryParseToInteger(csv[0]);
         ativo = Boolean.parseBoolean(csv[1]);
         Integer numeroRegistroCNH = Utilities.tryParseToInteger(csv[2]);
-        cnh = DAOFactory.createCNHService().buscar(numeroRegistroCNH);
+        cnh = DAOFactory.createCnhDAO().buscar(numeroRegistroCNH);
         pessoa = instanciarPessoa(csv);
     }
 
@@ -101,6 +101,11 @@ public class Motorista {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + pessoa.getNome();
     }
 
     private PessoaFisica instanciarPessoa(String[] csv) {

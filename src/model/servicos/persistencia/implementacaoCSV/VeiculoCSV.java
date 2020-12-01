@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Veiculo;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import util.Utilities;
 import model.servicos.persistencia.VeiculoDAO;
 
@@ -31,13 +31,13 @@ public class VeiculoCSV implements VeiculoDAO {
     }
 
     @Override
-    public void inserir(Veiculo veiculo) throws PersistenciaException {
+    public void inserir(Veiculo veiculo) throws DBException {
         if (veiculo.getId() == null) {
             veiculo.setId(getUltimoID() + 1);
 
         }
         if (buscar(veiculo.getId()) != null) {
-            throw new PersistenciaException("O veículo já existe");
+            throw new DBException("O veículo já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 

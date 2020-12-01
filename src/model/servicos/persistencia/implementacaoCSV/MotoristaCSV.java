@@ -4,7 +4,7 @@ import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import application.Configuracoes;
 import model.entidades.Motorista;
 import model.servicos.persistencia.DAOFactory;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public class MotoristaCSV implements MotoristaDAO {
     }
 
     @Override
-    public void inserir(Motorista motorista) throws PersistenciaException {
-        CnhDAO cnhPersistenceService = DAOFactory.createCNHService();
+    public void inserir(Motorista motorista) throws DBException {
+        CnhDAO cnhPersistenceService = DAOFactory.createCnhDAO();
         cnhPersistenceService.inserir(motorista.getCnh());
         if (motorista.getId() == null) {
             motorista.setId(getUltimoID() + 1);
         }
         if (buscar(motorista.getId()) != null) {
-            throw new PersistenciaException("O motorista já existe");
+            throw new DBException("O motorista já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 
@@ -51,7 +51,7 @@ public class MotoristaCSV implements MotoristaDAO {
     @Override
     public void atualizar(Motorista motorista) {
         if (motorista.getCnh() != null) {
-            DAOFactory.createCNHService().atualizar(motorista.getCnh());
+            DAOFactory.createCnhDAO().atualizar(motorista.getCnh());
         }
         File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\motorista-temp.csv");
         CSVConnection conexaoTemp = new CSVConnection();

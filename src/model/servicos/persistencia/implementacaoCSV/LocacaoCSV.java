@@ -5,7 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Locacao;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
@@ -30,10 +30,12 @@ public class LocacaoCSV implements LocacaoDAO {
     }
 
     @Override
-    public void inserir(Locacao locacao) throws PersistenciaException {
-
+    public void inserir(Locacao locacao) throws DBException {
+        if (locacao.getId() == null) {
+            locacao.setId(getUltimoID() + 1);
+        }
         if (buscar(locacao.getId()) != null) {
-            throw new PersistenciaException("A CNH " + locacao.getId() + " já existe");
+            throw new DBException("A locação " + locacao.getId() + " já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 
@@ -75,7 +77,6 @@ public class LocacaoCSV implements LocacaoDAO {
 
     @Override
     public Locacao buscar(Integer id) {
-
         if (id == null) {
             throw new IllegalStateException("O ID da locação está nulo");
         }
@@ -115,12 +116,12 @@ public class LocacaoCSV implements LocacaoDAO {
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
 
-        Integer ultimoID = 1;
+        Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             ultimoID = Utilities.tryParseToInteger(linha.split(";")[0]);
             if (ultimoID == null) {
-                ultimoID = 1;
+                ultimoID = 0;
             }
             linha = CONEXAO.reader().readLine();
         }

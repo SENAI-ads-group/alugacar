@@ -20,7 +20,7 @@ import model.servicos.persistencia.ClienteDAO;
  */
 public final class PanelClientesList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final ClienteDAO persistenceService = DAOFactory.createClienteService();
+    private final ClienteDAO persistenceService = DAOFactory.createClienteDAO();
 
     public PanelClientesList() {
         initComponents();

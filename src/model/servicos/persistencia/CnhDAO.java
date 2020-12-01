@@ -1,9 +1,8 @@
 package model.servicos.persistencia;
 
 import model.entidades.CNH;
-import model.exceptions.PersistenciaException;
-
 import java.util.List;
+import model.exceptions.DBException;
 
 /**
  *
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public interface CnhDAO {
 
-    void inserir(CNH cnh) throws PersistenciaException;
+    void inserir(CNH cnh) throws DBException;
 
     void atualizar(CNH cnh);
 

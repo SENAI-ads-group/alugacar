@@ -3,7 +3,7 @@ package model.servicos.persistencia.implementacaoCSV;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import application.Configuracoes;
 import model.entidades.CNH;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,9 @@ public class CnhCSV implements CnhDAO {
     }
 
     @Override
-    public void inserir(CNH cnh) throws PersistenciaException {
+    public void inserir(CNH cnh) throws DBException {
         if (buscar(cnh.getNumeroRegistro()) != null) {
-            throw new PersistenciaException("A CNH " + cnh.getNumeroRegistro() + " já existe");
+            throw new DBException("A CNH " + cnh.getNumeroRegistro() + " já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 

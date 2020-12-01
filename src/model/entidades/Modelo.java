@@ -37,9 +37,9 @@ public class Modelo {
         codigoFipe = csv[1];
         descricao = csv[2];
         Integer idMarca = Utilities.tryParseToInteger(csv[3]);
-        marca = DAOFactory.createMarcaService().buscar(idMarca);
+        marca = DAOFactory.createMarcaDAO().buscar(idMarca);
         Integer idCategoria = Utilities.tryParseToInteger(csv[4]);
-        categoria = DAOFactory.createCategoriaService().buscar(idCategoria);
+        categoria = DAOFactory.createCategoriaDAO().buscar(idCategoria);
         ano = Utilities.tryParseToInteger(csv[5]);
         combustivel = Combustivel.valueOf(csv[6]);        
     }
@@ -104,7 +104,7 @@ public class Modelo {
     public void setAno(Integer ano) {
         this.ano = ano;
     }
-    // </editor-fold> 
+    // </editor-fold>
 
     public String toCSV() {
         //id;codigoFipe;descricao;idMarca;idCategoria;ano;combustivel

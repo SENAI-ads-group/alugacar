@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Cliente;
-import model.exceptions.PersistenciaException;
+import model.exceptions.DBException;
 import util.Utilities;
 import model.servicos.persistencia.ClienteDAO;
 
@@ -28,12 +28,12 @@ public class ClienteCSV implements ClienteDAO {
     }
 
     @Override
-    public void inserir(Cliente cliente) throws PersistenciaException {
+    public void inserir(Cliente cliente) throws DBException {
         if (cliente.getId() == null) {
             cliente.setId(getUltimoID() + 1);
         }
         if (buscar(cliente.getId()) != null) {
-            throw new PersistenciaException("O cliente já existe");
+            throw new DBException("O cliente já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
 

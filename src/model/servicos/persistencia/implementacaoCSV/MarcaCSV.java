@@ -145,12 +145,12 @@ public class MarcaCSV implements MarcaDAO {
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
 
-        Integer ultimoID = 1;
+        Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             ultimoID = Utilities.tryParseToInteger(linha.split(";")[0]);
             if (ultimoID == null) {
-                ultimoID = 1;
+                ultimoID = 0;
             }
             linha = CONEXAO.reader().readLine();
         }

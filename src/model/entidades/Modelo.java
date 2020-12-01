@@ -1,5 +1,6 @@
 package model.entidades;
 
+import java.util.Objects;
 import model.entidades.enums.Combustivel;
 import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
@@ -41,7 +42,7 @@ public class Modelo {
         Integer idCategoria = Utilities.tryParseToInteger(csv[4]);
         categoria = DAOFactory.createCategoriaDAO().buscar(idCategoria);
         ano = Utilities.tryParseToInteger(csv[5]);
-        combustivel = Combustivel.valueOf(csv[6]);        
+        combustivel = Combustivel.valueOf(csv[6]);
     }
     // </editor-fold>  
 
@@ -59,7 +60,7 @@ public class Modelo {
     }
 
     public void setMarca(Marca marca) {
-        if(marca == null) {
+        if (marca == null) {
             throw new IllegalStateException("A marca está nula");
         }
         this.marca = marca;
@@ -115,6 +116,39 @@ public class Modelo {
                 + categoria.getId() + ";"
                 + ano + ";"
                 + combustivel.toCSV();
+    }
+
+    @Override
+    public String toString() {
+        return marca.getDescricao() + " "
+                + descricao + " "
+                + ano + " "
+                + combustivel;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Modelo other = (Modelo) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

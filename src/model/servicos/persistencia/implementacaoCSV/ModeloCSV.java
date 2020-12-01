@@ -8,6 +8,8 @@ import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import model.entidades.Categoria;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 import model.servicos.persistencia.ModeloDAO;
 
@@ -16,19 +18,19 @@ import model.servicos.persistencia.ModeloDAO;
  * @author patrick-ribeiro
  */
 public class ModeloCSV implements ModeloDAO {
-    
+
     private final File ARQUIVO_DB;
     private final String PASTA_RAIZ;
     private final CSVConnection CONEXAO;
-    
+
     public ModeloCSV() {
         String caminhoDB = Configuracoes.getProperties().getProperty("db.modelo");
         PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-        
+
         ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
         CONEXAO = new CSVConnection();
     }
-    
+
     @Override
     public void inserir(Modelo modelo) throws DBException {
         if (modelo.getId() == null) {
@@ -38,25 +40,25 @@ public class ModeloCSV implements ModeloDAO {
             throw new DBException("O modelo já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
-        
+
         CONEXAO.writer().write(modelo.toCSV());
         CONEXAO.writer().newLine();
-        
+
         CONEXAO.close();
     }
-    
+
     @Override
     public void atualizar(Modelo modelo) {
         File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\modelos-temp.txt");
         CSVConnection conexaoTemp = new CSVConnection();
-        
+
         CONEXAO.open(ARQUIVO_DB);
         conexaoTemp.open(arquivoDBTemp);
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Modelo modeloEncontrado = new Modelo(linha.split(";"));
-            
+
             if (modeloEncontrado.equals(modelo)) {
                 conexaoTemp.writer().write(modelo.toCSV());
             } else {
@@ -66,20 +68,51 @@ public class ModeloCSV implements ModeloDAO {
             conexaoTemp.writer().newLine();
             linha = CONEXAO.reader().readLine();
         }
-        
+
         conexaoTemp.close();
         CONEXAO.close();
         ARQUIVO_DB.delete();
         arquivoDBTemp.renameTo(ARQUIVO_DB);
     }
-    
+
+    @Override
+    public void excluir(Integer id) {
+        if (buscar(id) == null) {
+            throw new DBException("O modelo não existe");
+        }
+        if (DAOFactory.createVeiculoDAO().buscar(buscar(id)).size() > 0) {
+            throw new DBException("Não foi possível excluir o modelo pois está associado à um ou mais veículo(s)");
+        }
+        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Categoria categoriaEncontrada = new Categoria(linha.split(";"));
+            if (!categoriaEncontrada.getId().equals(id)) {
+                conexaoTemp.writer().write(categoriaEncontrada.toCSV());
+                conexaoTemp.writer().flush();
+                conexaoTemp.writer().newLine();
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
+    }
+
     @Override
     public Modelo buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
         CONEXAO.open(ARQUIVO_DB);
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Modelo modeloEcontrado = new Modelo(linha.split(";"));
@@ -92,12 +125,12 @@ public class ModeloCSV implements ModeloDAO {
         CONEXAO.close();
         return null;
     }
-    
+
     @Override
     public List<Modelo> buscar(Marca marca) {
         CONEXAO.open(ARQUIVO_DB);
         List<Modelo> modelos = new ArrayList<>();
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Modelo modelo = new Modelo(linha.split(";"));
@@ -106,30 +139,48 @@ public class ModeloCSV implements ModeloDAO {
             }
             linha = CONEXAO.reader().readLine();
         }
-        
+
         CONEXAO.close();
         return modelos;
     }
-    
+
+    @Override
+    public List<Modelo> buscar(Categoria categoria) {
+        CONEXAO.open(ARQUIVO_DB);
+        List<Modelo> modelos = new ArrayList<>();
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Modelo modelo = new Modelo(linha.split(";"));
+            if (modelo.getCategoria().equals(categoria)) {
+                modelos.add(modelo);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return modelos;
+    }
+
     @Override
     public List<Modelo> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
         List<Modelo> modelos = new ArrayList<>();
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Modelo modelo = new Modelo(linha.split(";"));
             modelos.add(modelo);
             linha = CONEXAO.reader().readLine();
         }
-        
+
         CONEXAO.close();
         return modelos;
     }
-    
+
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
-        
+
         Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
@@ -139,9 +190,9 @@ public class ModeloCSV implements ModeloDAO {
             }
             linha = CONEXAO.reader().readLine();
         }
-        
+
         CONEXAO.close();
         return ultimoID;
     }
-    
+
 }

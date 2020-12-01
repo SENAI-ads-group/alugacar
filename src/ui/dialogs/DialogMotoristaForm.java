@@ -40,7 +40,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
-    private File fileFotoMotorista;
+    private File fileFoto;
 
     private final List<DataChangeListener> listeners;
 
@@ -103,6 +103,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         Date dataValidadeCNH = dateChooserValidadeCNH.getDate();
         CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
         CNH cnh = new CNH(numeroRegistroCNH, categoriaCNH, dataValidadeCNH);
+        cnh.setFoto(fileFoto);
         motorista.setCnh(cnh);
         motorista.setAtivo(checkBoxAtivo.isSelected());
 
@@ -559,9 +560,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         int retorno = fileChooser.showOpenDialog(this);
         if (retorno == JFileChooser.APPROVE_OPTION) {
-            motorista.getCnh().setFoto(fileChooser.getSelectedFile());
-            textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
-            showImageOnLabel(motorista.getCnh().getFoto());
+            fileFoto = (fileChooser.getSelectedFile());
+            textFieldFoto.setText(fileFoto.getPath());
+            showImageOnLabel(fileFoto);
         }
     }//GEN-LAST:event_buttonBuscarFotoActionPerformed
 

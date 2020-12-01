@@ -6,6 +6,7 @@ import application.Configuracoes;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import model.entidades.Modelo;
 import model.entidades.Veiculo;
 import model.exceptions.DBException;
 import util.Utilities;
@@ -117,6 +118,24 @@ public class VeiculoCSV implements VeiculoDAO {
         }
         CONEXAO.close();
         return null;
+    }
+
+    @Override
+    public List<Veiculo> buscar(Modelo modelo) {
+        CONEXAO.open(ARQUIVO_DB);
+        List<Veiculo> veiculos = new ArrayList<>();
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Veiculo veiculo = new Veiculo(linha.split(";"));
+            if (veiculo.getModelo().equals(modelo)) {
+                veiculos.add(veiculo);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return veiculos;
     }
 
     @Override

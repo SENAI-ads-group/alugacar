@@ -120,8 +120,8 @@ public class Motorista {
         UF uf = UF.valueOf(csv[11]);
         String cep = csv[12];
         String cpf = csv[13];
-        String registroGeral = csv[13];
-        Date dataNascimento = DateUtilities.tryParseToDate(csv[14]);
+        String registroGeral = csv[14];
+        Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
 
         Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
         return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);

@@ -90,7 +90,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de cliente");
+        setTitle("Formulário de modelo de veículo");
         setMinimumSize(new java.awt.Dimension(440, 420));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
@@ -153,7 +153,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Modelos", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Modelo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -201,6 +201,8 @@ public class DialogModeloForm extends javax.swing.JDialog {
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
         getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
+
+        getAccessibleContext().setAccessibleName("Formulário de modelo de veículo");
 
         pack();
         setLocationRelativeTo(null);

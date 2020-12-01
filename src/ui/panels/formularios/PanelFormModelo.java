@@ -17,19 +17,19 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class PanelFormModelo extends javax.swing.JPanel {
-    
+
     private Modelo modelo;
-    
+
     public PanelFormModelo(Modelo modelo) {
         initComponents();
         this.modelo = modelo;
         initCombobox();
     }
-    
+
     public void setVeiculo(Modelo modelo) {
         this.modelo = modelo;
     }
-    
+
     public void initCombobox() {
         Object[] itemsMarca = DAOFactory.createMarcaDAO().buscarTodos().toArray();
         Object[] itemsCategoria = DAOFactory.createCategoriaDAO().buscarTodos().toArray();
@@ -37,14 +37,14 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         comboBoxCategoria.setModel(new DefaultComboBoxModel(itemsCategoria));
         comboBoxCombustivel.setModel(new DefaultComboBoxModel<>(Combustivel.values()));
     }
-    
+
     public void updateFormData() {
         if (modelo == null) {
             throw new IllegalStateException("O modelo está nulo");
         }
         comboBoxCategoria.setSelectedItem(modelo.getCategoria());
         comboBoxCombustivel.setSelectedItem(modelo.getCombustivel());
-        comboBoxMarca.setSelectedItem(modelo.getCategoria());
+        comboBoxMarca.setSelectedItem(modelo.getMarca());
         textFieldCodigoFipe.setText(modelo.getCodigoFipe());
         textFieldDescricao.setText(modelo.getDescricao());
         if (modelo.getAno() != null) {
@@ -52,27 +52,31 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         }
         if (modelo.getCodigoFipe() != null) {
             textFieldCodigoFipe.setEditable(false);
+            textFieldCodigoFipe.setEnabled(false);
         } else {
             textFieldCodigoFipe.setEditable(true);
+            textFieldCodigoFipe.setEnabled(true);
         }
     }
-    
+
     public Modelo getFormData() throws ValidacaoException {
         if (modelo == null) {
             modelo = new Modelo();
         }
         clearErrors();
         validarCampos();
-        modelo.setCodigoFipe(textFieldCodigoFipe.getText());
+        if (!Utilities.textFieldIsEmpty(textFieldCodigoFipe)) {
+            modelo.setCodigoFipe(textFieldCodigoFipe.getText());
+        }
         modelo.setDescricao(textFieldDescricao.getText());
         Marca marca = comboBoxMarca.getItemAt(comboBoxMarca.getSelectedIndex());
         modelo.setMarca(marca);
-        System.out.println(marca.toCSV());
+        modelo.setAno(yearChooserModelo.getYear());
         modelo.setCategoria(comboBoxCategoria.getItemAt(comboBoxCategoria.getSelectedIndex()));
         modelo.setCombustivel(comboBoxCombustivel.getItemAt(comboBoxCombustivel.getSelectedIndex()));
         return modelo;
     }
-    
+
     public void clearErrors() {
         labelErroAnoModelo.setText("");
         labelErroCombustivel.setText("");
@@ -82,27 +86,45 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         labelErroDescricao.setText("");
         labelErroCategoria.setText("");
     }
-    
+
     public void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldDescricao)) {
             exception.addError("descricao", "Descrição não informada");
         }
-        
+        if (comboBoxCombustivel.getSelectedItem() == null) {
+            exception.addError("combustivel", "Combustível não selecionado");
+        }
+        if (comboBoxCategoria.getSelectedItem() == null) {
+            exception.addError("categoria", "Categoria não selecionada");
+        }
+        if (comboBoxMarca.getSelectedItem() == null) {
+            exception.addError("marca", "Marca não selecionada");
+        }
+
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
     }
-    
+
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-        
+
         if (fields.contains("descricao")) {
             labelErroDescricao.setText(errors.get("descricao"));
         }
-        
+        if (fields.contains("combustivel")) {
+            labelErroCombustivel.setText(errors.get("combustivel"));
+        }
+        if (fields.contains("categoria")) {
+            labelErroCategoria.setText(errors.get("categoria"));
+        }
+        if (fields.contains("marca")) {
+            labelErroMarca.setText(errors.get("categoria"));
+        }
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

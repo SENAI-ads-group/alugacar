@@ -32,16 +32,14 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
             textFieldTelefone.setText(pessoa.getTelefone());
             dateChooserNascimento.setDate(pessoa.getDataNascimento());
         }
-
     }
 
     public PessoaFisica getFormData() throws ValidacaoException {
-        System.out.println(String.valueOf(jFormattedTextField1.getValue()));
         if (pessoa == null) {
             pessoa = new PessoaFisica();
         }
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        if (Utilities.textFieldIsEmpty(textFieldNome)) {
+        if (Utilities.textFieldIsEmpty(textFieldTelefone)) {
             exception.addError("nome", "Nome não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldCPF)) {
@@ -56,7 +54,7 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         if (dateChooserNascimento.getDate() == null) {
             exception.addError("dataNascimento", "Data não informada");
         }
-        pessoa.setNome(textFieldNome.getText());
+        pessoa.setNome(textFieldTelefone.getText());
         pessoa.setCpf(textFieldCPF.getText());
         pessoa.setTelefone(textFieldTelefone.getText());
         pessoa.setRegistroGeral(textFieldRG.getText());
@@ -102,16 +100,13 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        textFieldNome = new javax.swing.JTextField();
-        labelNome = new javax.swing.JLabel();
         textFieldTelefone = new javax.swing.JTextField();
+        labelNome = new javax.swing.JLabel();
         labelTelefone = new javax.swing.JLabel();
         textFieldEmail = new javax.swing.JTextField();
         labelEmail = new javax.swing.JLabel();
-        textFieldCPF = new javax.swing.JTextField();
         labelCPF = new javax.swing.JLabel();
         labelDataNascimento = new javax.swing.JLabel();
-        textFieldRG = new javax.swing.JTextField();
         labelRG = new javax.swing.JLabel();
         dateChooserNascimento = new com.toedter.calendar.JDateChooser();
         labelErroDataNascimento = new javax.swing.JLabel();
@@ -120,7 +115,9 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelErroTelefone = new javax.swing.JLabel();
         labelErroRG = new javax.swing.JLabel();
         labelErroEmail = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        textFieldNome = new javax.swing.JTextField();
+        textFieldCPF = new javax.swing.JTextField();
+        textFieldRG = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(360, 280));
@@ -128,21 +125,14 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(360, 280));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        textFieldNome.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldNome.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldNome.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
+        textFieldTelefone.setMaximumSize(new java.awt.Dimension(170, 25));
+        textFieldTelefone.setMinimumSize(new java.awt.Dimension(170, 25));
+        textFieldTelefone.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(textFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
         labelNome.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelNome.setText("Nome");
         add(labelNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        textFieldTelefone.setToolTipText("Apenas números (ex: (62)9.8765-4321)");
-        textFieldTelefone.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldTelefone.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldTelefone.setName(""); // NOI18N
-        textFieldTelefone.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
         labelTelefone.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelTelefone.setText("Telefone");
@@ -157,12 +147,6 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelEmail.setText("Email");
         add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
 
-        textFieldCPF.setToolTipText("Apenas números (ex: 123.456.789-00)");
-        textFieldCPF.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldCPF.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldCPF.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
-
         labelCPF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelCPF.setText("CPF");
         add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 65, -1, -1));
@@ -170,13 +154,6 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelDataNascimento.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelDataNascimento.setText("Data de nascimento");
         add(labelDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, -1, -1));
-
-        textFieldRG.setToolTipText("Apenas números (ex: 123456-7)");
-        textFieldRG.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldRG.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldRG.setName(""); // NOI18N
-        textFieldRG.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 85, -1, -1));
 
         labelRG.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelRG.setText("RG");
@@ -227,14 +204,25 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         labelErroEmail.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 175, 170, -1));
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat(""))));
-        add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 120, -1));
+        textFieldNome.setMaximumSize(new java.awt.Dimension(170, 25));
+        textFieldNome.setMinimumSize(new java.awt.Dimension(170, 25));
+        textFieldNome.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(textFieldNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
+
+        textFieldCPF.setMaximumSize(new java.awt.Dimension(170, 25));
+        textFieldCPF.setMinimumSize(new java.awt.Dimension(170, 25));
+        textFieldCPF.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(textFieldCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
+
+        textFieldRG.setMaximumSize(new java.awt.Dimension(170, 25));
+        textFieldRG.setMinimumSize(new java.awt.Dimension(170, 25));
+        textFieldRG.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(textFieldRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 85, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateChooserNascimento;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel labelCPF;
     private javax.swing.JLabel labelDataNascimento;
     private javax.swing.JLabel labelEmail;

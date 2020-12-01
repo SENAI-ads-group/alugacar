@@ -30,6 +30,8 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         textFieldDescricao.setText(categoria.getDescricao());
         textFieldValorDiaria.setText(String.valueOf(categoria.getValorDiaria()));
         textFieldValorMinimoLocacao.setText(String.valueOf(categoria.getValorMinimoLocacao()));
+        textFieldValorKM.setText(String.valueOf(categoria.getValorKM()));
+
     }
 
     public Categoria getFormData() throws ValidacaoException {
@@ -41,6 +43,7 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         categoria.setDescricao(textFieldDescricao.getText());
         categoria.setValorDiaria(Utilities.tryParseToDouble(textFieldValorDiaria.getText()));
         categoria.setValorMinimoLocacao(Utilities.tryParseToDouble(textFieldValorMinimoLocacao.getText()));
+        categoria.setValorKM(Utilities.tryParseToDouble(textFieldValorMinimoLocacao.getText()));
         return categoria;
     }
 
@@ -60,6 +63,9 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         }
         if (Utilities.textFieldIsEmpty(textFieldValorDiaria)) {
             exception.addError("valorDiaria", "Valor da diária não informado");
+        }
+        if (Utilities.textFieldIsEmpty(textFieldValorKM)) {
+            exception.addError("valorDiaria", "Valor do KM não informado");
         }
 
         if (exception.getErrors().size() > 0) {
@@ -94,30 +100,37 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         textFieldValorDiaria = new javax.swing.JTextField();
         labelErroValorDiaria = new javax.swing.JLabel();
         labelValorDiaria = new javax.swing.JLabel();
+        textFieldValorKM = new javax.swing.JTextField();
+        labelValorKM = new javax.swing.JLabel();
+        labelErroValorKM = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(400, 260));
         setPreferredSize(new java.awt.Dimension(400, 260));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        textFieldDescricao.setToolTipText("Descrição simples da categoria");
         textFieldDescricao.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldDescricao.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldDescricao.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
+        textFieldDescricao.getAccessibleContext().setAccessibleName("");
+        textFieldDescricao.getAccessibleContext().setAccessibleDescription("");
 
         labelDescricao.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelDescricao.setText("Descrição");
         add(labelDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        textFieldValorMinimoLocacao.setToolTipText("Apenas números (ex: (62)9.8765-4321)");
+        textFieldValorMinimoLocacao.setToolTipText("Valor (R$) mínimo para uma locação com um veículo desta categoria");
         textFieldValorMinimoLocacao.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldValorMinimoLocacao.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldValorMinimoLocacao.setName(""); // NOI18N
         textFieldValorMinimoLocacao.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldValorMinimoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
+        textFieldValorMinimoLocacao.getAccessibleContext().setAccessibleDescription("");
 
         labelValorMinimoLocacao.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelValorMinimoLocacao.setText("Valor mínimo locação");
+        labelValorMinimoLocacao.setText("Valor mínimo locação (R$)");
         add(labelValorMinimoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
 
         labelErroDescricao.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
@@ -134,12 +147,13 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         labelErroValorMinimoLocacao.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroValorMinimoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, 170, -1));
 
-        textFieldValorDiaria.setToolTipText("Apenas números (ex: (62)9.8765-4321)");
+        textFieldValorDiaria.setToolTipText("Valor (R$) da diária usado na modalidade de locação por diária");
         textFieldValorDiaria.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldValorDiaria.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldValorDiaria.setName(""); // NOI18N
         textFieldValorDiaria.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, -1));
+        textFieldValorDiaria.getAccessibleContext().setAccessibleDescription("");
 
         labelErroValorDiaria.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroValorDiaria.setForeground(java.awt.Color.red);
@@ -149,8 +163,27 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         add(labelErroValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 170, -1));
 
         labelValorDiaria.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelValorDiaria.setText("Valor da diária");
+        labelValorDiaria.setText("Valor da diária (R$)");
         add(labelValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+
+        textFieldValorKM.setToolTipText("Valor (R$) para cada quillômetro percorrido pelo veículo na modalidade de locação por quilômetro");
+        textFieldValorKM.setMaximumSize(new java.awt.Dimension(170, 25));
+        textFieldValorKM.setMinimumSize(new java.awt.Dimension(170, 25));
+        textFieldValorKM.setName(""); // NOI18N
+        textFieldValorKM.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(textFieldValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
+        textFieldValorKM.getAccessibleContext().setAccessibleDescription("");
+
+        labelValorKM.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelValorKM.setText("Valor KM (R$)");
+        add(labelValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, -1, -1));
+
+        labelErroValorKM.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        labelErroValorKM.setForeground(java.awt.Color.red);
+        labelErroValorKM.setMaximumSize(new java.awt.Dimension(150, 15));
+        labelErroValorKM.setMinimumSize(new java.awt.Dimension(150, 15));
+        labelErroValorKM.setPreferredSize(new java.awt.Dimension(150, 15));
+        add(labelErroValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 115, 170, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -158,11 +191,14 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
     private javax.swing.JLabel labelDescricao;
     private javax.swing.JLabel labelErroDescricao;
     private javax.swing.JLabel labelErroValorDiaria;
+    private javax.swing.JLabel labelErroValorKM;
     private javax.swing.JLabel labelErroValorMinimoLocacao;
     private javax.swing.JLabel labelValorDiaria;
+    private javax.swing.JLabel labelValorKM;
     private javax.swing.JLabel labelValorMinimoLocacao;
     private javax.swing.JTextField textFieldDescricao;
     private javax.swing.JTextField textFieldValorDiaria;
+    private javax.swing.JTextField textFieldValorKM;
     private javax.swing.JTextField textFieldValorMinimoLocacao;
     // End of variables declaration//GEN-END:variables
 }

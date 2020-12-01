@@ -25,6 +25,7 @@ public class CNH {
         numeroRegistro = Integer.parseInt(csv[0]);
         categoria = CategoriaCNH.valueOf(csv[1]);
         dataValidade = DateUtilities.tryParseToDate(csv[2]);
+        foto = new File(csv[3]);
     }
 
     public CNH(Integer numeroRegistro, CategoriaCNH categoria, Date dataValidade) {
@@ -71,7 +72,8 @@ public class CNH {
     public String toCSV() {
         return "" + numeroRegistro + ";"
                 + categoria.toString() + ";"
-                + DateUtilities.formatData(dataValidade);
+                + DateUtilities.formatData(dataValidade) + ";"
+                + foto.getAbsolutePath();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package model.entidades;
 
+import java.util.Objects;
 import model.entidades.enums.StatusVeiculo;
 import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
@@ -126,6 +127,31 @@ public class Veiculo {
     @Override
     public String toString() {
         return id + " - " + placa;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Veiculo other = (Veiculo) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

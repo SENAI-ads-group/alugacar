@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import util.Utilities;
 import model.servicos.persistencia.CategoriaDAO;
+import model.servicos.persistencia.DAOFactory;
 
 /**
  *
@@ -63,6 +64,37 @@ public class CategoriaCSV implements CategoriaDAO {
             }
             conexaoTemp.writer().flush();
             conexaoTemp.writer().newLine();
+            linha = CONEXAO.reader().readLine();
+        }
+
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
+    }
+
+    @Override
+    public void excluir(Integer id) throws DBException {
+        if (buscar(id) == null) {
+            throw new DBException("A categoria não existe");
+        }
+        if (DAOFactory.createModeloDAO().buscar(buscar(id)).size() > 0) {
+            throw new DBException("Não foi possível excluir a categoria pois está associada à um ou mais modelo(s)");
+        }
+        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Categoria categoriaEncontrada = new Categoria(linha.split(";"));
+            if (!categoriaEncontrada.getId().equals(id)) {
+                conexaoTemp.writer().write(categoriaEncontrada.toCSV());
+                conexaoTemp.writer().flush();
+                conexaoTemp.writer().newLine();
+            }
             linha = CONEXAO.reader().readLine();
         }
 

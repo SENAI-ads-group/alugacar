@@ -2,6 +2,7 @@ package ui.frames;
 
 import java.awt.Component;
 import model.entidades.Locacao;
+import model.entidades.enums.TipoLocacao;
 import ui.dialogs.DialogLocacaoForm;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.PanelCategoriaList;
@@ -17,10 +18,10 @@ import util.PanelUtilities;
  * @author Patrick-Ribeiro
  */
 public class FrameMain extends javax.swing.JFrame {
-    
+
     public FrameMain() {
         initComponents();
-        
+
         for (Component component : panelMenu.getComponents()) {
             component.addMouseListener(new MouseListenerPanelButtonMenu(component));
         }
@@ -355,7 +356,7 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
     private void panelMenuItemLocacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemLocacaoMouseClicked
-        DialogLocacaoForm dialogLocacao = new DialogLocacaoForm(this, true, new Locacao());
+        DialogLocacaoForm dialogLocacao = new DialogLocacaoForm(this, true, new Locacao(TipoLocacao.DIARIA));
         dialogLocacao.setVisible(true);
     }//GEN-LAST:event_panelMenuItemLocacaoMouseClicked
 

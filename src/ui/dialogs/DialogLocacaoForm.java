@@ -46,7 +46,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
     private void persistEntity() throws DBException, ValidacaoException {
         getFormData();
-        locacao.entregarVeiculo(new Vistoria(locacao.getVeiculo().getKMRodado(), true));
+        locacao.registrar();
         if (locacao.getId() == null) {
             DAO.inserir(locacao);
         } else {
@@ -93,17 +93,18 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de cliente");
-        setMinimumSize(new java.awt.Dimension(440, 420));
+        setMinimumSize(new java.awt.Dimension(500, 450));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(500, 500));
         setResizable(false);
-        setSize(new java.awt.Dimension(440, 420));
+        setSize(new java.awt.Dimension(500, 450));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(1000, 500));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(460, 300));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(460, 300));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -128,13 +129,13 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
         );
         panelBorderLeftTab1Layout.setVerticalGroup(
             panelBorderLeftTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 302, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderLeftTab1, java.awt.BorderLayout.LINE_START);
 
         panelCenterTab1.setBackground(new java.awt.Color(250, 250, 250));
-        panelCenterTab1.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab1.setPreferredSize(new java.awt.Dimension(420, 300));
         panelCenterTab1.setLayout(new javax.swing.BoxLayout(panelCenterTab1, javax.swing.BoxLayout.LINE_AXIS));
         panelTab1.add(panelCenterTab1, java.awt.BorderLayout.CENTER);
 
@@ -150,14 +151,14 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
         );
         panelBorderRightTab1Layout.setVerticalGroup(
             panelBorderRightTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 302, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
         tabbedPane.addTab("Locação", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
 
-        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
         panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
@@ -202,7 +203,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 460, -1));
 
         pack();
         setLocationRelativeTo(null);

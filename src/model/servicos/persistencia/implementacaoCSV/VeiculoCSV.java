@@ -105,8 +105,7 @@ public class VeiculoCSV implements VeiculoDAO {
     }
 
     @Override
-    public Veiculo buscar(Integer id
-    ) {
+    public Veiculo buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }

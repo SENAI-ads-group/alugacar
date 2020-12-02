@@ -26,7 +26,10 @@ public class Locacao {
     private Vistoria vistoriaEntrega;
     private Vistoria vistoriaDevolucao;
 
-    public Locacao() {
+    public Locacao(TipoLocacao tipoLocacao) {
+        status = StatusLocacao.PENDENTE;
+        this.tipo = tipoLocacao;
+        tipo.getContrato().setLocacao(this);
     }
 
     public Locacao(TipoLocacao tipo, Date dataEntrega, Date dataDevolucao, Veiculo veiculo, Cliente cliente, Motorista motorista) {
@@ -42,10 +45,17 @@ public class Locacao {
     public Locacao(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
         status = StatusLocacao.valueOf(csv[0]);
-        if (status == StatusLocacao.EM_ABERTO) {
-            instanciarLocacaoEmAberto(csv);
-        } else {
-            instanciarLocacaoFinalizada(csv);
+        switch (status) {
+            case EM_ABERTO:
+                instanciarLocacaoEmAberto(csv);
+                break;
+            case FINALIZADA:
+                instanciarLocacaoFinalizada(csv);
+                break;
+            case PENDENTE:
+                instanciarLocacaoPendente(csv);
+            default:
+                break;
         }
     }
 
@@ -122,9 +132,14 @@ public class Locacao {
         return vistoriaDevolucao;
     }
 
+    public void registrar() {
+        dataRegistro = new Date();
+        veiculo.setStatusVeiculo(StatusVeiculo.PENDENTE_DE_ENTREGA);
+        status = StatusLocacao.PENDENTE;
+    }
+
     public void entregarVeiculo(Vistoria vistoriaEntrega) {
         this.vistoriaEntrega = vistoriaEntrega;
-        dataRegistro = new Date();
         veiculo.setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
         status = StatusLocacao.EM_ABERTO;
     }
@@ -139,7 +154,7 @@ public class Locacao {
     }
 
     public String toCSV() {
-        if (status != StatusLocacao.EM_ABERTO && status != StatusLocacao.FINALIZADA) {
+        if (status != StatusLocacao.EM_ABERTO && status != StatusLocacao.FINALIZADA && status != StatusLocacao.PENDENTE) {
             throw new IllegalStateException("Status inválido");
         }
         switch (status) {
@@ -147,9 +162,21 @@ public class Locacao {
                 return toCsvStatusAberto();
             case FINALIZADA:
                 return toCsvStatusFinalizado();
+            case PENDENTE:
+                return toCsvstatusPendente();
             default:
                 throw new IllegalStateException("Status inválido");
         }
+    }
+
+    private String toCsvstatusPendente() {
+        return "" + id + ";"
+                + status.name() + ";"
+                + tipo.toCSV() + ";"
+                + DateUtilities.formatData(dataRegistro) + ";"
+                + veiculo.getId() + ";"
+                + motorista.getId() + ";"
+                + cliente.getId();
     }
 
     private String toCsvStatusAberto() {
@@ -161,6 +188,7 @@ public class Locacao {
                 + DateUtilities.formatData(dataDevolucao) + ";"
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
+                + cliente.getId() + ";"
                 + vistoriaEntrega.toCSV() + ";"
                 + tipo.getContrato().getValorBruto();
     }
@@ -174,9 +202,22 @@ public class Locacao {
                 + DateUtilities.formatData(dataDevolucao) + ";"
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
+                + cliente.getId() + ";"
                 + vistoriaEntrega.toCSV() + ";"
                 + vistoriaDevolucao.toCSV() + ";"
                 + tipo.getContrato().getValorTotal();
+    }
+
+    private void instanciarLocacaoPendente(String[] csv) {
+        tipo = TipoLocacao.valueOf(csv[2]);
+        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
+        Integer idVeiculo = Utilities.tryParseToInteger(csv[4]);
+        Integer idMotorista = Utilities.tryParseToInteger(csv[5]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[6]);
+
+        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
+        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
+        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
     }
 
     private void instanciarLocacaoEmAberto(String[] csv) {
@@ -186,12 +227,13 @@ public class Locacao {
         dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
         Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
         Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
-        Double kmEntrega = Utilities.tryParseToDouble(csv[8]);
-        Boolean veiculoAdequado = Boolean.parseBoolean(csv[9]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
+        Integer idVistoriaEntrega = Utilities.tryParseToInteger(csv[9]);
 
         veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
         motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
-        vistoriaEntrega = new Vistoria(kmEntrega, veiculoAdequado);
+        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
+        vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
     }
 
     private void instanciarLocacaoFinalizada(String[] csv) {
@@ -201,15 +243,15 @@ public class Locacao {
         dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
         Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
         Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
-        Double kmEntrega = Utilities.tryParseToDouble(csv[8]);
-        Boolean veiculoAdequadoEntrega = Boolean.parseBoolean(csv[9]);
-        Double kmDevolucao = Utilities.tryParseToDouble(csv[10]);
-        Boolean veiculoAdequadoDevolucao = Boolean.parseBoolean(csv[11]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
+        Integer idVistoriaEntrega = Utilities.tryParseToInteger(csv[9]);
+        Integer idVistoriaDevolucao = Utilities.tryParseToInteger(csv[10]);
 
         veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
         motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
-        vistoriaEntrega = new Vistoria(kmEntrega, veiculoAdequadoEntrega);
-        vistoriaDevolucao = new Vistoria(kmDevolucao, veiculoAdequadoDevolucao);
+        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
+        vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
+        vistoriaDevolucao = DAOFactory.createVistoriaDAO().buscar(idVistoriaDevolucao);
     }
 
 }

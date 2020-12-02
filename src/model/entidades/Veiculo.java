@@ -126,7 +126,7 @@ public class Veiculo {
 
     @Override
     public String toString() {
-        return modelo.toString() + " " + placa;
+        return modelo.getDescricao() + " " + modelo.getAno() + " " + placa;
     }
 
     @Override

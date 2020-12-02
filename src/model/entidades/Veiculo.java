@@ -17,7 +17,7 @@ public class Veiculo {
     private Double precoCompra = 0.0;
     private Modelo modelo;
     private Integer anoFabricacao;
-    private Double KMRodado = 0.0;
+    private Double KMRodado;
     private StatusVeiculo statusVeiculo = StatusVeiculo.INDISPONIVEL;
 
     public Veiculo() {
@@ -126,7 +126,7 @@ public class Veiculo {
 
     @Override
     public String toString() {
-        return id + " - " + placa;
+        return modelo.toString() + " " + placa;
     }
 
     @Override

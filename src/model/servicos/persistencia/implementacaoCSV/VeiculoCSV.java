@@ -23,7 +23,6 @@ public class VeiculoCSV implements VeiculoDAO {
     private final CSVConnection CONEXAO;
 
     public VeiculoCSV() {
-
         String caminhoDB = Configuracoes.getProperties().getProperty("db.veiculo");
         PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
 
@@ -79,29 +78,35 @@ public class VeiculoCSV implements VeiculoDAO {
     }
 
     @Override
-    public Veiculo buscar(String placa) {
-
-        if (placa == null) {
-            throw new IllegalStateException("id está nulo");
+    public List<Veiculo> buscar(String filtro) {
+        if (filtro == null) {
+            throw new IllegalStateException("Filtro de pesquisa vazio");
         }
+        List<Veiculo> veiculos = new ArrayList<>();
         CONEXAO.open(ARQUIVO_DB);
 
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
-            Veiculo veiculoEncontrado = new Veiculo(linha.split(";"));
-            if (veiculoEncontrado.getPlaca().equals(placa)) {
-                CONEXAO.close();
-                return veiculoEncontrado;
+            Veiculo veiculo = new Veiculo(linha.split(";"));
+            if (veiculo.getPlaca().contains(filtro) || veiculo.getRenavam().contains(filtro)
+                    || veiculo.getModelo().getDescricao().contains(filtro) || veiculo.getModelo().getCategoria().getDescricao().contains(filtro)
+                    || veiculo.getModelo().getMarca().getDescricao().contains(filtro) || veiculo.getModelo().getCombustivel().toString().contains(filtro)) {
+                veiculos.add(veiculo);
             }
             linha = CONEXAO.reader().readLine();
         }
-        CONEXAO.close();
-        return null;
 
+        CONEXAO.close();
+        if (veiculos.size() > 0) {
+            return veiculos;
+        } else {
+            return buscarTodos();
+        }
     }
 
     @Override
-    public Veiculo buscar(Integer id) {
+    public Veiculo buscar(Integer id
+    ) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
@@ -121,7 +126,8 @@ public class VeiculoCSV implements VeiculoDAO {
     }
 
     @Override
-    public List<Veiculo> buscar(Modelo modelo) {
+    public List<Veiculo> buscar(Modelo modelo
+    ) {
         CONEXAO.open(ARQUIVO_DB);
         List<Veiculo> veiculos = new ArrayList<>();
 

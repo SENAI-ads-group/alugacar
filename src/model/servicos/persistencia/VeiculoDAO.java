@@ -17,7 +17,7 @@ public interface VeiculoDAO {
 
     Veiculo buscar(Integer id);
 
-    Veiculo buscar(String placa);
+    List<Veiculo> buscar(String filtro);
 
     List<Veiculo> buscar(Modelo modelo);
 

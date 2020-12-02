@@ -36,7 +36,7 @@ import model.servicos.persistencia.MotoristaDAO;
 public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
-    private final MotoristaDAO MotoristaPersistenceService = DAOFactory.createMotoristaDAO();
+    private final MotoristaDAO DAO = DAOFactory.createMotoristaDAO();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
@@ -69,9 +69,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private void persistEntity() throws DBException, ValidacaoException {
         motorista = getFormData();
         if (motorista.getId() == null) {
-            MotoristaPersistenceService.inserir(motorista);
+            DAO.inserir(motorista);
         } else {
-            MotoristaPersistenceService.atualizar(motorista);
+            DAO.atualizar(motorista);
         }
     }
 
@@ -91,7 +91,10 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         }
         if (dateChooserValidadeCNH.getDate() == null) {
             exceptionCNH.addError("validadeCNH", "Data não selecionada");
+        } else if (dateChooserValidadeCNH.getDate().before(new Date())) {
+            exceptionCNH.addError("validadeCNH", "Data inválida");
         }
+
         clearErrors();
         if (exceptionCNH.getErrors().size() > 0) {
             throw exceptionCNH;

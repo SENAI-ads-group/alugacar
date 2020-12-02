@@ -54,7 +54,7 @@ public class PanelFormPessoaFisica extends javax.swing.JPanel {
         if (dateChooserNascimento.getDate() == null) {
             exception.addError("dataNascimento", "Data não informada");
         }
-        pessoa.setNome(textFieldTelefone.getText());
+        pessoa.setNome(textFieldNome.getText());
         pessoa.setCpf(textFieldCPF.getText());
         pessoa.setTelefone(textFieldTelefone.getText());
         pessoa.setRegistroGeral(textFieldRG.getText());

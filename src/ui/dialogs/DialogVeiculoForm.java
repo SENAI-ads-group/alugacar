@@ -88,7 +88,7 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de cliente");
+        setTitle("Formulário de veículo");
         setMinimumSize(new java.awt.Dimension(440, 440));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setPreferredSize(new java.awt.Dimension(440, 440));

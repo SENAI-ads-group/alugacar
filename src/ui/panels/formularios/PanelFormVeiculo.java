@@ -17,24 +17,24 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class PanelFormVeiculo extends javax.swing.JPanel {
-
+    
     private Veiculo veiculo;
-
+    
     public PanelFormVeiculo(Veiculo veiculo) {
         initComponents();
         this.veiculo = veiculo;
         initCombobox();
     }
-
+    
     public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
     }
-
+    
     public void initCombobox() {
         Object[] itemsMarca = DAOFactory.createMarcaDAO().buscarTodos().toArray();
         comboBoxMarca.setModel(new DefaultComboBoxModel(itemsMarca));
     }
-
+    
     private void loadModelos() {
         Marca marcaSelecionada = comboBoxMarca.getItemAt(comboBoxMarca.getSelectedIndex());
         if (marcaSelecionada != null) {
@@ -43,7 +43,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
             comboBoxModelo.setModel(new DefaultComboBoxModel(itemsModelo));
         }
     }
-
+    
     public void updateFormData() {
         textFieldPlaca.setText(veiculo.getPlaca());
         textFieldRenavam.setText(veiculo.getRenavam());
@@ -53,13 +53,22 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         if (veiculo.getPrecoCompra() != null) {
             textFieldPrecoCompra.setText("" + veiculo.getPrecoCompra());
         }
-        comboBoxMarca.setSelectedItem(veiculo.getModelo());
-        loadModelos();
+        if (veiculo.getModelo() != null && veiculo.getModelo().getMarca() != null) {
+            comboBoxMarca.setSelectedItem(veiculo.getModelo().getMarca());
+            loadModelos();
+        } else {
+            comboBoxMarca.setSelectedIndex(-1);
+        }
         if (veiculo.getModelo() != null && veiculo.getModelo().getAno() != null) {
             yearChooserFabricacao.setYear(veiculo.getAnoFabricacao());
         }
+        if (veiculo.getKMRodado() != null) {
+            textFieldKMAtual.setEnabled(false);
+        } else {
+            textFieldKMAtual.setEnabled(true);
+        }
     }
-
+    
     public Veiculo getFormData() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldPlaca)) {
@@ -88,7 +97,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         veiculo.setModelo(comboBoxModelo.getItemAt(comboBoxModelo.getSelectedIndex()));
         return veiculo;
     }
-
+    
     public void clearErrors() {
         labelErroAnoFabricacao.setText("");
         labelErroKMAtual.setText("");
@@ -98,10 +107,10 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         labelErroRenavam.setText("");
         labelErroModelo.setText("");
     }
-
+    
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-
+        
         if (fields.contains("placa")) {
             labelErroPlaca.setText(errors.get("placa"));
         }
@@ -121,7 +130,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
             labelErroModelo.setText(errors.get("modelo"));
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

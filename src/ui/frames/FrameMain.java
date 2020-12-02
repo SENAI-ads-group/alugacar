@@ -72,7 +72,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelLoader = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Locação de Veículos - Versão de testes 01/12/2020");
+        setTitle("Locação de Veículos");
         setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(1366, 768));

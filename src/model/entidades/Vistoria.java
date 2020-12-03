@@ -12,17 +12,24 @@ import util.Utilities;
 public class Vistoria {
 
     private Integer id;
-    private List<ItemVistoria> itens;
+    private List<ItemVistoria> itens = Configuracoes.loadItensVistoria();
     private double kmVeiculo;
 
-    public Vistoria(double kmVeiculo) {
+    public Vistoria() {
+    }
+
+    public Vistoria(Integer id, double kmVeiculo) {
+        this.id = id;
         this.kmVeiculo = kmVeiculo;
-        itens = Configuracoes.loadItensVistoria();
     }
 
     public Vistoria(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
         kmVeiculo = Utilities.tryParseToDouble(csv[1]);
+        itens = new ArrayList<>();
+    }
+
+    public void removeAllItens() {
         itens = new ArrayList<>();
     }
 

@@ -7,6 +7,7 @@ import ui.dialogs.DialogLocacaoForm;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
+import ui.panels.PanelLocacoesList;
 import ui.panels.PanelMarcasList;
 import ui.panels.PanelModelosList;
 import ui.panels.PanelMotoristasList;
@@ -356,8 +357,9 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
     private void panelMenuItemLocacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemLocacaoMouseClicked
-        DialogLocacaoForm dialogLocacao = new DialogLocacaoForm(this, true, new Locacao(TipoLocacao.DIARIA));
-        dialogLocacao.setVisible(true);
+        PanelLocacoesList listLocacoes = new PanelLocacoesList();
+        PanelUtilities.loadPanelToPanel(listLocacoes, panelLoader);
+        listLocacoes.updateTable();
     }//GEN-LAST:event_panelMenuItemLocacaoMouseClicked
 
 

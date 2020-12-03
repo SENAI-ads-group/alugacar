@@ -10,29 +10,34 @@ import javax.swing.JOptionPane;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
 import model.exceptions.ValidacaoException;
-import model.servicos.persistencia.LocacaoDAO;
+import model.servicos.persistencia.VistoriaDAO;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormLocacao;
+import ui.panels.formularios.PanelFormVistoria;
 import util.PanelUtilities;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public class DialogLocacaoForm extends javax.swing.JDialog {
+public class DialogVistoriaForm extends javax.swing.JDialog {
 
+    private Vistoria vistoria;
     private Locacao locacao;
-    private final LocacaoDAO DAO = DAOFactory.createLocacaoDAO();
+    private final VistoriaDAO DAO = DAOFactory.createVistoriaDAO();
 
-    private PanelFormLocacao formLocacao;
+    private PanelFormVistoria formVistoria;
 
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
-    public DialogLocacaoForm(java.awt.Frame parent, boolean modal, Locacao locacao) {
+    public DialogVistoriaForm(java.awt.Frame parent, boolean modal, Vistoria vistoria) {
         super(parent, modal);
-        this.locacao = locacao;
+        this.vistoria = vistoria;
         initComponents();
         loadPanels();
+    }
+
+    public void setVistoria(Vistoria vistoria) {
+        this.vistoria = vistoria;
     }
 
     public void setLocacao(Locacao locacao) {
@@ -40,27 +45,28 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
     }
 
     private void loadPanels() {
-        formLocacao = new PanelFormLocacao(locacao);
-        PanelUtilities.loadPanelToPanel(formLocacao, panelCenterTab1);
+        formVistoria = new PanelFormVistoria(vistoria);
+        PanelUtilities.loadPanelToPanel(formVistoria, panelCenterTab1);
     }
 
     private void persistEntity() throws DBException, ValidacaoException {
         getFormData();
-        locacao.registrar();
-        if (locacao.getId() == null) {
-            DAO.inserir(locacao);
-        } else {
-            DAO.atualizar(locacao);
+        if (vistoria.getId() == null) {
+            DAO.inserir(vistoria);
         }
+        locacao.entregarVeiculo(vistoria);
+        System.out.println(locacao.toCSV());
+        DAOFactory.createLocacaoDAO().atualizar(locacao);
+        System.out.println(locacao.toCSV());
     }
 
-    public Locacao getFormData() throws ValidacaoException {
-        locacao = formLocacao.getFormData();
-        return locacao;
+    public Vistoria getFormData() throws ValidacaoException {
+        vistoria = formVistoria.getFormData();
+        return vistoria;
     }
 
     public void updateFormData() {
-        formLocacao.updateFormData();
+        formVistoria.updateFormData();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -95,7 +101,6 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
         setTitle("Formulário de cliente");
         setMinimumSize(new java.awt.Dimension(500, 450));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        setPreferredSize(new java.awt.Dimension(500, 500));
         setResizable(false);
         setSize(new java.awt.Dimension(500, 450));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -156,7 +161,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Locação", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Vistoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
 
@@ -218,7 +223,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormModelo")) {
                 tabbedPane.setIconAt(0, iconError);
-                formLocacao.setErrorsMessages(ex.getErrors());
+                formVistoria.setErrorsMessages(ex.getErrors());
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);

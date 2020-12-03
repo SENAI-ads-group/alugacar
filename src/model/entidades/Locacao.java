@@ -1,6 +1,7 @@
 package model.entidades;
 
 import java.util.Date;
+import java.util.Objects;
 import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.StatusVeiculo;
 import model.entidades.enums.TipoLocacao;
@@ -44,7 +45,7 @@ public class Locacao {
 
     public Locacao(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
-        status = StatusLocacao.valueOf(csv[0]);
+        status = StatusLocacao.valueOf(csv[1]);
         switch (status) {
             case EM_ABERTO:
                 instanciarLocacaoEmAberto(csv);
@@ -57,6 +58,7 @@ public class Locacao {
             default:
                 break;
         }
+        tipo.getContrato().setLocacao(this);
     }
 
     public Integer getId() {
@@ -140,13 +142,14 @@ public class Locacao {
 
     public void entregarVeiculo(Vistoria vistoriaEntrega) {
         this.vistoriaEntrega = vistoriaEntrega;
+        dataEntrega = new Date();
         veiculo.setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
         status = StatusLocacao.EM_ABERTO;
     }
 
     public void devolverVeiculo(Vistoria vistoriaDevolucao) {
         if (status != StatusLocacao.EM_ABERTO) {
-            throw new IllegalStateException("A locação precisa ser iniciada antes");
+            throw new IllegalStateException("A locação precisa ser registrada antes");
         }
         status = StatusLocacao.FINALIZADA;
         this.vistoriaDevolucao = vistoriaDevolucao;
@@ -174,12 +177,15 @@ public class Locacao {
                 + status.name() + ";"
                 + tipo.toCSV() + ";"
                 + DateUtilities.formatData(dataRegistro) + ";"
+                + DateUtilities.formatData(dataEntrega) + ";"
+                + DateUtilities.formatData(dataDevolucao) + ";"
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
                 + cliente.getId();
     }
 
     private String toCsvStatusAberto() {
+        tipo.getContrato().setLocacao(this);
         return "" + id + ";"
                 + status.name() + ";"
                 + tipo.toCSV() + ";"
@@ -194,6 +200,7 @@ public class Locacao {
     }
 
     private String toCsvStatusFinalizado() {
+        tipo.getContrato().setLocacao(this);
         return "" + id
                 + status.name() + ";"
                 + tipo.toCSV() + ";"
@@ -211,9 +218,11 @@ public class Locacao {
     private void instanciarLocacaoPendente(String[] csv) {
         tipo = TipoLocacao.valueOf(csv[2]);
         dataRegistro = DateUtilities.tryParseToDate(csv[3]);
-        Integer idVeiculo = Utilities.tryParseToInteger(csv[4]);
-        Integer idMotorista = Utilities.tryParseToInteger(csv[5]);
-        Integer idCliente = Utilities.tryParseToInteger(csv[6]);
+        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
+        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
+        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
+        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
 
         veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
         motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
@@ -252,6 +261,31 @@ public class Locacao {
         cliente = DAOFactory.createClienteDAO().buscar(idCliente);
         vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
         vistoriaDevolucao = DAOFactory.createVistoriaDAO().buscar(idVistoriaDevolucao);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Locacao other = (Locacao) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
 }

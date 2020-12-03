@@ -34,6 +34,9 @@ public class VistoriaCSV implements VistoriaDAO {
 
     @Override
     public void inserir(Vistoria vistoria) {
+        if (vistoria.getId() == null) {
+            vistoria.setId(getUltimoID() + 1);
+        }
         CONEXAO.open(ARQUIVO_DB);
         CONEXAO.writer().write(vistoria.toCSV());
         CONEXAO.writer().newLine();
@@ -41,7 +44,7 @@ public class VistoriaCSV implements VistoriaDAO {
 
         CONEXAO_ITEM.open(ARQUIVO_ITEM_DB);
         for (ItemVistoria item : vistoria.getItens()) {
-            CONEXAO_ITEM.writer().write(vistoria.getId() + item.toCSV());
+            CONEXAO_ITEM.writer().write(vistoria.getId() + ";" + item.toCSV());
             CONEXAO_ITEM.writer().newLine();
         }
         CONEXAO_ITEM.close();
@@ -82,5 +85,22 @@ public class VistoriaCSV implements VistoriaDAO {
             linha = CONEXAO_ITEM.reader().readLine();
         }
         CONEXAO_ITEM.close();
+    }
+
+    private Integer getUltimoID() {
+        CONEXAO.open(ARQUIVO_DB);
+
+        Integer ultimoID = 0;
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            ultimoID = Utilities.tryParseToInteger(linha.split(";")[0]);
+            if (ultimoID == null) {
+                ultimoID = 0;
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return ultimoID;
     }
 }

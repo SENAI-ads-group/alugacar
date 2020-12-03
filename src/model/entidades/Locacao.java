@@ -152,6 +152,7 @@ public class Locacao {
     }
 
     // </editor-fold>
+    
     @Override
     public int hashCode() {
         int hash = 3;

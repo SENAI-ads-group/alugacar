@@ -10,6 +10,7 @@ import model.servicos.persistencia.implementacaoCSV.ModeloCSV;
 import model.servicos.persistencia.implementacaoCSV.MotoristaCSV;
 import model.servicos.persistencia.implementacaoCSV.UsuarioCSV;
 import model.servicos.persistencia.implementacaoCSV.VeiculoCSV;
+import model.servicos.persistencia.implementacaoCSV.VistoriaCSV;
 
 /**
  *
@@ -51,6 +52,10 @@ public class DAOFactory {
 
     public static LocacaoDAO createLocacaoDAO() {
         return new LocacaoCSV();
+    }
+
+    public static VistoriaDAO createVistoriaDAO() {
+        return new VistoriaCSV();
     }
 
 }

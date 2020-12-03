@@ -2,8 +2,10 @@ package ui.panels;
 
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Modelo;
+import model.exceptions.DBException;
 import model.servicos.persistencia.ModeloDAO;
 import ui.FrameLoader;
 import ui.dialogs.DialogModeloForm;
@@ -117,6 +119,11 @@ public final class PanelModelosList extends javax.swing.JPanel implements DataCh
         buttonExcluir.setFocusPainted(false);
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-28x28.png"))); // NOI18N
@@ -199,6 +206,19 @@ public final class PanelModelosList extends javax.swing.JPanel implements DataCh
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         createModeloForm(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão do modelo selecionado?", "Exclusão de modelo", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                DAO.excluir(idSelecionado);
+                updateTable();
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir o modelo", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

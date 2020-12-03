@@ -3,6 +3,7 @@ package model.servicos.persistencia;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import java.util.List;
+import model.entidades.Categoria;
 import model.exceptions.DBException;
 
 /**
@@ -15,9 +16,13 @@ public interface ModeloDAO {
 
     void atualizar(Modelo modelo);
 
+    void excluir(Integer id);
+
     Modelo buscar(Integer id);
 
     List<Modelo> buscar(Marca marca);
+
+    List<Modelo> buscar(Categoria categoria);
 
     List<Modelo> buscarTodos();
 }

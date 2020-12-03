@@ -36,8 +36,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         }
         table.setModel(tableModel);
 
-        if (tableModel.getRowCount()
-                > 0) {
+        if (tableModel.getRowCount() > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
@@ -57,7 +56,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
 
     public void createMarcaForm(Marca marca) throws DBException {
         String descricao = String.valueOf(JOptionPane.showInputDialog(this, "Descrição", "Formulário de marcas", JOptionPane.QUESTION_MESSAGE, null, null, marca.getDescricao()));
-        if (descricao != null && descricao.trim().length() > 0) {
+        if (descricao != null && descricao.trim().length() > 0 && !descricao.equals("null")) {
             marca.setDescricao(descricao);
             persistEntity(marca);
         }
@@ -222,8 +221,11 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         try {
-            DAO.excluir(idSelecionado);
-            updateTable();
+            int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão da marca selecionada?", "Exclusão de marca", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                DAO.excluir(idSelecionado);
+                updateTable();
+            }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir a marca", JOptionPane.ERROR_MESSAGE);
         }

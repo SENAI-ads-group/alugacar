@@ -15,6 +15,8 @@ public interface CategoriaDAO {
 
     void atualizar(Categoria categoria);
 
+    void excluir(Integer id) throws DBException;
+
     Categoria buscar(Integer id);
 
     List<Categoria> buscarTodos();

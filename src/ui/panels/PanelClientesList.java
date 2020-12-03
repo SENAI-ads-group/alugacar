@@ -29,10 +29,8 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
     public void updateTable() {
         List<Cliente> clientes = persistenceService.buscarTodos();
-
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
-
         clientes.stream().map((cliente) -> {
             String cpfCnpj = null;
             String rgInscricaoEstadual = null;

@@ -3,16 +3,21 @@ package model.servicos.persistencia.implementacaoCSV;
 import application.Configuracoes;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.entidades.Locacao;
+import model.entidades.Vistoria;
+import model.entidades.enums.StatusLocacao;
+import model.entidades.enums.StatusVeiculo;
 import model.exceptions.DBException;
+import model.servicos.persistencia.DAOFactory;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
 
 /**
  *
- * @author Alexsander
+ * @author Patrick-Ribeiro
  */
 public class LocacaoCSV implements LocacaoDAO {
 
@@ -26,11 +31,75 @@ public class LocacaoCSV implements LocacaoDAO {
 
         ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
         CONEXAO = new CSVConnection();
-
     }
 
     @Override
-    public void inserir(Locacao locacao) throws DBException {
+    public void registrar(Locacao locacao) throws DBException {
+        locacao.setDataRegistro(new Date());
+        locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.PENDENTE_DE_ENTREGA);
+        locacao.setStatus(StatusLocacao.PENDENTE);
+        DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
+        inserir(locacao);
+    }
+
+    @Override
+    public void entregarVeiculo(Locacao locacao, Vistoria vistoria) {
+        locacao.setVistoriaEntrega(vistoria);
+        locacao.setDataEntrega(new Date());
+        locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
+        locacao.setStatus(StatusLocacao.INICIADA);
+        DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
+        atualizar(locacao);
+    }
+
+    @Override
+    public void devolverVeiculo(Locacao locacao, Vistoria vistoria) {
+        locacao.setVistoriaDevolucao(vistoria);
+        locacao.setDataDevolucao(new Date());
+        locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.INDISPONIVEL);
+        locacao.setStatus(StatusLocacao.FINALIZADA);
+        DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
+        atualizar(locacao);
+    }
+
+    @Override
+    public Locacao buscar(Integer id) {
+        if (id == null) {
+            throw new IllegalStateException("O ID da locação está nulo");
+        }
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
+
+            if (locacaoEncontrada.getId().equals(id)) {
+                CONEXAO.close();
+                return locacaoEncontrada;
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+        CONEXAO.close();
+        return null;
+    }
+
+    @Override
+    public List<Locacao> buscarTodos() {
+        CONEXAO.open(ARQUIVO_DB);
+
+        List<Locacao> locacoesEncontradas = new ArrayList<>();
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
+            locacoesEncontradas.add(locacaoEncontrada);
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return locacoesEncontradas;
+    }
+
+    private void inserir(Locacao locacao) {
         if (locacao.getId() == null) {
             locacao.setId(getUltimoID() + 1);
         }
@@ -45,9 +114,7 @@ public class LocacaoCSV implements LocacaoDAO {
         CONEXAO.close();
     }
 
-    @Override
-    public void atualizar(Locacao locacao) {
-
+    private void atualizar(Locacao locacao) {
         File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\locacao-temp.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
@@ -72,50 +139,10 @@ public class LocacaoCSV implements LocacaoDAO {
         CONEXAO.close();
         ARQUIVO_DB.delete();
         arquivoDBTemp.renameTo(ARQUIVO_DB);
-
-    }
-
-    @Override
-    public Locacao buscar(Integer id) {
-        if (id == null) {
-            throw new IllegalStateException("O ID da locação está nulo");
-        }
-        CONEXAO.open(ARQUIVO_DB);
-
-        String linha = CONEXAO.reader().readLine();
-        while (linha != null) {
-            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
-
-            if (locacaoEncontrada.getId().equals(id)) {
-                CONEXAO.close();
-                return locacaoEncontrada;
-            }
-            linha = CONEXAO.reader().readLine();
-        }
-        CONEXAO.close();
-        return null;
-
-    }
-
-    @Override
-    public List<Locacao> buscarTodos() {
-        CONEXAO.open(ARQUIVO_DB);
-
-        List<Locacao> locacoesEncontradas = new ArrayList<>();
-        String linha = CONEXAO.reader().readLine();
-        while (linha != null) {
-            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
-            locacoesEncontradas.add(locacaoEncontrada);
-            linha = CONEXAO.reader().readLine();
-        }
-
-        CONEXAO.close();
-        return locacoesEncontradas;
     }
 
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
-
         Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
@@ -125,7 +152,6 @@ public class LocacaoCSV implements LocacaoDAO {
             }
             linha = CONEXAO.reader().readLine();
         }
-
         CONEXAO.close();
         return ultimoID;
     }

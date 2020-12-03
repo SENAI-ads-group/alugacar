@@ -44,7 +44,7 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
     }
 
     private void persistEntity() throws DBException, ValidacaoException {
-        categoria = getFormData();
+        getFormData();
         if (categoria.getId() == null) {
             DAO.inserir(categoria);
         } else {

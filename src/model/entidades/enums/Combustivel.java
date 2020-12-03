@@ -7,7 +7,7 @@ package model.entidades.enums;
 public enum Combustivel {
     GASOLINA("Gasolina"),
     DIESEL("Diesel"),
-    ALCOOL("Álcoool"),
+    ALCOOL("Álcool"),
     FLEX("Flex");
 
     private final String NOME_FORMATADO;

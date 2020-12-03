@@ -1,5 +1,6 @@
 package model.entidades;
 
+import java.util.Objects;
 import util.Utilities;
 
 /**
@@ -29,6 +30,8 @@ public class Categoria {
         id = Utilities.tryParseToInteger(csv[0]);
         descricao = csv[1];
         valorMinimoLocacao = Utilities.tryParseToDouble(csv[2]);
+        valorDiaria = Utilities.tryParseToDouble(csv[3]);
+        valorKM = Utilities.tryParseToDouble(csv[4]);
     }
 
     public Integer getId() {
@@ -82,6 +85,31 @@ public class Categoria {
     @Override
     public String toString() {
         return id + " - " + descricao;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Categoria other = (Categoria) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 
 }

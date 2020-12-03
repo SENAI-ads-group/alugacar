@@ -60,14 +60,14 @@ public class TesteLocacao {
         Cliente cliente = new Cliente(TipoCliente.PESSOA_FISICA);
         cliente.setPessoa(pessoa);
 
-        Vistoria vistoriaEntrega = new Vistoria(veiculo.getKMRodado(), true);
+        Vistoria vistoriaEntrega = new Vistoria();
 
         Locacao locacao = new Locacao(TipoLocacao.DIARIA, new Date(), new Date(2020, 11, 14), veiculo, cliente, motorista);
-        locacao.entregarVeiculo(vistoriaEntrega);
+        //locacao.entregarVeiculo(vistoriaEntrega);
         System.out.println(locacao.toCSV());
 
-        Vistoria vistoriaDevolucao = new Vistoria(50.0, false);
-        locacao.devolverVeiculo(vistoriaDevolucao);
+        Vistoria vistoriaDevolucao = new Vistoria();
+        //locacao.devolverVeiculo(vistoriaDevolucao);
         System.out.println(locacao.toCSV());
     }
 
@@ -82,15 +82,15 @@ public class TesteLocacao {
         System.out.println(motorista.toCSV());
         System.out.println(cliente.toCSV());
 
-        Vistoria vistoriaEntrega = new Vistoria(veiculo.getKMRodado(), true);
+        Vistoria vistoriaEntrega = new Vistoria();
 
         Locacao locacao = new Locacao(TipoLocacao.DIARIA, new Date(), new Date(2020, 11, 14), veiculo, cliente, motorista);
-        locacao.entregarVeiculo(vistoriaEntrega);
+        //locacao.entregarVeiculo(vistoriaEntrega);
         System.out.println(locacao.toCSV());
 
         System.out.println();
-        Vistoria vistoriaDevolucao = new Vistoria(50.0, false);
-        locacao.devolverVeiculo(vistoriaDevolucao);
+        Vistoria vistoriaDevolucao = new Vistoria();
+        //locacao.devolverVeiculo(vistoriaDevolucao);
         System.out.println("id;status;data registro; data entrega; data devolucao; veiculo id; motorista id; km entrega; veiculo adequado entrega; valor total");
         System.out.println(locacao.toCSV());
     }

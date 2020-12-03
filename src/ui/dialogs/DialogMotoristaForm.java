@@ -36,11 +36,11 @@ import model.servicos.persistencia.MotoristaDAO;
 public class DialogMotoristaForm extends javax.swing.JDialog {
 
     private Motorista motorista;
-    private final MotoristaDAO MotoristaPersistenceService = DAOFactory.createMotoristaDAO();
+    private final MotoristaDAO DAO = DAOFactory.createMotoristaDAO();
 
     private PanelFormEndereco panelFormEndereco;
     private PanelFormPessoaFisica panelFormPessoaFisica;
-    private File fileFotoMotorista;
+    private File fileFoto;
 
     private final List<DataChangeListener> listeners;
 
@@ -69,9 +69,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private void persistEntity() throws DBException, ValidacaoException {
         motorista = getFormData();
         if (motorista.getId() == null) {
-            MotoristaPersistenceService.inserir(motorista);
+            DAO.inserir(motorista);
         } else {
-            MotoristaPersistenceService.atualizar(motorista);
+            DAO.atualizar(motorista);
         }
     }
 
@@ -91,7 +91,10 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         }
         if (dateChooserValidadeCNH.getDate() == null) {
             exceptionCNH.addError("validadeCNH", "Data não selecionada");
+        } else if (dateChooserValidadeCNH.getDate().before(new Date())) {
+            exceptionCNH.addError("validadeCNH", "Data inválida");
         }
+
         clearErrors();
         if (exceptionCNH.getErrors().size() > 0) {
             throw exceptionCNH;
@@ -103,6 +106,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         Date dataValidadeCNH = dateChooserValidadeCNH.getDate();
         CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
         CNH cnh = new CNH(numeroRegistroCNH, categoriaCNH, dataValidadeCNH);
+        cnh.setFoto(fileFoto);
         motorista.setCnh(cnh);
         motorista.setAtivo(checkBoxAtivo.isSelected());
 
@@ -559,9 +563,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         int retorno = fileChooser.showOpenDialog(this);
         if (retorno == JFileChooser.APPROVE_OPTION) {
-            motorista.getCnh().setFoto(fileChooser.getSelectedFile());
-            textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
-            showImageOnLabel(motorista.getCnh().getFoto());
+            fileFoto = (fileChooser.getSelectedFile());
+            textFieldFoto.setText(fileFoto.getPath());
+            showImageOnLabel(fileFoto);
         }
     }//GEN-LAST:event_buttonBuscarFotoActionPerformed
 

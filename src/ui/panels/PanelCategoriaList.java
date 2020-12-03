@@ -2,8 +2,10 @@ package ui.panels;
 
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Categoria;
+import model.exceptions.DBException;
 import model.servicos.persistencia.CategoriaDAO;
 import ui.FrameLoader;
 import ui.dialogs.DialogCategoriaForm;
@@ -32,7 +34,8 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
                 categoria.getId(),
                 categoria.getDescricao(),
                 categoria.getValorMinimoLocacao(),
-                categoria.getValorDiaria()
+                categoria.getValorDiaria(),
+                categoria.getValorKM()
             };
             tableModel.addRow(row);
         }
@@ -114,6 +117,11 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
         buttonExcluir.setFocusPainted(false);
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-28x28.png"))); // NOI18N
@@ -196,6 +204,19 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         createCategoriaForm(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
+
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão da categoria selecionada?", "Exclusão de categoria", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                DAO.excluir(idSelecionado);
+                updateTable();
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir a categoria", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

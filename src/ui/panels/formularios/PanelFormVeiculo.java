@@ -16,24 +16,24 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class PanelFormVeiculo extends javax.swing.JPanel {
-    
+
     private Veiculo veiculo;
-    
+
     public PanelFormVeiculo(Veiculo veiculo) {
         initComponents();
         this.veiculo = veiculo;
         initCombobox();
     }
-    
+
     public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
     }
-    
+
     public void initCombobox() {
         Object[] itemsMarca = DAOFactory.createMarcaDAO().buscarTodos().toArray();
         comboBoxMarca.setModel(new DefaultComboBoxModel(itemsMarca));
     }
-    
+
     private void loadModelos() {
         Marca marcaSelecionada = comboBoxMarca.getItemAt(comboBoxMarca.getSelectedIndex());
         if (marcaSelecionada != null) {
@@ -42,7 +42,23 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
             comboBoxModelo.setModel(new DefaultComboBoxModel(itemsModelo));
         }
     }
-    
+
+    public void updateMinMaxYear() {
+        Modelo modeloSelecionado = comboBoxModelo.getItemAt(comboBoxModelo.getSelectedIndex());
+        if (modeloSelecionado != null) {
+            int startYear = modeloSelecionado.getAno() - 1;
+            int endYear = modeloSelecionado.getAno();
+            int currentYear = modeloSelecionado.getAno();
+
+            yearChooserFabricacao.setStartYear(startYear);
+            yearChooserFabricacao.setEndYear(endYear);
+            yearChooserFabricacao.setYear(currentYear);
+            yearChooserFabricacao.setMinimum(startYear);
+            yearChooserFabricacao.setMaximum(endYear);
+            yearChooserFabricacao.setValue(currentYear);
+        }
+    }
+
     public void updateFormData() {
         textFieldPlaca.setText(veiculo.getPlaca());
         textFieldRenavam.setText(veiculo.getRenavam());
@@ -58,8 +74,19 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         } else {
             comboBoxMarca.setSelectedIndex(-1);
         }
-        if (veiculo.getModelo() != null && veiculo.getModelo().getAno() != null) {
+        if (veiculo.getAnoFabricacao() != null) {
             yearChooserFabricacao.setYear(veiculo.getAnoFabricacao());
+        } else if (veiculo.getModelo() != null && veiculo.getModelo().getAno() != null) {
+            int startYear = veiculo.getModelo().getAno() - 1;
+            int endYear = veiculo.getModelo().getAno();
+            int currentYear = veiculo.getModelo().getAno();
+
+            yearChooserFabricacao.setStartYear(startYear);
+            yearChooserFabricacao.setEndYear(endYear);
+            yearChooserFabricacao.setYear(currentYear);
+            yearChooserFabricacao.setMinimum(startYear);
+            yearChooserFabricacao.setMaximum(endYear);
+            yearChooserFabricacao.setValue(currentYear);
         }
         if (veiculo.getKMRodado() != null) {
             textFieldKMAtual.setEnabled(false);
@@ -67,7 +94,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
             textFieldKMAtual.setEnabled(true);
         }
     }
-    
+
     public Veiculo getFormData() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
         if (Utilities.textFieldIsEmpty(textFieldPlaca)) {
@@ -97,7 +124,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         veiculo.setModelo(comboBoxModelo.getItemAt(comboBoxModelo.getSelectedIndex()));
         return veiculo;
     }
-    
+
     public void clearErrors() {
         labelErroAnoFabricacao.setText("");
         labelErroKMAtual.setText("");
@@ -107,10 +134,10 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         labelErroRenavam.setText("");
         labelErroModelo.setText("");
     }
-    
+
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-        
+
         if (fields.contains("placa")) {
             labelErroPlaca.setText(errors.get("placa"));
         }
@@ -130,7 +157,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
             labelErroModelo.setText(errors.get("modelo"));
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -167,7 +194,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldPlaca.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldPlaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
 
-        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelNome.setText("Placa");
         add(labelNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -178,7 +205,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldRenavam.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldRenavam, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
-        labelRenavam.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelRenavam.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelRenavam.setText("Renavam");
         add(labelRenavam, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
 
@@ -189,7 +216,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldKMAtual.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldKMAtual, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, -1));
 
-        labelRG.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelRG.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelRG.setText("Quilometragem atual");
         add(labelRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
 
@@ -221,13 +248,11 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         labelErroKMAtual.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroKMAtual, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 170, -1));
 
-        labelAnoFabricacao.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelAnoFabricacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelAnoFabricacao.setText("Ano de fabricação");
         add(labelAnoFabricacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, -1, -1));
 
-        yearChooserFabricacao.setEndYear(Calendar.getInstance().get(Calendar.YEAR) + 1);
         yearChooserFabricacao.setFocusable(false);
-        yearChooserFabricacao.setMaximum(Calendar.getInstance().get(Calendar.YEAR) + 1);
         yearChooserFabricacao.setPreferredSize(new java.awt.Dimension(170, 25));
         yearChooserFabricacao.setStartYear(1900);
         add(yearChooserFabricacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, -1, -1));
@@ -248,7 +273,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         });
         add(comboBoxMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, -1, -1));
 
-        labelMarca.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelMarca.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelMarca.setText("Marca");
         add(labelMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
@@ -259,7 +284,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldPrecoCompra.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldPrecoCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
 
-        labelPrecoCompra.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelPrecoCompra.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelPrecoCompra.setText("Preço de compra");
         add(labelPrecoCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, -1, -1));
 
@@ -280,16 +305,26 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         comboBoxModelo.setToolTipText("Para selecionar o modelo você deve primeiro selecionar a marca do veículo");
         comboBoxModelo.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxModelo.setPreferredSize(new java.awt.Dimension(170, 25));
+        comboBoxModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxModeloActionPerformed(evt);
+            }
+        });
         add(comboBoxModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
 
-        labelModelo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelModelo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelModelo.setText("Modelo");
         add(labelModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboBoxMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxMarcaActionPerformed
         loadModelos();
+        updateMinMaxYear();
     }//GEN-LAST:event_comboBoxMarcaActionPerformed
+
+    private void comboBoxModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxModeloActionPerformed
+        updateMinMaxYear();
+    }//GEN-LAST:event_comboBoxModeloActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

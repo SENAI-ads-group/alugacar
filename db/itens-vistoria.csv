@@ -1,9 +1,6 @@
-1;pneus;true;true
-1;motor;true;true
-2;pneus;true;true
-2;motor;true;true
-3;pneus;true;true
-3;motor;true;true
-4;Motor;true;true
-4;Pneus;true;true
-4;Nivel-de-oleo;true;true
+1;Motor;true;true
+1;Pneus;true;true
+1;Nivel-de-oleo;true;true
+2;Motor;true;true
+2;Pneus;true;true
+2;Nivel-de-oleo;true;true

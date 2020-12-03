@@ -47,7 +47,7 @@ public class Locacao {
         id = Utilities.tryParseToInteger(csv[0]);
         status = StatusLocacao.valueOf(csv[1]);
         switch (status) {
-            case EM_ABERTO:
+            case INICIADA:
                 instanciarLocacaoEmAberto(csv);
                 break;
             case FINALIZADA:
@@ -152,7 +152,6 @@ public class Locacao {
     }
 
     // </editor-fold>
-    
     @Override
     public int hashCode() {
         int hash = 3;
@@ -179,11 +178,11 @@ public class Locacao {
     }
 
     public String toCSV() {
-        if (status != StatusLocacao.EM_ABERTO && status != StatusLocacao.FINALIZADA && status != StatusLocacao.PENDENTE) {
+        if (status != StatusLocacao.INICIADA && status != StatusLocacao.FINALIZADA && status != StatusLocacao.PENDENTE) {
             throw new IllegalStateException("Status inválido");
         }
         switch (status) {
-            case EM_ABERTO:
+            case INICIADA:
                 return toCsvStatusAberto();
             case FINALIZADA:
                 return toCsvStatusFinalizado();
@@ -196,7 +195,7 @@ public class Locacao {
 
     private String toCsvstatusPendente() {
         return "" + id + ";"
-                + status.name() + ";"
+                + status.toCSV() + ";"
                 + tipo.toCSV() + ";"
                 + DateUtilities.formatData(dataRegistro) + ";"
                 + DateUtilities.formatData(dataEntrega) + ";"
@@ -209,7 +208,7 @@ public class Locacao {
     private String toCsvStatusAberto() {
         tipo.getContrato().setLocacao(this);
         return "" + id + ";"
-                + status.name() + ";"
+                + status.toCSV() + ";"
                 + tipo.toCSV() + ";"
                 + DateUtilities.formatData(dataRegistro) + ";"
                 + DateUtilities.formatData(dataEntrega) + ";"
@@ -217,14 +216,14 @@ public class Locacao {
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
                 + cliente.getId() + ";"
-                + vistoriaEntrega.toCSV() + ";"
+                + vistoriaEntrega.getId() + ";"
                 + tipo.getContrato().getValorBruto();
     }
 
     private String toCsvStatusFinalizado() {
         tipo.getContrato().setLocacao(this);
-        return "" + id
-                + status.name() + ";"
+        return "" + id + ";"
+                + status.toCSV() + ";"
                 + tipo.toCSV() + ";"
                 + DateUtilities.formatData(dataRegistro) + ";"
                 + DateUtilities.formatData(dataEntrega) + ";"
@@ -232,8 +231,8 @@ public class Locacao {
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
                 + cliente.getId() + ";"
-                + vistoriaEntrega.toCSV() + ";"
-                + vistoriaDevolucao.toCSV() + ";"
+                + vistoriaEntrega.getId()+ ";"
+                + vistoriaDevolucao.getId()+ ";"
                 + tipo.getContrato().getValorTotal();
     }
 

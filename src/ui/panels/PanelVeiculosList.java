@@ -274,18 +274,25 @@ public final class PanelVeiculosList extends javax.swing.JPanel implements DataC
         Veiculo veiculoSelecionado = DAO.buscar(idSelecionado);
         StatusVeiculo status = veiculoSelecionado.getStatusVeiculo();
 
-        if (status == StatusVeiculo.DISPONIVEL) {
-            veiculoSelecionado.setStatusVeiculo(StatusVeiculo.INDISPONIVEL);
-            DAO.atualizar(veiculoSelecionado);
-            updateTable();
-            JOptionPane.showMessageDialog(this, "O veículo " + veiculoSelecionado.toString()
-                    + "  foi indisponibilizado para a locação", "Indisponibilização de veículo", JOptionPane.WARNING_MESSAGE);
-        } else if (status == StatusVeiculo.INDISPONIVEL) {
-            veiculoSelecionado.setStatusVeiculo(StatusVeiculo.DISPONIVEL);
-            DAO.atualizar(veiculoSelecionado);
-            updateTable();
-            JOptionPane.showMessageDialog(this, "O veículo " + veiculoSelecionado.toString()
-                    + "  foi disponibilizado para a locação", "Disponibilização de veículo", JOptionPane.INFORMATION_MESSAGE);
+        switch (status) {
+            case DISPONIVEL:
+                veiculoSelecionado.setStatusVeiculo(StatusVeiculo.INDISPONIVEL);
+                DAO.atualizar(veiculoSelecionado);
+                updateTable();
+                JOptionPane.showMessageDialog(this, "O veículo " + veiculoSelecionado.toString()
+                        + "  foi indisponibilizado para a locação", "Indisponibilização de veículo", JOptionPane.WARNING_MESSAGE);
+                break;
+            case INDISPONIVEL:
+                veiculoSelecionado.setStatusVeiculo(StatusVeiculo.DISPONIVEL);
+                DAO.atualizar(veiculoSelecionado);
+                updateTable();
+                JOptionPane.showMessageDialog(this, "O veículo " + veiculoSelecionado.toString()
+                        + "  foi disponibilizado para a locação", "Disponibilização de veículo", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Não é possível disponibilizar ou indisponibilizar o veículo "
+                        + veiculoSelecionado.toString() + ", pois está " + veiculoSelecionado.getStatusVeiculo().toString(), "Erro ao disponibilizar ou indisponibilizar veículo", JOptionPane.ERROR_MESSAGE);
+                break;
         }
     }//GEN-LAST:event_buttonDisponibilizarIndisponibilizarActionPerformed
 

@@ -31,7 +31,7 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="textFieldDescricao">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="Descri&#xe7;&#xe3;o simples da categoria"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[170, 25]"/>
         </Property>
@@ -44,7 +44,6 @@
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
       </AccessibilityProperties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -55,7 +54,7 @@
     <Component class="javax.swing.JLabel" name="labelDescricao">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Descri&#xe7;&#xe3;o"/>
       </Properties>
@@ -67,7 +66,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="textFieldValorMinimoLocacao">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="Valor (R$) m&#xed;nimo para uma loca&#xe7;&#xe3;o com um ve&#xed;culo desta categoria"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[170, 25]"/>
         </Property>
@@ -91,9 +89,14 @@
     <Component class="javax.swing.JLabel" name="labelValorMinimoLocacao">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Valor m&#xed;nimo loca&#xe7;&#xe3;o (R$)"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/ui/media/icons/icon-info-12x12.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Valor m&#xed;nimo (R$)"/>
+        <Property name="toolTipText" type="java.lang.String" value="Valor em reais (R$) m&#xed;nimo para uma loca&#xe7;&#xe3;o com um ve&#xed;culo desta categoria"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -151,7 +154,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="textFieldValorDiaria">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="Valor (R$) da di&#xe1;ria usado na modalidade de loca&#xe7;&#xe3;o por di&#xe1;ria"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[170, 25]"/>
         </Property>
@@ -199,9 +201,15 @@
     <Component class="javax.swing.JLabel" name="labelValorDiaria">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="2"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/ui/media/icons/icon-info-12x12.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Valor da di&#xe1;ria (R$)"/>
+        <Property name="toolTipText" type="java.lang.String" value="Valor em reais (R$) para cada dia de loca&#xe7;&#xe3;o na modalidade por di&#xe1;ria"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -211,7 +219,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="textFieldValorKM">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="Valor (R$) para cada quill&#xf4;metro percorrido pelo ve&#xed;culo na modalidade de loca&#xe7;&#xe3;o por quil&#xf4;metro"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[170, 25]"/>
         </Property>
@@ -235,9 +242,14 @@
     <Component class="javax.swing.JLabel" name="labelValorKM">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/ui/media/icons/icon-info-12x12.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Valor KM (R$)"/>
+        <Property name="toolTipText" type="java.lang.String" value="Valor em reais (R$) para cada quill&#xf4;metro percorrido pelo ve&#xed;culo na modalidade de loca&#xe7;&#xe3;o por quil&#xf4;metro"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

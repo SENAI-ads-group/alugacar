@@ -17,7 +17,7 @@ import util.Utilities;
 
 /**
  *
- * @author Alexsander
+ * @author Patrick-Ribeiro
  */
 public class LocacaoCSV implements LocacaoDAO {
 
@@ -38,6 +38,7 @@ public class LocacaoCSV implements LocacaoDAO {
         locacao.setDataRegistro(new Date());
         locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.PENDENTE_DE_ENTREGA);
         locacao.setStatus(StatusLocacao.PENDENTE);
+        DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
         inserir(locacao);
     }
 
@@ -46,7 +47,7 @@ public class LocacaoCSV implements LocacaoDAO {
         locacao.setVistoriaEntrega(vistoria);
         locacao.setDataEntrega(new Date());
         locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
-        locacao.setStatus(StatusLocacao.EM_ABERTO);
+        locacao.setStatus(StatusLocacao.INICIADA);
         DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
         atualizar(locacao);
     }
@@ -80,7 +81,6 @@ public class LocacaoCSV implements LocacaoDAO {
         }
         CONEXAO.close();
         return null;
-
     }
 
     @Override
@@ -143,7 +143,6 @@ public class LocacaoCSV implements LocacaoDAO {
 
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
-
         Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
@@ -153,7 +152,6 @@ public class LocacaoCSV implements LocacaoDAO {
             }
             linha = CONEXAO.reader().readLine();
         }
-
         CONEXAO.close();
         return ultimoID;
     }

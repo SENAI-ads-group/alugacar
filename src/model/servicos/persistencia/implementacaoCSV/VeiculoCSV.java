@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
+import model.entidades.enums.StatusVeiculo;
 import model.exceptions.DBException;
 import util.Utilities;
 import model.servicos.persistencia.VeiculoDAO;
@@ -125,8 +126,7 @@ public class VeiculoCSV implements VeiculoDAO {
     }
 
     @Override
-    public List<Veiculo> buscar(Modelo modelo
-    ) {
+    public List<Veiculo> buscar(Modelo modelo) {
         CONEXAO.open(ARQUIVO_DB);
         List<Veiculo> veiculos = new ArrayList<>();
 
@@ -139,6 +139,22 @@ public class VeiculoCSV implements VeiculoDAO {
             linha = CONEXAO.reader().readLine();
         }
 
+        CONEXAO.close();
+        return veiculos;
+    }
+
+    public List<Veiculo> buscar(StatusVeiculo status) {
+        CONEXAO.open(ARQUIVO_DB);
+        List<Veiculo> veiculos = new ArrayList<>();
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Veiculo veiculo = new Veiculo(linha.split(";"));
+            if (veiculo.getStatusVeiculo().equals(status)) {
+                veiculos.add(veiculo);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
         CONEXAO.close();
         return veiculos;
     }

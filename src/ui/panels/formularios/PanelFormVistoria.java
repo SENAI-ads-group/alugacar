@@ -52,7 +52,7 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
         if (vistoria == null) {
             throw new IllegalStateException("A vistoria está nulo");
         }
-        textFieldLocacao.setText("" + locacao.getId());
+        textFieldLocacao.setText("" + locacao.getId() + " - " + locacao.getVeiculo().toString());
         textFieldKM.setText("" + locacao.getVeiculo().getKMRodado());
         updateListItens();
     }
@@ -100,9 +100,11 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
         textFieldKM = new javax.swing.JTextField();
         scrollPane = new javax.swing.JScrollPane();
         panelItens = new javax.swing.JPanel();
+        panelTop = new javax.swing.JPanel();
         panelLeft = new javax.swing.JPanel();
         panelRight = new javax.swing.JPanel();
         panelCenter = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(400, 260));
@@ -123,11 +125,11 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
         labelErroLocacao.setPreferredSize(new java.awt.Dimension(200, 15));
         add(labelErroLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
 
-        labelLocacao.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelLocacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelLocacao.setText("Locação");
         add(labelLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        labelKM.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelKM.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelKM.setText("KM atual do veículo");
         add(labelKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, -1, -1));
 
@@ -149,8 +151,13 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
         scrollPane.setPreferredSize(new java.awt.Dimension(420, 230));
 
         panelItens.setBackground(new java.awt.Color(255, 255, 255));
-        panelItens.setPreferredSize(new java.awt.Dimension(410, 220));
+        panelItens.setPreferredSize(new java.awt.Dimension(400, 195));
         panelItens.setLayout(new java.awt.BorderLayout());
+
+        panelTop.setBackground(new java.awt.Color(255, 255, 255));
+        panelTop.setMinimumSize(new java.awt.Dimension(20, 5));
+        panelTop.setPreferredSize(new java.awt.Dimension(20, 5));
+        panelItens.add(panelTop, java.awt.BorderLayout.PAGE_START);
 
         panelLeft.setBackground(new java.awt.Color(255, 255, 255));
         panelLeft.setMinimumSize(new java.awt.Dimension(20, 10));
@@ -168,11 +175,16 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
 
         scrollPane.setViewportView(panelItens);
 
-        add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+        add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 95, -1, 200));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Checklist");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelErroKM;
     private javax.swing.JLabel labelErroLocacao;
     private javax.swing.JLabel labelKM;
@@ -181,6 +193,7 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
     private javax.swing.JPanel panelItens;
     private javax.swing.JPanel panelLeft;
     private javax.swing.JPanel panelRight;
+    private javax.swing.JPanel panelTop;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTextField textFieldKM;
     private javax.swing.JTextField textFieldLocacao;

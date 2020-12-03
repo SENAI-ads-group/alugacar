@@ -7,7 +7,6 @@ import javax.swing.DefaultComboBoxModel;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.entidades.Veiculo;
-import model.entidades.enums.StatusVeiculo;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
@@ -93,6 +92,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         veiculo.setPlaca(textFieldPlaca.getText());
         veiculo.setRenavam(textFieldRenavam.getText());
         veiculo.setPrecoCompra(Utilities.tryParseToDouble(textFieldPrecoCompra.getText()));
+        veiculo.setKMRodado(Utilities.tryParseToDouble(textFieldKMAtual.getText()));
         veiculo.setAnoFabricacao(yearChooserFabricacao.getYear());
         veiculo.setModelo(comboBoxModelo.getItemAt(comboBoxModelo.getSelectedIndex()));
         return veiculo;

@@ -63,11 +63,11 @@ public class TesteLocacao {
         Vistoria vistoriaEntrega = new Vistoria();
 
         Locacao locacao = new Locacao(TipoLocacao.DIARIA, new Date(), new Date(2020, 11, 14), veiculo, cliente, motorista);
-        locacao.entregarVeiculo(vistoriaEntrega);
+        //locacao.entregarVeiculo(vistoriaEntrega);
         System.out.println(locacao.toCSV());
 
         Vistoria vistoriaDevolucao = new Vistoria();
-        locacao.devolverVeiculo(vistoriaDevolucao);
+        //locacao.devolverVeiculo(vistoriaDevolucao);
         System.out.println(locacao.toCSV());
     }
 
@@ -85,12 +85,12 @@ public class TesteLocacao {
         Vistoria vistoriaEntrega = new Vistoria();
 
         Locacao locacao = new Locacao(TipoLocacao.DIARIA, new Date(), new Date(2020, 11, 14), veiculo, cliente, motorista);
-        locacao.entregarVeiculo(vistoriaEntrega);
+        //locacao.entregarVeiculo(vistoriaEntrega);
         System.out.println(locacao.toCSV());
 
         System.out.println();
         Vistoria vistoriaDevolucao = new Vistoria();
-        locacao.devolverVeiculo(vistoriaDevolucao);
+        //locacao.devolverVeiculo(vistoriaDevolucao);
         System.out.println("id;status;data registro; data entrega; data devolucao; veiculo id; motorista id; km entrega; veiculo adequado entrega; valor total");
         System.out.println(locacao.toCSV());
     }

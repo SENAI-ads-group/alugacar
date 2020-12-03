@@ -4,11 +4,9 @@ import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.entidades.Cliente;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
 import model.entidades.enums.StatusLocacao;
-import model.entidades.enums.TipoCliente;
 import model.entidades.enums.TipoLocacao;
 import model.servicos.persistencia.LocacaoDAO;
 import ui.FrameLoader;
@@ -52,8 +50,10 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
         if (tableModel.getRowCount() > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonVer.setEnabled(true);
+            buttonEntregarDevolver.setEnabled(true);
         } else {
             buttonVer.setEnabled(false);
+            buttonEntregarDevolver.setEnabled(false);
         }
     }
 
@@ -217,7 +217,9 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
     private void buttonEntregarDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntregarDevolverActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         Locacao locacao = DAO.buscar(idSelecionado);
-        if (locacao.getStatus() == StatusLocacao.PENDENTE) {
+        if (locacao.getStatus() == StatusLocacao.FINALIZADA) {
+            JOptionPane.showMessageDialog(this, "Esta operação é inválida, pois veículo desta locação já foi devolvido", "Operação inválida", JOptionPane.ERROR_MESSAGE);
+        } else {
             DialogVistoriaForm dialogForm = new DialogVistoriaForm(FrameLoader.getFrameMain(), true, locacao, new Vistoria());
             dialogForm.subscribeListener(this);
             dialogForm.updateFormData();

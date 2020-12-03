@@ -3,6 +3,7 @@ package model.servicos.persistencia;
 import model.entidades.Veiculo;
 import java.util.List;
 import model.entidades.Modelo;
+import model.entidades.enums.StatusVeiculo;
 import model.exceptions.DBException;
 
 /**
@@ -20,6 +21,8 @@ public interface VeiculoDAO {
     List<Veiculo> buscar(String filtro);
 
     List<Veiculo> buscar(Modelo modelo);
+
+    List<Veiculo> buscar(StatusVeiculo status);
 
     List<Veiculo> buscarTodos();
 

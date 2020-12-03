@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
+import model.entidades.enums.StatusLocacao;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.VistoriaDAO;
@@ -48,7 +49,11 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
         if (vistoria.getId() == null) {
             DAO_VISTORIA.inserir(vistoria);
         }
-        DAO_LOCACAO.entregarVeiculo(locacao, vistoria);
+        if (locacao.getStatus() == StatusLocacao.INICIADA) {
+            DAO_LOCACAO.devolverVeiculo(locacao, vistoria);
+        } else if (locacao.getStatus() == StatusLocacao.PENDENTE) {
+            DAO_LOCACAO.entregarVeiculo(locacao, vistoria);
+        }
     }
 
     public Vistoria getFormData() throws ValidacaoException {
@@ -89,7 +94,8 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de cliente");
+        setTitle("Formulário de vistoria");
+        setIconImage(null);
         setMinimumSize(new java.awt.Dimension(500, 450));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
@@ -97,13 +103,14 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
-        tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tabbedPane.setMaximumSize(new java.awt.Dimension(1000, 500));
         tabbedPane.setMinimumSize(new java.awt.Dimension(460, 300));
         tabbedPane.setPreferredSize(new java.awt.Dimension(460, 300));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         panelTab1.setMaximumSize(new java.awt.Dimension(400, 280));
         panelTab1.setMinimumSize(new java.awt.Dimension(400, 280));
         panelTab1.setPreferredSize(new java.awt.Dimension(400, 280));
@@ -152,7 +159,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Vistoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Vistoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
 

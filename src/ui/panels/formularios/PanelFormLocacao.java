@@ -8,6 +8,7 @@ import model.entidades.Cliente;
 import model.entidades.Locacao;
 import model.entidades.Motorista;
 import model.entidades.Veiculo;
+import model.entidades.enums.StatusVeiculo;
 import model.entidades.enums.TipoLocacao;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.DAOFactory;
@@ -17,21 +18,21 @@ import model.servicos.persistencia.DAOFactory;
  * @author patrick-ribeiro
  */
 public final class PanelFormLocacao extends javax.swing.JPanel {
-
+    
     private Locacao locacao;
-
+    
     public PanelFormLocacao(Locacao locacao) {
         initComponents();
         this.locacao = locacao;
         initCombobox();
     }
-
+    
     public void setLocacao(Locacao locacao) {
         this.locacao = locacao;
     }
-
+    
     public void initCombobox() {
-        Object[] itensVeiculo = DAOFactory.createVeiculoDAO().buscarTodos().toArray();
+        Object[] itensVeiculo = DAOFactory.createVeiculoDAO().buscar(StatusVeiculo.DISPONIVEL).toArray();
         Object[] itensCliente = DAOFactory.createClienteDAO().buscarTodos().toArray();
         Object[] itensMotorista = DAOFactory.createMotoristaDAO().buscarTodos().toArray();
         comboBoxVeiculo.setModel(new DefaultComboBoxModel(itensVeiculo));
@@ -39,7 +40,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         comboBoxCliente.setModel(new DefaultComboBoxModel(itensCliente));
         comboBoxTipoLocacao.setModel(new DefaultComboBoxModel<>(TipoLocacao.values()));
     }
-
+    
     public void updateFormData() {
         if (locacao == null) {
             throw new IllegalStateException("O modelo está nulo");
@@ -49,7 +50,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         comboBoxVeiculo.setSelectedItem(locacao.getVeiculo());
         comboBoxTipoLocacao.setSelectedItem(locacao.getTipo());
     }
-
+    
     public Locacao getFormData() throws ValidacaoException {
         if (locacao == null) {
             locacao = new Locacao(TipoLocacao.DIARIA);
@@ -64,7 +65,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         locacao.setTipo(comboBoxTipoLocacao.getItemAt(comboBoxTipoLocacao.getSelectedIndex()));
         return locacao;
     }
-
+    
     public void clearErrors() {
         labelErroDataEntrega.setText("");
         labelErroMarca.setText("");
@@ -72,28 +73,28 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         labelErroCategoria.setText("");
         labelErroTipoLocacao.setText("");
     }
-
+    
     public void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-
+        
         if (dateChooserEntrega.getDate() == null) {
             exception.addError("dataEntrega", "Data não informada");
         }
         if (dateChooserEntrega.getDate() == null) {
             exception.addError("dataDevolucao", "Data não informada");
         }
-
+        
     }
-
+    
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-
+        
         if (fields.contains("descricao")) {
             labelErroDataDevolucao.setText(errors.get("descricao"));
         }
-
+        
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

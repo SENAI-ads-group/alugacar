@@ -46,13 +46,13 @@ public class PanelItemVistoria extends javax.swing.JPanel {
         checkBoxAdequado.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         checkBoxAdequado.setText("Adequado");
         checkBoxAdequado.setPreferredSize(new java.awt.Dimension(95, 25));
-        add(checkBoxAdequado, new org.netbeans.lib.awtextra.AbsoluteConstraints(305, 0, -1, -1));
+        add(checkBoxAdequado, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 0, -1, -1));
 
         labelDescricao.setBackground(new java.awt.Color(255, 255, 255));
         labelDescricao.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         labelDescricao.setOpaque(true);
         labelDescricao.setPreferredSize(new java.awt.Dimension(305, 25));
-        add(labelDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        add(labelDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 

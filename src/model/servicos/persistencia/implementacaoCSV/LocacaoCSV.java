@@ -3,9 +3,14 @@ package model.servicos.persistencia.implementacaoCSV;
 import application.Configuracoes;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.entidades.Locacao;
+import model.entidades.Vistoria;
+import model.entidades.enums.StatusLocacao;
+import model.entidades.enums.StatusVeiculo;
 import model.exceptions.DBException;
+import model.servicos.persistencia.DAOFactory;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
@@ -26,53 +31,34 @@ public class LocacaoCSV implements LocacaoDAO {
 
         ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
         CONEXAO = new CSVConnection();
-
     }
 
     @Override
-    public void inserir(Locacao locacao) throws DBException {
-        if (locacao.getId() == null) {
-            locacao.setId(getUltimoID() + 1);
-        }
-        if (buscar(locacao.getId()) != null) {
-            throw new DBException("A locação " + locacao.getId() + " já existe");
-        }
-        CONEXAO.open(ARQUIVO_DB);
-
-        CONEXAO.writer().write(locacao.toCSV());
-        CONEXAO.writer().newLine();
-
-        CONEXAO.close();
+    public void registrar(Locacao locacao) throws DBException {
+        locacao.setDataRegistro(new Date());
+        locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.PENDENTE_DE_ENTREGA);
+        locacao.setStatus(StatusLocacao.PENDENTE);
+        inserir(locacao);
     }
 
     @Override
-    public void atualizar(Locacao locacao) {
+    public void entregarVeiculo(Locacao locacao, Vistoria vistoria) {
+        locacao.setVistoriaEntrega(vistoria);
+        locacao.setDataEntrega(new Date());
+        locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
+        locacao.setStatus(StatusLocacao.EM_ABERTO);
+        DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
+        atualizar(locacao);
+    }
 
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\locacao-temp.csv");
-        CSVConnection conexaoTemp = new CSVConnection();
-
-        CONEXAO.open(ARQUIVO_DB);
-        conexaoTemp.open(arquivoDBTemp);
-
-        String linha = CONEXAO.reader().readLine();
-        while (linha != null) {
-            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
-
-            if (locacaoEncontrada.equals(locacao)) {
-                conexaoTemp.writer().write(locacao.toCSV());
-            } else {
-                conexaoTemp.writer().write(locacaoEncontrada.toCSV());
-            }
-            conexaoTemp.writer().flush();
-            conexaoTemp.writer().newLine();
-            linha = CONEXAO.reader().readLine();
-        }
-
-        conexaoTemp.close();
-        CONEXAO.close();
-        ARQUIVO_DB.delete();
-        arquivoDBTemp.renameTo(ARQUIVO_DB);
-
+    @Override
+    public void devolverVeiculo(Locacao locacao, Vistoria vistoria) {
+        locacao.setVistoriaDevolucao(vistoria);
+        locacao.setDataDevolucao(new Date());
+        locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.INDISPONIVEL);
+        locacao.setStatus(StatusLocacao.FINALIZADA);
+        DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
+        atualizar(locacao);
     }
 
     @Override
@@ -111,6 +97,48 @@ public class LocacaoCSV implements LocacaoDAO {
 
         CONEXAO.close();
         return locacoesEncontradas;
+    }
+
+    private void inserir(Locacao locacao) {
+        if (locacao.getId() == null) {
+            locacao.setId(getUltimoID() + 1);
+        }
+        if (buscar(locacao.getId()) != null) {
+            throw new DBException("A locação " + locacao.getId() + " já existe");
+        }
+        CONEXAO.open(ARQUIVO_DB);
+
+        CONEXAO.writer().write(locacao.toCSV());
+        CONEXAO.writer().newLine();
+
+        CONEXAO.close();
+    }
+
+    private void atualizar(Locacao locacao) {
+        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\locacao-temp.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
+
+            if (locacaoEncontrada.equals(locacao)) {
+                conexaoTemp.writer().write(locacao.toCSV());
+            } else {
+                conexaoTemp.writer().write(locacaoEncontrada.toCSV());
+            }
+            conexaoTemp.writer().flush();
+            conexaoTemp.writer().newLine();
+            linha = CONEXAO.reader().readLine();
+        }
+
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
     }
 
     private Integer getUltimoID() {

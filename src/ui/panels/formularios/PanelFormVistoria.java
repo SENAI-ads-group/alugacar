@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.util.Map;
 import java.util.Set;
 import model.entidades.ItemVistoria;
+import model.entidades.Locacao;
 import model.entidades.Vistoria;
 import model.exceptions.ValidacaoException;
 import util.Utilities;
@@ -15,14 +16,12 @@ import util.Utilities;
 public final class PanelFormVistoria extends javax.swing.JPanel {
 
     private Vistoria vistoria;
+    private Locacao locacao;
 
-    public PanelFormVistoria(Vistoria vistoria) {
+    public PanelFormVistoria(Vistoria vistoria, Locacao locacao) {
         initComponents();
         this.vistoria = vistoria;
-    }
-
-    public void setVistoria(Vistoria vistoria) {
-        this.vistoria = vistoria;
+        this.locacao = locacao;
     }
 
     public void updateListItens() {
@@ -53,7 +52,8 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
         if (vistoria == null) {
             throw new IllegalStateException("A vistoria está nulo");
         }
-        textFieldKM.setText("" + vistoria.getKmVeiculo());
+        textFieldLocacao.setText("" + locacao.getId());
+        textFieldKM.setText("" + locacao.getVeiculo().getKMRodado());
         updateListItens();
     }
 
@@ -131,6 +131,8 @@ public final class PanelFormVistoria extends javax.swing.JPanel {
         labelKM.setText("KM atual do veículo");
         add(labelKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, -1, -1));
 
+        textFieldLocacao.setEditable(false);
+        textFieldLocacao.setEnabled(false);
         textFieldLocacao.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldLocacao.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldLocacao.setPreferredSize(new java.awt.Dimension(170, 25));

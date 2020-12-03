@@ -8,7 +8,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.entidades.Locacao;
-import model.entidades.Vistoria;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.LocacaoDAO;
 import ui.listeners.DataChangeListener;
@@ -46,12 +45,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
     private void persistEntity() throws DBException, ValidacaoException {
         getFormData();
-        locacao.registrar();
-        if (locacao.getId() == null) {
-            DAO.inserir(locacao);
-        } else {
-            DAO.atualizar(locacao);
-        }
+        DAO.registrar(locacao);
     }
 
     public Locacao getFormData() throws ValidacaoException {
@@ -92,7 +86,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de cliente");
+        setTitle("Registro de locação");
         setMinimumSize(new java.awt.Dimension(500, 450));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setPreferredSize(new java.awt.Dimension(500, 500));
@@ -216,12 +210,12 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormModelo")) {
+            if (ex.getMessage().equals("PanelFormLocacao")) {
                 tabbedPane.setIconAt(0, iconError);
                 formLocacao.setErrorsMessages(ex.getErrors());
             }
         } catch (DBException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao registrar locação", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed
 

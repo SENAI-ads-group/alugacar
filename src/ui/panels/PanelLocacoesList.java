@@ -2,10 +2,13 @@ package ui.panels;
 
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.entidades.Cliente;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
 import model.entidades.enums.StatusLocacao;
+import model.entidades.enums.TipoCliente;
 import model.entidades.enums.TipoLocacao;
 import model.servicos.persistencia.LocacaoDAO;
 import ui.FrameLoader;
@@ -30,10 +33,8 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
 
     public void updateTable() {
         List<Locacao> locacoes = DAO.buscarTodos();
-
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
-
         for (Locacao locacao : locacoes) {
             Object[] row = {
                 locacao.getId(),
@@ -50,11 +51,9 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
         table.setModel(tableModel);
         if (tableModel.getRowCount() > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
-            buttonExcluir.setEnabled(true);
-            buttonEditar.setEnabled(true);
+            buttonVer.setEnabled(true);
         } else {
-            buttonExcluir.setEnabled(false);
-            buttonEditar.setEnabled(false);
+            buttonVer.setEnabled(false);
         }
     }
 
@@ -76,8 +75,7 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
 
         panelHeader = new javax.swing.JPanel();
         buttonNovo = new javax.swing.JButton();
-        buttonEditar = new javax.swing.JButton();
-        buttonExcluir = new javax.swing.JButton();
+        buttonVer = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
         buttonEntregarDevolver = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
@@ -104,33 +102,25 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
             }
         });
 
-        buttonEditar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-editar-24x24.png"))); // NOI18N
-        buttonEditar.setText("Editar");
-        buttonEditar.setBorderPainted(false);
-        buttonEditar.setFocusPainted(false);
-        buttonEditar.setFocusable(false);
-        buttonEditar.setPreferredSize(new java.awt.Dimension(95, 35));
-        buttonEditar.addActionListener(new java.awt.event.ActionListener() {
+        buttonVer.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-visualizar-24x24.png"))); // NOI18N
+        buttonVer.setText("Visualizar");
+        buttonVer.setBorderPainted(false);
+        buttonVer.setFocusPainted(false);
+        buttonVer.setFocusable(false);
+        buttonVer.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonVer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonEditarActionPerformed(evt);
+                buttonVerActionPerformed(evt);
             }
         });
-
-        buttonExcluir.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-excluir-24x24.png"))); // NOI18N
-        buttonExcluir.setText("Excluir");
-        buttonExcluir.setBorderPainted(false);
-        buttonExcluir.setFocusPainted(false);
-        buttonExcluir.setFocusable(false);
-        buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-28x28.png"))); // NOI18N
         labelTitleList.setText("Locações");
 
         buttonEntregarDevolver.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonEntregarDevolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-excluir-24x24.png"))); // NOI18N
+        buttonEntregarDevolver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-entregarDevolver-24x24.png"))); // NOI18N
         buttonEntregarDevolver.setText("Entregar / Devolver");
         buttonEntregarDevolver.setBorderPainted(false);
         buttonEntregarDevolver.setFocusPainted(false);
@@ -149,12 +139,10 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 576, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 650, Short.MAX_VALUE)
                 .addComponent(buttonEntregarDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonVer, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -167,8 +155,7 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
                     .addComponent(labelTitleList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEntregarDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -215,19 +202,23 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        createLocacaoForm(new Locacao(TipoLocacao.DIARIA));
+        TipoLocacao[] itens = TipoLocacao.values();
+        TipoLocacao selectedValue = (TipoLocacao) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o tipo de locação", "Tipo de locação",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+        if (selectedValue != null) {
+            createLocacaoForm(new Locacao(selectedValue));
+        }
     }//GEN-LAST:event_buttonNovoActionPerformed
 
-    private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
+    private void buttonVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVerActionPerformed
 
-    }//GEN-LAST:event_buttonEditarActionPerformed
+    }//GEN-LAST:event_buttonVerActionPerformed
 
     private void buttonEntregarDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntregarDevolverActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         Locacao locacao = DAO.buscar(idSelecionado);
         if (locacao.getStatus() == StatusLocacao.PENDENTE) {
-            DialogVistoriaForm dialogForm = new DialogVistoriaForm(FrameLoader.getFrameMain(), true, new Vistoria());
-            dialogForm.setLocacao(locacao);
+            DialogVistoriaForm dialogForm = new DialogVistoriaForm(FrameLoader.getFrameMain(), true, locacao, new Vistoria());
             dialogForm.subscribeListener(this);
             dialogForm.updateFormData();
             dialogForm.setVisible(true);
@@ -236,10 +227,9 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonEntregarDevolver;
-    private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
+    private javax.swing.JButton buttonVer;
     private javax.swing.JLabel labelTitleList;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JScrollPane scrollPane;

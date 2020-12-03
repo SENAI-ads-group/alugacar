@@ -3,7 +3,6 @@ package model.entidades;
 import java.util.Date;
 import java.util.Objects;
 import model.entidades.enums.StatusLocacao;
-import model.entidades.enums.StatusVeiculo;
 import model.entidades.enums.TipoLocacao;
 import model.servicos.persistencia.DAOFactory;
 import util.DateUtilities;
@@ -27,6 +26,7 @@ public class Locacao {
     private Vistoria vistoriaEntrega;
     private Vistoria vistoriaDevolucao;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Locacao(TipoLocacao tipoLocacao) {
         status = StatusLocacao.PENDENTE;
         this.tipo = tipoLocacao;
@@ -60,7 +60,9 @@ public class Locacao {
         }
         tipo.getContrato().setLocacao(this);
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">
     public Integer getId() {
         return id;
     }
@@ -69,13 +71,28 @@ public class Locacao {
         this.id = id;
     }
 
+    public StatusLocacao getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusLocacao status) {
+        this.status = status;
+    }
+
     public TipoLocacao getTipo() {
         return tipo;
     }
 
     public void setTipo(TipoLocacao tipo) {
-        tipo.getContrato().setLocacao(this);
         this.tipo = tipo;
+    }
+
+    public Date getDataRegistro() {
+        return dataRegistro;
+    }
+
+    public void setDataRegistro(Date dataRegistro) {
+        this.dataRegistro = dataRegistro;
     }
 
     public Date getDataEntrega() {
@@ -118,42 +135,47 @@ public class Locacao {
         this.motorista = motorista;
     }
 
-    public StatusLocacao getStatus() {
-        return status;
-    }
-
-    public Date getDataRegistro() {
-        return dataRegistro;
-    }
-
     public Vistoria getVistoriaEntrega() {
         return vistoriaEntrega;
+    }
+
+    public void setVistoriaEntrega(Vistoria vistoriaEntrega) {
+        this.vistoriaEntrega = vistoriaEntrega;
     }
 
     public Vistoria getVistoriaDevolucao() {
         return vistoriaDevolucao;
     }
 
-    public void registrar() {
-        dataRegistro = new Date();
-        veiculo.setStatusVeiculo(StatusVeiculo.PENDENTE_DE_ENTREGA);
-        status = StatusLocacao.PENDENTE;
-    }
-
-    public void entregarVeiculo(Vistoria vistoriaEntrega) {
-        this.vistoriaEntrega = vistoriaEntrega;
-        dataEntrega = new Date();
-        veiculo.setStatusVeiculo(StatusVeiculo.EM_LOCACAO);
-        status = StatusLocacao.EM_ABERTO;
-    }
-
-    public void devolverVeiculo(Vistoria vistoriaDevolucao) {
-        if (status != StatusLocacao.EM_ABERTO) {
-            throw new IllegalStateException("A locação precisa ser registrada antes");
-        }
-        status = StatusLocacao.FINALIZADA;
+    public void setVistoriaDevolucao(Vistoria vistoriaDevolucao) {
         this.vistoriaDevolucao = vistoriaDevolucao;
-        dataDevolucao = new Date();
+    }
+
+    // </editor-fold>
+    
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Locacao other = (Locacao) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 
     public String toCSV() {
@@ -261,31 +283,6 @@ public class Locacao {
         cliente = DAOFactory.createClienteDAO().buscar(idCliente);
         vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
         vistoriaDevolucao = DAOFactory.createVistoriaDAO().buscar(idVistoriaDevolucao);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 89 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Locacao other = (Locacao) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
     }
 
 }

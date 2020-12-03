@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
 import model.exceptions.ValidacaoException;
+import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.VistoriaDAO;
 import ui.listeners.DataChangeListener;
 import ui.panels.formularios.PanelFormVistoria;
@@ -23,41 +24,31 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
     private Vistoria vistoria;
     private Locacao locacao;
-    private final VistoriaDAO DAO = DAOFactory.createVistoriaDAO();
-
+    private final VistoriaDAO DAO_VISTORIA = DAOFactory.createVistoriaDAO();
+    private final LocacaoDAO DAO_LOCACAO = DAOFactory.createLocacaoDAO();
     private PanelFormVistoria formVistoria;
-
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
-    public DialogVistoriaForm(java.awt.Frame parent, boolean modal, Vistoria vistoria) {
+    public DialogVistoriaForm(java.awt.Frame parent, boolean modal, Locacao locacao, Vistoria vistoria) {
         super(parent, modal);
         this.vistoria = vistoria;
+        this.locacao = locacao;
+
         initComponents();
         loadPanels();
     }
 
-    public void setVistoria(Vistoria vistoria) {
-        this.vistoria = vistoria;
-    }
-
-    public void setLocacao(Locacao locacao) {
-        this.locacao = locacao;
-    }
-
     private void loadPanels() {
-        formVistoria = new PanelFormVistoria(vistoria);
+        formVistoria = new PanelFormVistoria(vistoria, locacao);
         PanelUtilities.loadPanelToPanel(formVistoria, panelCenterTab1);
     }
 
     private void persistEntity() throws DBException, ValidacaoException {
         getFormData();
         if (vistoria.getId() == null) {
-            DAO.inserir(vistoria);
+            DAO_VISTORIA.inserir(vistoria);
         }
-        locacao.entregarVeiculo(vistoria);
-        System.out.println(locacao.toCSV());
-        DAOFactory.createLocacaoDAO().atualizar(locacao);
-        System.out.println(locacao.toCSV());
+        DAO_LOCACAO.entregarVeiculo(locacao, vistoria);
     }
 
     public Vistoria getFormData() throws ValidacaoException {
@@ -221,12 +212,12 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormModelo")) {
+            if (ex.getMessage().equals("PanelFormVistoria")) {
                 tabbedPane.setIconAt(0, iconError);
                 formVistoria.setErrorsMessages(ex.getErrors());
             }
         } catch (DBException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir vistoria", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed
 

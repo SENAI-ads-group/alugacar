@@ -24,6 +24,7 @@ import model.entidades.Endereco;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.entidades.Motorista;
+import model.entidades.Pessoa;
 import model.entidades.PessoaFisica;
 import model.entidades.PessoaJuridica;
 import model.entidades.Veiculo;
@@ -39,14 +40,13 @@ public class GeradorPdfPF {
 
     public static void main(String[] args) {
 
-       gerarContratoPDF();
-     
+        gerarContratoPDF();
 
     }
     public static final Font BOLD_UNDERLINED = new Font(FontFamily.HELVETICA, 14, Font.BOLDITALIC);
-    
-   public static final Font SUB_TITLE = new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
-        
+
+    public static final Font SUB_TITLE = new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+
     public static final Font NORMAL = new Font(FontFamily.COURIER, 12);
 
     public static void gerarContratoPDF() {
@@ -55,7 +55,8 @@ public class GeradorPdfPF {
 
         Endereco endereco = new Endereco("Rua X", 123, "complemento", "bairro1", "cidade1", UF.CE, "75380082");
         PessoaFisica pessoa = new PessoaFisica("Carlos", "(62)9.92245404", "carlos@carlos", endereco, "701.701.701-45", "313131", new Date());
-        //PessoaJuridica pj = new PessoaJuridica("PESSOA JURIFICA", "39980231", "pessoajuridica@gmail.com", endereco, "02.323.233/0001-34", "PESSOA JURIDICA SOCIEDADE", "131313");
+        PessoaJuridica pj = new PessoaJuridica("PESSOA JURIFICA", "39980231", "pessoajuridica@gmail.com", endereco, "02.323.233/0001-34", "PESSOA JURIDICA SOCIEDADE", "131313");
+        Pessoa people = pj;
         Cliente cliente = new Cliente(3131, pessoa, true);
         Marca marca = new Marca(1, "descricao");
         Categoria categoria = new Categoria(233, "descricao", 345.45, 31.44, 23.4);
@@ -90,18 +91,29 @@ public class GeradorPdfPF {
             tabela1.addCell(cabecalhoTabela1);
             tabela1.addCell(emBranco);
 
-            tabela1.addCell("Nome : " + cliente.getPessoa().getNome());
-            tabela1.addCell("CPF : " + pessoa.getCpf());
+            if (people instanceof PessoaFisica) {
+                tabela1.addCell("Nome : " + ((PessoaFisica) people).getNome());
+            } else {
+                tabela1.addCell("Razão Social : " + ((PessoaJuridica) people).getRazaoSocial());
+
+            }
+
+            if (people instanceof PessoaFisica) {
+
+                tabela1.addCell("CPF : " + ((PessoaFisica) people).getCpf());
+            } else {
+                tabela1.addCell("CNPJ : " + ((PessoaJuridica) people).getCnpj());
+            }
+
             tabela1.addCell("Telefone : " + pessoa.getTelefone());
             tabela1.addCell("E-mail : " + cliente.getPessoa().getEmail());
             tabela1.addCell("ID : " + cliente.getId());
             tabela1.addCell("Tipo : " + cliente.getTipoCliente().toString());
-        
 
             //tabela.setSpacingBefore(17);
             tabela1.addCell(emBranco);
-            
-                 //*************CAMPO APENAS COM OS DADOS DO MOTORISTA*************//
+
+            //*************CAMPO APENAS COM OS DADOS DO MOTORISTA*************//
             PdfPTable tabela2 = new PdfPTable(2);
             PdfPCell cabecalhoTabela2 = new PdfPCell(new Paragraph("DADOS DO MOTORISTA", NORMAL));
 
@@ -120,12 +132,9 @@ public class GeradorPdfPF {
             tabela2.addCell("ID : " + motorista.getId());
             tabela2.addCell("Telefone : " + motorista.getPessoa().getTelefone());
             tabela2.addCell("E-mail : " + motorista.getPessoa().getEmail());
-            tabela2.addCell("Data de Nascimento : " + motorista.getPessoa().getDataNascimento());
-            
-            
+            tabela2.addCell("Data de Nascimento : " + DateUtilities.formatData(motorista.getPessoa().getDataNascimento()));
+
             tabela2.addCell(emBranco);
-            
-            
 
             //*************CAMPO APENAS COM OS DADOS DO VEÍCULO ALUGADO*************//
             PdfPTable tabela3 = new PdfPTable(2);
@@ -141,7 +150,7 @@ public class GeradorPdfPF {
 
             tabela3.addCell("Marca : " + modelo.getMarca());
             tabela3.addCell("Categoria : " + modelo.getDescricao());
-            
+
             tabela3.addCell("Código FIPE :  " + modelo.getCodigoFipe());
             tabela3.addCell("Placa : " + veiculo.getPlaca());
             tabela3.addCell("Quilometragem : " + veiculo.getKMRodado() + " KM");
@@ -149,14 +158,9 @@ public class GeradorPdfPF {
             tabela3.addCell("Renavam : " + veiculo.getRenavam());
             tabela3.addCell(emBranco);
             tabela3.addCell(emBranco);
-            
-            
-            //*************CAMPO APENAS COM OS DADOS DO MOTORISTA*************//
 
-            
-            
-            
-             //*************CAMPO APENAS COM OS DADOS DA LOCAÇÃO*************//
+            //*************CAMPO APENAS COM OS DADOS DO MOTORISTA*************//
+            //*************CAMPO APENAS COM OS DADOS DA LOCAÇÃO*************//
             PdfPTable tabela4 = new PdfPTable(2);
             PdfPCell cabecalhoTabela4 = new PdfPCell(new Paragraph("DADOS DA LOCAÇÃO", NORMAL));
 
@@ -174,7 +178,6 @@ public class GeradorPdfPF {
             tabela4.addCell("Status da Locação : ");
             tabela4.addCell(emBranco);
 
-            
             //*************CAMPO APENAS COM OS DADOS DA VISTORIA*************//
             PdfPTable tabela5 = new PdfPTable(2);
             PdfPCell cabecalhoTabela5 = new PdfPCell(new Paragraph("DADOS DA VISTORIA", NORMAL));
@@ -186,10 +189,10 @@ public class GeradorPdfPF {
 
             tabela5.addCell(cabecalhoTabela5);
             tabela5.addCell(emBranco);
-            
+
             tabela5.addCell("Tipo de Taxa");
             tabela5.addCell("Valor");
-            
+
 
             /*Image imagem = Image.getInstance("C:\\Users\\Alexsander\\Desktop\\teste.jpg");
             imagem.scalePercent(15);*/
@@ -213,7 +216,5 @@ public class GeradorPdfPF {
         }
 
     }
-
-    
 
 }

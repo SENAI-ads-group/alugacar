@@ -43,8 +43,8 @@ public interface ContratoService {
         if (getLocacao().getStatus() != StatusLocacao.FINALIZADA) {
             throw new IllegalStateException("A locação deve ser finalizada para o processamento");
         }
-        if (getLocacao().getVistoriaEntrega().isVeiculoAdequado()) {
-            if (getLocacao().getVistoriaDevolucao().isVeiculoAdequado()) {
+        if (getLocacao().getVistoriaEntrega().isAdequada()) {
+            if (getLocacao().getVistoriaDevolucao().isAdequada()) {
                 addTaxa(Taxa.getTaxaItemVistoria());
             }
         } else {

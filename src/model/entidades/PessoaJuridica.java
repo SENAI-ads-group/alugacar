@@ -2,7 +2,7 @@ package model.entidades;
 
 /**
  *
- * @author usuario
+ * @author Patrick-Ribeiro
  */
 public class PessoaJuridica extends Pessoa {
 
@@ -10,6 +10,7 @@ public class PessoaJuridica extends Pessoa {
     private String razaoSocial;
     private String inscricaoEstadual;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">
     public PessoaJuridica() {
     }
 
@@ -34,7 +35,9 @@ public class PessoaJuridica extends Pessoa {
         this.razaoSocial = razaoSocial;
         this.inscricaoEstadual = inscricaoEstadual;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">
     public String getCnpj() {
         return cnpj;
     }
@@ -58,6 +61,7 @@ public class PessoaJuridica extends Pessoa {
     public void setInscricaoEstadual(String inscricaoEstadual) {
         this.inscricaoEstadual = inscricaoEstadual;
     }
+    // </editor-fold>
 
     @Override
     public String toCSV() {

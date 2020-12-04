@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Configuracoes;
+import application.Programa;
 import model.entidades.Marca;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,17 +17,8 @@ import model.servicos.persistencia.MarcaDAO;
  */
 public class MarcaCSV implements MarcaDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public MarcaCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.marca");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "marcas.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(Marca marca) throws DBException {
@@ -47,7 +38,7 @@ public class MarcaCSV implements MarcaDAO {
 
     @Override
     public void atualizar(Marca marca) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-marcas.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);
@@ -81,7 +72,7 @@ public class MarcaCSV implements MarcaDAO {
         if (DAOFactory.createModeloDAO().buscar(buscar(id)).size() > 0) {
             throw new DBException("A marca não pode ser excluída pois está associada a uma ou mais modelos");
         }
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-marca.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);
@@ -112,7 +103,7 @@ public class MarcaCSV implements MarcaDAO {
         CONEXAO.open(ARQUIVO_DB);
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
-            String[] csv        = linha.split(";");
+            String[] csv = linha.split(";");
             Marca marcaEncontrada = new Marca(csv);
 
             if (marcaEncontrada.getId().equals(id)) {

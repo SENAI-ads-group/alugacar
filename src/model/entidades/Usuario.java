@@ -1,6 +1,7 @@
 package model.entidades;
 
 import java.util.Date;
+import java.util.Objects;
 import model.entidades.enums.CategoriaUsuario;
 import model.entidades.enums.UF;
 import util.DateUtilities;
@@ -18,6 +19,7 @@ public class Usuario {
     private CategoriaUsuario categoria;
     private PessoaFisica pessoa;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">
     public Usuario() {
     }
 
@@ -44,6 +46,27 @@ public class Usuario {
         pessoa = instanciarPessoa(csv);
     }
 
+    private PessoaFisica instanciarPessoa(String[] csv) {
+        String nome = csv[4];
+        String telefone = csv[5];
+        String email = csv[6];
+        String logradouro = csv[7];
+        String numero = csv[8];
+        String complemento = csv[9];
+        String bairro = csv[10];
+        String cidade = csv[11];
+        UF uf = UF.valueOf(csv[12]);
+        String cep = csv[13];
+        String cpf = csv[14];
+        String registroGeral = csv[15];
+        Date dataNascimento = DateUtilities.tryParseToDate(csv[16]);
+
+        Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getId() {
         return id;
     }
@@ -83,6 +106,34 @@ public class Usuario {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    // </editor-fold>
 
     public String toCSV() {
         return "" + id + ";"
@@ -92,22 +143,4 @@ public class Usuario {
                 + pessoa.toCSV();
     }
 
-    private PessoaFisica instanciarPessoa(String[] csv) {
-        String nome = csv[4];
-        String telefone = csv[5];
-        String email = csv[6];
-        String logradouro = csv[7];
-        Integer numero = Utilities.tryParseToInteger(csv[8]);
-        String complemento = csv[9];
-        String bairro = csv[10];
-        String cidade = csv[11];
-        UF uf = UF.valueOf(csv[12]);
-        String cep = csv[13];
-        String cpf = csv[14];
-        String registroGeral = csv[15];
-        Date dataNascimento = DateUtilities.tryParseToDate(csv[16]);
-
-        Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
-        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
-    }
 }

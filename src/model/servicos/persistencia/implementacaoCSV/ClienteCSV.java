@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Configuracoes;
+import application.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import model.entidades.Cliente;
 import model.exceptions.DBException;
 import util.Utilities;
 import model.servicos.persistencia.ClienteDAO;
+import model.servicos.persistencia.DAOFactory;
 
 /**
  *
@@ -16,16 +17,8 @@ import model.servicos.persistencia.ClienteDAO;
  */
 public class ClienteCSV implements ClienteDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public ClienteCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.cliente");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "clientes.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(Cliente cliente) throws DBException {
@@ -45,7 +38,7 @@ public class ClienteCSV implements ClienteDAO {
 
     @Override
     public void atualizar(Cliente cliente) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\clientes-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-clientes.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);
@@ -62,6 +55,37 @@ public class ClienteCSV implements ClienteDAO {
             }
             conexaoTemp.writer().flush();
             conexaoTemp.writer().newLine();
+            linha = CONEXAO.reader().readLine();
+        }
+
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
+    }
+
+    @Override
+    public void excluir(int id) {
+        if (buscar(id) == null) {
+            throw new DBException("A marca não existe");
+        }
+        if (DAOFactory.createLocacaoDAO().buscar(buscar(id)).size() > 0) {
+            throw new DBException("O cliente não pode ser excluído pois está associado à uma ou mais locações");
+        }
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-clientes.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Cliente clienteEncontrado = new Cliente(linha.split(";"));
+            if (!clienteEncontrado.getId().equals(id)) {
+                conexaoTemp.writer().write(clienteEncontrado.toCSV());
+                conexaoTemp.writer().flush();
+                conexaoTemp.writer().newLine();
+            }
             linha = CONEXAO.reader().readLine();
         }
 

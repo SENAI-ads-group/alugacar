@@ -29,7 +29,6 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         }
         textFieldDescricao.setText(categoria.getDescricao());
         textFieldValorDiaria.setText(String.valueOf(categoria.getValorDiaria()));
-        textFieldValorMinimoLocacao.setText(String.valueOf(categoria.getValorMinimoLocacao()));
         textFieldValorKM.setText(String.valueOf(categoria.getValorKM()));
 
     }
@@ -42,14 +41,12 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         validarCampos();
         categoria.setDescricao(textFieldDescricao.getText());
         categoria.setValorDiaria(Utilities.tryParseToDouble(textFieldValorDiaria.getText()));
-        categoria.setValorMinimoLocacao(Utilities.tryParseToDouble(textFieldValorMinimoLocacao.getText()));
-        categoria.setValorKM(Utilities.tryParseToDouble(textFieldValorMinimoLocacao.getText()));
+        categoria.setValorKM(Utilities.tryParseToDouble(textFieldValorKM.getText()));
         return categoria;
     }
 
     public void clearErrors() {
         labelErroDescricao.setText("");
-        labelErroValorMinimoLocacao.setText("");
         labelErroValorDiaria.setText("");
     }
 
@@ -58,14 +55,11 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         if (Utilities.textFieldIsEmpty(textFieldDescricao)) {
             exception.addError("descricao", "Descrição não informada");
         }
-        if (Utilities.textFieldIsEmpty(textFieldValorMinimoLocacao)) {
-            exception.addError("valorMinimoLocacao", "Valor mínimo não informado");
-        }
         if (Utilities.textFieldIsEmpty(textFieldValorDiaria)) {
             exception.addError("valorDiaria", "Valor da diária não informado");
         }
         if (Utilities.textFieldIsEmpty(textFieldValorKM)) {
-            exception.addError("valorDiaria", "Valor do KM não informado");
+            exception.addError("valorKM", "Valor do KM não informado");
         }
 
         if (exception.getErrors().size() > 0) {
@@ -82,8 +76,8 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         if (fields.contains("valorDiaria")) {
             labelErroValorDiaria.setText(errors.get("valorDiaria"));
         }
-        if (fields.contains("valorMinimoLocacao")) {
-            labelErroValorDiaria.setText(errors.get("valorMinimoLocacao"));
+        if (fields.contains("valorKM")) {
+            labelErroValorKM.setText(errors.get("valorKM"));
         }
     }
 
@@ -93,10 +87,7 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
 
         textFieldDescricao = new javax.swing.JTextField();
         labelDescricao = new javax.swing.JLabel();
-        textFieldValorMinimoLocacao = new javax.swing.JTextField();
-        labelValorMinimoLocacao = new javax.swing.JLabel();
         labelErroDescricao = new javax.swing.JLabel();
-        labelErroValorMinimoLocacao = new javax.swing.JLabel();
         textFieldValorDiaria = new javax.swing.JTextField();
         labelErroValorDiaria = new javax.swing.JLabel();
         labelValorDiaria = new javax.swing.JLabel();
@@ -120,33 +111,12 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         labelDescricao.setText("Descrição");
         add(labelDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        textFieldValorMinimoLocacao.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldValorMinimoLocacao.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldValorMinimoLocacao.setName(""); // NOI18N
-        textFieldValorMinimoLocacao.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldValorMinimoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
-        textFieldValorMinimoLocacao.getAccessibleContext().setAccessibleDescription("");
-
-        labelValorMinimoLocacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelValorMinimoLocacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-info-12x12.png"))); // NOI18N
-        labelValorMinimoLocacao.setText("Valor mínimo (R$)");
-        labelValorMinimoLocacao.setToolTipText("Valor em reais (R$) mínimo para uma locação com um veículo desta categoria");
-        labelValorMinimoLocacao.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelValorMinimoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
-
         labelErroDescricao.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroDescricao.setForeground(java.awt.Color.red);
         labelErroDescricao.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroDescricao.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroDescricao.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, 170, -1));
-
-        labelErroValorMinimoLocacao.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroValorMinimoLocacao.setForeground(java.awt.Color.red);
-        labelErroValorMinimoLocacao.setMaximumSize(new java.awt.Dimension(150, 15));
-        labelErroValorMinimoLocacao.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroValorMinimoLocacao.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroValorMinimoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, 170, -1));
 
         textFieldValorDiaria.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldValorDiaria.setMinimumSize(new java.awt.Dimension(170, 25));
@@ -174,7 +144,7 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         textFieldValorKM.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldValorKM.setName(""); // NOI18N
         textFieldValorKM.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
+        add(textFieldValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
         textFieldValorKM.getAccessibleContext().setAccessibleDescription("");
 
         labelValorKM.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -182,14 +152,14 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
         labelValorKM.setText("Valor KM (R$)");
         labelValorKM.setToolTipText("Valor em reais (R$) para cada quillômetro percorrido pelo veículo na modalidade de locação por quilômetro");
         labelValorKM.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, -1, -1));
+        add(labelValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
 
         labelErroValorKM.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroValorKM.setForeground(java.awt.Color.red);
         labelErroValorKM.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroValorKM.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroValorKM.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 115, 170, -1));
+        add(labelErroValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, 170, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -198,13 +168,10 @@ public final class PanelFormCategoria extends javax.swing.JPanel {
     private javax.swing.JLabel labelErroDescricao;
     private javax.swing.JLabel labelErroValorDiaria;
     private javax.swing.JLabel labelErroValorKM;
-    private javax.swing.JLabel labelErroValorMinimoLocacao;
     private javax.swing.JLabel labelValorDiaria;
     private javax.swing.JLabel labelValorKM;
-    private javax.swing.JLabel labelValorMinimoLocacao;
     private javax.swing.JTextField textFieldDescricao;
     private javax.swing.JTextField textFieldValorDiaria;
     private javax.swing.JTextField textFieldValorKM;
-    private javax.swing.JTextField textFieldValorMinimoLocacao;
     // End of variables declaration//GEN-END:variables
 }

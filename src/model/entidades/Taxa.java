@@ -12,6 +12,7 @@ public class Taxa {
     private String descricao;
     private double valor;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">
     public Taxa() {
     }
 
@@ -19,7 +20,9 @@ public class Taxa {
         this.descricao = descricao;
         this.valor = valor;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setter">
     public String getDescricao() {
         return descricao;
     }
@@ -35,6 +38,7 @@ public class Taxa {
     public void setValor(double valor) {
         this.valor = valor;
     }
+    // </editor-fold>
 
     public static Taxa getTaxaItemVistoria() {
         Double valorTaxa = Utilities.tryParseToDouble(Configuracoes.getProperties().getProperty("taxa.item-vistoria"));

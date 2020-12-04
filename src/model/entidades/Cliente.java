@@ -20,6 +20,7 @@ public class Cliente {
     private boolean ativo = true;
     private final TipoCliente tipoCliente;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Cliente(TipoCliente tipo) {
         this.tipoCliente = tipo;
         if (tipo == TipoCliente.PESSOA_FISICA) {
@@ -51,6 +52,46 @@ public class Cliente {
         }
     }
 
+    private PessoaJuridica instanciarPessoaJuridica(String[] csv) {
+        String nome = csv[3];
+        String telefone = csv[4];
+        String email = csv[5];
+        String logradouro = csv[6];
+        String numeroEndereco = csv[7];
+        String complemento = csv[8];
+        String bairro = csv[9];
+        String cidade = csv[10];
+        UF uf = UF.valueOf(csv[11]);
+        String cep = csv[12];
+        String cnpj = csv[13];
+        String razaoSocial = csv[14];
+        String inscricaoEstadual = csv[15];
+
+        Endereco endereco = new Endereco(logradouro, numeroEndereco, complemento, bairro, cidade, uf, cep);
+        return new PessoaJuridica(nome, telefone, email, endereco, cnpj, razaoSocial, inscricaoEstadual);
+    }
+
+    private PessoaFisica instanciarPessoaFisica(String[] csv) {
+        String nome = csv[3];
+        String telefone = csv[4];
+        String email = csv[5];
+        String logradouro = csv[6];
+        String numeroEndereco = csv[7];
+        String complemento = csv[8];
+        String bairro = csv[9];
+        String cidade = csv[10];
+        UF uf = UF.valueOf(csv[11]);
+        String cep = csv[12];
+        String cpf = csv[13];
+        String registroGeral = csv[14];
+        Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
+
+        Endereco endereco = new Endereco(logradouro, numeroEndereco, complemento, bairro, cidade, uf, cep);
+        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getId() {
         return id;
     }
@@ -78,14 +119,9 @@ public class Cliente {
     public TipoCliente getTipoCliente() {
         return tipoCliente;
     }
+    // </editor-fold>
 
-    public String toCSV() {
-        return "" + id + ";"
-                + ativo + ";"
-                + tipoCliente.toCSV() + ";"
-                + pessoa.toCSV();
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
         int hash = 7;
@@ -110,47 +146,18 @@ public class Cliente {
         }
         return true;
     }
+    // </editor-fold>
+
+    public String toCSV() {
+        return "" + id + ";"
+                + ativo + ";"
+                + tipoCliente.toCSV() + ";"
+                + pessoa.toCSV();
+    }
 
     @Override
     public String toString() {
-        return id + " - " + pessoa.getNome();
+        return pessoa.getNome();
     }
 
-    private PessoaJuridica instanciarPessoaJuridica(String[] csv) {
-        String nome = csv[3];
-        String telefone = csv[4];
-        String email = csv[5];
-        String logradouro = csv[6];
-        Integer numeroEndereco = Utilities.tryParseToInteger(csv[7]);
-        String complemento = csv[8];
-        String bairro = csv[9];
-        String cidade = csv[10];
-        UF uf = UF.valueOf(csv[11]);
-        String cep = csv[12];
-        String cnpj = csv[13];
-        String razaoSocial = csv[14];
-        String inscricaoEstadual = csv[15];
-
-        Endereco endereco = new Endereco(logradouro, numeroEndereco, complemento, bairro, cidade, uf, cep);
-        return new PessoaJuridica(nome, telefone, email, endereco, cnpj, razaoSocial, inscricaoEstadual);
-    }
-
-    private PessoaFisica instanciarPessoaFisica(String[] csv) {
-        String nome = csv[3];
-        String telefone = csv[4];
-        String email = csv[5];
-        String logradouro = csv[6];
-        Integer numeroEndereco = Utilities.tryParseToInteger(csv[7]);
-        String complemento = csv[8];
-        String bairro = csv[9];
-        String cidade = csv[10];
-        UF uf = UF.valueOf(csv[11]);
-        String cep = csv[12];
-        String cpf = csv[13];
-        String registroGeral = csv[14];
-        Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
-
-        Endereco endereco = new Endereco(logradouro, numeroEndereco, complemento, bairro, cidade, uf, cep);
-        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
-    }
 }

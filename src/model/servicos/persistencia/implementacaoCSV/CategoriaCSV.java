@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Configuracoes;
+import application.Programa;
 import model.entidades.Categoria;
 import model.exceptions.DBException;
 import java.io.File;
@@ -17,17 +17,8 @@ import model.servicos.persistencia.DAOFactory;
  */
 public class CategoriaCSV implements CategoriaDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public CategoriaCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.categoria");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "categorias.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(Categoria categoria) throws DBException {
@@ -47,7 +38,7 @@ public class CategoriaCSV implements CategoriaDAO {
 
     @Override
     public void atualizar(Categoria categoria) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\categorias-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-categorias.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);
@@ -81,7 +72,7 @@ public class CategoriaCSV implements CategoriaDAO {
         if (DAOFactory.createModeloDAO().buscar(buscar(id)).size() > 0) {
             throw new DBException("Não foi possível excluir a categoria pois está associada à um ou mais modelo(s)");
         }
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-categorias.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);

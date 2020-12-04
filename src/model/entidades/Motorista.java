@@ -20,6 +20,7 @@ public class Motorista {
     private PessoaFisica pessoa;
     private CNH cnh;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Motorista() {
         pessoa = new PessoaFisica();
     }
@@ -39,6 +40,27 @@ public class Motorista {
         pessoa = instanciarPessoa(csv);
     }
 
+    private PessoaFisica instanciarPessoa(String[] csv) {
+        String nome = csv[3];
+        String telefone = csv[4];
+        String email = csv[5];
+        String logradouro = csv[6];
+        String numero = csv[7];
+        String complemento = csv[8];
+        String bairro = csv[9];
+        String cidade = csv[10];
+        UF uf = UF.valueOf(csv[11]);
+        String cep = csv[12];
+        String cpf = csv[13];
+        String registroGeral = csv[14];
+        Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
+
+        Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
+        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getId() {
         return id;
     }
@@ -70,14 +92,9 @@ public class Motorista {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+    // </editor-fold>
 
-    public String toCSV() {
-        return "" + id + ";"
-                + ativo + ";"
-                + cnh.getNumeroRegistro() + ";"
-                + pessoa.toCSV();
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
         int hash = 7;
@@ -102,28 +119,17 @@ public class Motorista {
         }
         return true;
     }
+    // </editor-fold>
+
+    public String toCSV() {
+        return "" + id + ";"
+                + ativo + ";"
+                + cnh.getNumeroRegistro() + ";"
+                + pessoa.toCSV();
+    }
 
     @Override
     public String toString() {
         return id + " - " + pessoa.getNome();
-    }
-
-    private PessoaFisica instanciarPessoa(String[] csv) {
-        String nome = csv[3];
-        String telefone = csv[4];
-        String email = csv[5];
-        String logradouro = csv[6];
-        Integer numero = Utilities.tryParseToInteger(csv[7]);
-        String complemento = csv[8];
-        String bairro = csv[9];
-        String cidade = csv[10];
-        UF uf = UF.valueOf(csv[11]);
-        String cep = csv[12];
-        String cpf = csv[13];
-        String registroGeral = csv[14];
-        Date dataNascimento = DateUtilities.tryParseToDate(csv[15]);
-
-        Endereco endereco = new Endereco(logradouro, numero, complemento, bairro, cidade, uf, cep);
-        return new PessoaFisica(nome, telefone, email, endereco, cpf, registroGeral, dataNascimento);
     }
 }

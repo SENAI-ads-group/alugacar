@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Configuracoes;
+import application.Programa;
 import model.entidades.CNH;
 import model.exceptions.DBException;
 import java.io.File;
@@ -15,17 +15,8 @@ import model.servicos.persistencia.CnhDAO;
  */
 public class CnhCSV implements CnhDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public CnhCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.cnh");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "CNH.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(CNH cnh) throws DBException {
@@ -42,7 +33,7 @@ public class CnhCSV implements CnhDAO {
 
     @Override
     public void atualizar(CNH cnh) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\cnh-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-CNH.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);

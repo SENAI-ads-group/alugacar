@@ -29,7 +29,7 @@ public class PanelFormEndereco extends javax.swing.JPanel {
     public void updateFormData() {
         if (endereco != null) {
             textFieldLogradouro.setText(endereco.getLogradouro());
-            textFieldNumero.setText("" + endereco.getNumero());
+            textFieldNumero.setText(endereco.getNumero());
             textFieldComplemento.setText(endereco.getComplemento());
             textFieldBairro.setText(endereco.getBairro());
             textFieldCidade.setText(endereco.getCidade());
@@ -46,9 +46,6 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         if (Utilities.textFieldIsEmpty(textFieldLogradouro)) {
             exception.addError("logradouro", "Logradouro não informado");
         }
-        if (Utilities.textFieldIsEmpty(textFieldNumero)) {
-            exception.addError("numero", "Número não informado");
-        }
         if (Utilities.textFieldIsEmpty(textFieldCEP)) {
             exception.addError("CEP", "CEP não informado");
         }
@@ -59,7 +56,7 @@ public class PanelFormEndereco extends javax.swing.JPanel {
             exception.addError("cidade", "Cidade não informada");
         }
         endereco.setLogradouro(textFieldLogradouro.getText());
-        endereco.setNumero(Utilities.tryParseToInteger(textFieldNumero.getText()));
+        endereco.setNumero(textFieldNumero.getText());
         endereco.setComplemento(textFieldComplemento.getText());
         endereco.setBairro(textFieldBairro.getText());
         endereco.setCidade(textFieldCidade.getText());
@@ -78,9 +75,6 @@ public class PanelFormEndereco extends javax.swing.JPanel {
 
         if (fields.contains("logradouro")) {
             labelErroLogradouro.setText(errors.get("logradouro"));
-        }
-        if (fields.contains("numero")) {
-            labelErroNumero.setText(errors.get("numero"));
         }
         if (fields.contains("CEP")) {
             labelErroCEP.setText(errors.get("CEP"));

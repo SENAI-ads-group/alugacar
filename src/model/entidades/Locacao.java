@@ -27,6 +27,9 @@ public class Locacao {
     private Vistoria vistoriaDevolucao;
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
+    public Locacao() {
+    }
+
     public Locacao(TipoLocacao tipoLocacao) {
         status = StatusLocacao.PENDENTE;
         this.tipo = tipoLocacao;
@@ -59,6 +62,54 @@ public class Locacao {
                 break;
         }
         tipo.getContrato().setLocacao(this);
+    }
+
+    private void instanciarLocacaoPendente(String[] csv) {
+        tipo = TipoLocacao.valueOf(csv[2]);
+        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
+        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
+        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
+        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
+        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
+
+        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
+        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
+        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
+    }
+
+    private void instanciarLocacaoEmAberto(String[] csv) {
+        tipo = TipoLocacao.valueOf(csv[2]);
+        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
+        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
+        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
+        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
+        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
+        Integer idVistoriaEntrega = Utilities.tryParseToInteger(csv[9]);
+
+        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
+        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
+        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
+        vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
+    }
+
+    private void instanciarLocacaoFinalizada(String[] csv) {
+        tipo = TipoLocacao.valueOf(csv[2]);
+        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
+        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
+        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
+        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
+        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
+        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
+        Integer idVistoriaEntrega = Utilities.tryParseToInteger(csv[9]);
+        Integer idVistoriaDevolucao = Utilities.tryParseToInteger(csv[10]);
+
+        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
+        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
+        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
+        vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
+        vistoriaDevolucao = DAOFactory.createVistoriaDAO().buscar(idVistoriaDevolucao);
     }
     // </editor-fold>
 
@@ -150,9 +201,9 @@ public class Locacao {
     public void setVistoriaDevolucao(Vistoria vistoriaDevolucao) {
         this.vistoriaDevolucao = vistoriaDevolucao;
     }
-
     // </editor-fold>
-    
+
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode"> 
     @Override
     public int hashCode() {
         int hash = 3;
@@ -177,11 +228,9 @@ public class Locacao {
         }
         return true;
     }
+    // </editor-fold>
 
     public String toCSV() {
-        if (status != StatusLocacao.INICIADA && status != StatusLocacao.FINALIZADA && status != StatusLocacao.PENDENTE) {
-            throw new IllegalStateException("Status inválido");
-        }
         switch (status) {
             case INICIADA:
                 return toCsvStatusAberto();
@@ -232,57 +281,9 @@ public class Locacao {
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
                 + cliente.getId() + ";"
-                + vistoriaEntrega.getId()+ ";"
-                + vistoriaDevolucao.getId()+ ";"
+                + vistoriaEntrega.getId() + ";"
+                + vistoriaDevolucao.getId() + ";"
                 + tipo.getContrato().getValorTotal();
-    }
-
-    private void instanciarLocacaoPendente(String[] csv) {
-        tipo = TipoLocacao.valueOf(csv[2]);
-        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
-        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
-        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
-        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
-        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
-        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
-
-        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
-        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
-        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
-    }
-
-    private void instanciarLocacaoEmAberto(String[] csv) {
-        tipo = TipoLocacao.valueOf(csv[2]);
-        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
-        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
-        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
-        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
-        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
-        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
-        Integer idVistoriaEntrega = Utilities.tryParseToInteger(csv[9]);
-
-        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
-        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
-        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
-        vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
-    }
-
-    private void instanciarLocacaoFinalizada(String[] csv) {
-        tipo = TipoLocacao.valueOf(csv[2]);
-        dataRegistro = DateUtilities.tryParseToDate(csv[3]);
-        dataEntrega = DateUtilities.tryParseToDate(csv[4]);
-        dataDevolucao = DateUtilities.tryParseToDate(csv[5]);
-        Integer idVeiculo = Utilities.tryParseToInteger(csv[6]);
-        Integer idMotorista = Utilities.tryParseToInteger(csv[7]);
-        Integer idCliente = Utilities.tryParseToInteger(csv[8]);
-        Integer idVistoriaEntrega = Utilities.tryParseToInteger(csv[9]);
-        Integer idVistoriaDevolucao = Utilities.tryParseToInteger(csv[10]);
-
-        veiculo = DAOFactory.createVeiculoDAO().buscar(idVeiculo);
-        motorista = DAOFactory.createMotoristaDAO().buscar(idMotorista);
-        cliente = DAOFactory.createClienteDAO().buscar(idCliente);
-        vistoriaEntrega = DAOFactory.createVistoriaDAO().buscar(idVistoriaEntrega);
-        vistoriaDevolucao = DAOFactory.createVistoriaDAO().buscar(idVistoriaDevolucao);
     }
 
 }

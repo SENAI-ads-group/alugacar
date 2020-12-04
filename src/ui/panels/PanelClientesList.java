@@ -8,6 +8,7 @@ import model.entidades.Cliente;
 import model.entidades.PessoaFisica;
 import model.entidades.PessoaJuridica;
 import model.entidades.enums.TipoCliente;
+import model.exceptions.DBException;
 import ui.FrameLoader;
 import ui.dialogs.DialogClienteForm;
 import ui.listeners.DataChangeListener;
@@ -20,7 +21,7 @@ import model.servicos.persistencia.ClienteDAO;
  */
 public final class PanelClientesList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final ClienteDAO persistenceService = DAOFactory.createClienteDAO();
+    private final ClienteDAO DAO = DAOFactory.createClienteDAO();
 
     public PanelClientesList() {
         initComponents();
@@ -28,7 +29,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
     }
 
     public void updateTable() {
-        List<Cliente> clientes = persistenceService.buscarTodos();
+        List<Cliente> clientes = DAO.buscarTodos();
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
         clientes.stream().map((cliente) -> {
@@ -62,9 +63,11 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
+            buttonAtivarDesativar.setEnabled(true);
         } else {
             buttonExcluir.setEnabled(false);
             buttonEditar.setEnabled(false);
+            buttonAtivarDesativar.setEnabled(false);
         }
     }
 
@@ -89,6 +92,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
+        buttonAtivarDesativar = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -133,10 +137,28 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonExcluir.setFocusPainted(false);
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-clientes-28x28.png"))); // NOI18N
         labelTitleList.setText("Clientes");
+
+        buttonAtivarDesativar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonAtivarDesativar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-ativarDesativar-24x24.png"))); // NOI18N
+        buttonAtivarDesativar.setText("Ativar / Desativar");
+        buttonAtivarDesativar.setBorderPainted(false);
+        buttonAtivarDesativar.setFocusPainted(false);
+        buttonAtivarDesativar.setFocusable(false);
+        buttonAtivarDesativar.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonAtivarDesativar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAtivarDesativarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -145,7 +167,9 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 766, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 609, Short.MAX_VALUE)
+                .addComponent(buttonAtivarDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,7 +185,8 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonAtivarDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(labelTitleList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -224,11 +249,36 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        createClienteForm(persistenceService.buscar(idSelecionado));
+        createClienteForm(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão do cliente selecionado?", "Exclusão de cliente", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                DAO.excluir(idSelecionado);
+                updateTable();
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir o cliente", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
+
+    private void buttonAtivarDesativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtivarDesativarActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            Cliente clienteSelecionado = DAO.buscar(idSelecionado);
+            clienteSelecionado.setAtivo(!clienteSelecionado.isAtivo());
+            DAO.atualizar(clienteSelecionado);
+            updateTable();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao ativar ou desativar cliente", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonAtivarDesativarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAtivarDesativar;
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;

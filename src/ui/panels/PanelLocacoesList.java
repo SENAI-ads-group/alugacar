@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
 import model.entidades.enums.StatusLocacao;
-import model.entidades.enums.TipoLocacao;
 import model.servicos.pdf.GeradorPDF;
 import model.servicos.persistencia.LocacaoDAO;
 import ui.FrameLoader;
@@ -23,14 +22,14 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class PanelLocacoesList extends javax.swing.JPanel implements DataChangeListener {
-
+    
     private final LocacaoDAO DAO = DAOFactory.createLocacaoDAO();
-
+    
     public PanelLocacoesList() {
         initComponents();
         updateTable();
     }
-
+    
     public void updateTable() {
         List<Locacao> locacoes = DAO.buscarTodos();
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
@@ -58,19 +57,19 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
             buttonEntregarDevolver.setEnabled(false);
         }
     }
-
+    
     public void createLocacaoForm(Locacao locacao) {
         DialogLocacaoForm dialogForm = new DialogLocacaoForm(FrameLoader.getFrameMain(), true, locacao);
         dialogForm.subscribeListener(this);
         dialogForm.updateFormData();
         dialogForm.setVisible(true);
     }
-
+    
     @Override
     public void onDataChanged() {
         updateTable();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -204,12 +203,7 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        TipoLocacao[] itens = TipoLocacao.values();
-        TipoLocacao selectedValue = (TipoLocacao) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o tipo de locação", "Tipo de locação",
-                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
-        if (selectedValue != null) {
-            createLocacaoForm(new Locacao(selectedValue));
-        }
+        createLocacaoForm(new Locacao());
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVerActionPerformed

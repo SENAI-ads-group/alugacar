@@ -14,6 +14,8 @@ public interface MotoristaDAO {
 
     void atualizar(Motorista motorista);
 
+    void excluir(int id);
+
     Motorista buscar(Integer id);
 
     List<Motorista> buscarTodos();

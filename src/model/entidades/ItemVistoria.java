@@ -12,6 +12,7 @@ public class ItemVistoria {
     private boolean obrigatorio;
     private boolean adequado;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public ItemVistoria(String descricao, boolean obrigatorio) {
         this.descricao = descricao;
         this.obrigatorio = obrigatorio;
@@ -22,7 +23,9 @@ public class ItemVistoria {
         obrigatorio = Boolean.parseBoolean(csv[1]);
         adequado = Boolean.parseBoolean(csv[2]);
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public String getDescricao() {
         return descricao;
     }
@@ -46,13 +49,9 @@ public class ItemVistoria {
     public void setAdequado(boolean adequado) {
         this.adequado = adequado;
     }
+    // </editor-fold>
 
-    public String toCSV() {
-        return descricao + ";"
-                + obrigatorio + ";"
-                + adequado;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
         int hash = 7;
@@ -80,6 +79,19 @@ public class ItemVistoria {
             return false;
         }
         return true;
+    }
+    // </editor-fold>
+
+    public String toCSV() {
+        return descricao + ";"
+                + obrigatorio + ";"
+                + adequado;
+    }
+
+    @Override
+    public String toString() {
+        String string = (adequado) ? "adequado" : "não adequado";
+        return descricao + string;
     }
 
 }

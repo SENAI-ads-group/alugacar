@@ -20,11 +20,14 @@ public class Configuracoes {
             Properties properties = new Properties();
 
             String caminhoPastaRaiz = new File("").getCanonicalPath();
-            FileInputStream fileInput = new FileInputStream(caminhoPastaRaiz + "\\config.properties");
+            FileInputStream fileInput = new FileInputStream(caminhoPastaRaiz + "/config.properties");
             properties.load(fileInput);
 
             String canonicalPath = new File("").getCanonicalPath();
-            properties.put("canonicalPath", canonicalPath);
+            properties.put("pasta-raiz", canonicalPath);
+
+            String databasePath = "\\\\" + properties.getProperty("servidor") + "/" + properties.getProperty("database") + "/";
+            properties.put("absoluteDatabasePath", databasePath);
             return properties;
         } catch (IOException ex) {
             return null;

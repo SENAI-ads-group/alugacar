@@ -15,6 +15,8 @@ public interface ClienteDAO {
 
     void atualizar(Cliente cliente);
 
+    void excluir(int id);
+
     Cliente buscar(Integer id);
 
     List<Cliente> buscarTodos();

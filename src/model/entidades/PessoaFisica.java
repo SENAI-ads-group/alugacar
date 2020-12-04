@@ -5,7 +5,7 @@ import util.DateUtilities;
 
 /**
  *
- * @author usuario
+ * @author Patrick-Ribeiro
  */
 public class PessoaFisica extends Pessoa {
 
@@ -13,6 +13,7 @@ public class PessoaFisica extends Pessoa {
     private String registroGeral;
     private Date dataNascimento;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">
     public PessoaFisica() {
         super();
     }
@@ -31,7 +32,9 @@ public class PessoaFisica extends Pessoa {
         this.registroGeral = registroGeral;
         this.dataNascimento = dataNascimento;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">
     public String getCpf() {
         return cpf;
     }
@@ -55,6 +58,7 @@ public class PessoaFisica extends Pessoa {
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
+    // </editor-fold>
 
     @Override
     public String toCSV() {

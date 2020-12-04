@@ -11,6 +11,7 @@ public abstract class Pessoa {
     private String email;
     private Endereco endereco;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">
     public Pessoa() {
     }
 
@@ -24,7 +25,9 @@ public abstract class Pessoa {
         this.email = email;
         this.endereco = endereco;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">
     public String getNome() {
         return nome;
     }
@@ -56,6 +59,7 @@ public abstract class Pessoa {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+    // </editor-fold>
 
     public String toCSV() {
         return nome + ";"

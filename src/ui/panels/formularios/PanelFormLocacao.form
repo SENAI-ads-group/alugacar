@@ -149,9 +149,11 @@
     <Component class="javax.swing.JLabel" name="labelMarca">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Ve&#xed;culo"/>
+        <Property name="toolTipText" type="java.lang.String" value="Ve&#xed;culo a ser locado"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -228,9 +230,14 @@
     <Component class="javax.swing.JLabel" name="labelCategoria">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
+        </Property>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/ui/media/icons/icon-info-12x12.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Modalidade de precifica&#xe7;&#xe3;o"/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Modalidade com qual ser&#xe1; calculado os custos da loca&#xe7;&#xe3;o&lt;br&gt;&#xa;&lt;span&gt;Di&#xe1;ria:&lt;/span&gt; custos calculados de acordo com a quantidade de dias de loca&#xe7;&#xe3;o;&lt;br&gt;&#xa;&lt;span&gt;KM rodado:&lt;/span&gt; custos calculados de acordo com a quantidade de quil&#xf4;metros percorridos pelo ve&#xed;culo no prazo da loca&#xe7;&#xe3;o&lt;/html&gt;"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -241,9 +248,11 @@
     <Component class="javax.swing.JLabel" name="labelDataEntrega">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Data de entrega"/>
+        <Property name="toolTipText" type="java.lang.String" value="Data de previs&#xe3;o de entrega do ve&#xed;culo"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -311,9 +320,11 @@
     <Component class="javax.swing.JLabel" name="labelDataEntrega1">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Previs&#xe3;o de devolu&#xe7;&#xe3;o"/>
+        <Property name="toolTipText" type="java.lang.String" value="Data de previs&#xe3;o de devolu&#xe7;&#xe3;o do ve&#xed;culo"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -369,9 +380,11 @@
     <Component class="javax.swing.JLabel" name="labelMotorista">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Motorista"/>
+        <Property name="toolTipText" type="java.lang.String" value="Motorista respons&#xe1;vel pelo ve&#xed;culo a ser locado"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -382,9 +395,11 @@
     <Component class="javax.swing.JLabel" name="labelCategoria2">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="12" style="0"/>
+          <Font name="Segoe UI" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Cliente"/>
+        <Property name="toolTipText" type="java.lang.String" value="Cliente respons&#xe1;vel pela loca&#xe7;&#xe3;o"/>
+        <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

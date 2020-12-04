@@ -3,7 +3,9 @@ package ui.panels;
 import model.entidades.Motorista;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.exceptions.DBException;
 import ui.FrameLoader;
 import ui.dialogs.DialogMotoristaForm;
 import ui.listeners.DataChangeListener;
@@ -16,7 +18,7 @@ import model.servicos.persistencia.MotoristaDAO;
  */
 public final class PanelMotoristasList extends javax.swing.JPanel implements DataChangeListener {
 
-    private final MotoristaDAO persistenceService = DAOFactory.createMotoristaDAO();
+    private final MotoristaDAO DAO = DAOFactory.createMotoristaDAO();
 
     public PanelMotoristasList() {
         initComponents();
@@ -24,7 +26,7 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
     }
 
     public void updateTable() {
-        List<Motorista> motoristas = persistenceService.buscarTodos();
+        List<Motorista> motoristas = DAO.buscarTodos();
 
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
@@ -75,6 +77,7 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
+        buttonAtivarDesativar = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -119,10 +122,28 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
         buttonExcluir.setFocusPainted(false);
         buttonExcluir.setFocusable(false);
         buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirActionPerformed(evt);
+            }
+        });
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-motorista-28x28.png"))); // NOI18N
         labelTitleList.setText("Motoristas");
+
+        buttonAtivarDesativar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonAtivarDesativar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-ativarDesativar-24x24.png"))); // NOI18N
+        buttonAtivarDesativar.setText("Ativar / Desativar");
+        buttonAtivarDesativar.setBorderPainted(false);
+        buttonAtivarDesativar.setFocusPainted(false);
+        buttonAtivarDesativar.setFocusable(false);
+        buttonAtivarDesativar.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonAtivarDesativar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAtivarDesativarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -131,7 +152,9 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 745, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 588, Short.MAX_VALUE)
+                .addComponent(buttonAtivarDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -148,7 +171,8 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonAtivarDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -207,11 +231,36 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        createMotoristaForm(persistenceService.buscar(idSelecionado));
+        createMotoristaForm(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
+    private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão do motorista selecionado?", "Exclusão de motorista", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                DAO.excluir(idSelecionado);
+                updateTable();
+            }
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir o motorista", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonExcluirActionPerformed
+
+    private void buttonAtivarDesativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtivarDesativarActionPerformed
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        try {
+            Motorista motoristaSelecionado = DAO.buscar(idSelecionado);
+            motoristaSelecionado.setAtivo(!motoristaSelecionado.isAtivo());
+            DAO.atualizar(motoristaSelecionado);
+            updateTable();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao ativar ou desativar motorista", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonAtivarDesativarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAtivarDesativar;
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;

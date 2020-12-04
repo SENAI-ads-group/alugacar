@@ -11,17 +11,16 @@ public class Categoria {
 
     private Integer id;
     private String descricao;
-    private Double valorMinimoLocacao = 0.0;
     private Double valorDiaria = 0.0;
     private Double valorKM = 0.0;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Categoria() {
     }
 
-    public Categoria(Integer id, String descricao, Double valorMinimoLocacao, Double valorDiaria, Double valorKM) {
+    public Categoria(Integer id, String descricao, Double valorDiaria, Double valorKM) {
         this.id = id;
         this.descricao = descricao;
-        this.valorMinimoLocacao = valorMinimoLocacao;
         this.valorDiaria = valorDiaria;
         this.valorKM = valorKM;
     }
@@ -29,11 +28,12 @@ public class Categoria {
     public Categoria(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
         descricao = csv[1];
-        valorMinimoLocacao = Utilities.tryParseToDouble(csv[2]);
-        valorDiaria = Utilities.tryParseToDouble(csv[3]);
-        valorKM = Utilities.tryParseToDouble(csv[4]);
+        valorDiaria = Utilities.tryParseToDouble(csv[2]);
+        valorKM = Utilities.tryParseToDouble(csv[3]);
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getId() {
         return id;
     }
@@ -48,14 +48,6 @@ public class Categoria {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Double getValorMinimoLocacao() {
-        return valorMinimoLocacao;
-    }
-
-    public void setValorMinimoLocacao(Double valorMinimoLocacao) {
-        this.valorMinimoLocacao = valorMinimoLocacao;
     }
 
     public Double getValorDiaria() {
@@ -73,20 +65,9 @@ public class Categoria {
     public void setValorKM(Double valorKM) {
         this.valorKM = valorKM;
     }
+    // </editor-fold>
 
-    public String toCSV() {
-        return "" + id + ";"
-                + descricao + ";"
-                + valorMinimoLocacao + ";"
-                + valorDiaria + ";"
-                + valorKM;
-    }
-
-    @Override
-    public String toString() {
-        return id + " - " + descricao;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hasCode">  
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -110,6 +91,20 @@ public class Categoria {
         int hash = 3;
         hash = 19 * hash + Objects.hashCode(this.id);
         return hash;
+    }
+
+    // </editor-fold>
+    
+    public String toCSV() {
+        return "" + id + ";"
+                + descricao + ";"
+                + valorDiaria + ";"
+                + valorKM;
+    }
+
+    @Override
+    public String toString() {
+        return descricao;
     }
 
 }

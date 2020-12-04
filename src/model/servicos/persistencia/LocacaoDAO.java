@@ -1,7 +1,9 @@
 package model.servicos.persistencia;
 
 import java.util.List;
+import model.entidades.Cliente;
 import model.entidades.Locacao;
+import model.entidades.Motorista;
 import model.entidades.Vistoria;
 import model.exceptions.DBException;
 
@@ -18,6 +20,10 @@ public interface LocacaoDAO {
     void devolverVeiculo(Locacao locacao, Vistoria vistoria);
 
     Locacao buscar(Integer id);
+
+    List<Locacao> buscar(Cliente cliente);
+
+    List<Locacao> buscar(Motorista motorista);
 
     List<Locacao> buscarTodos();
 

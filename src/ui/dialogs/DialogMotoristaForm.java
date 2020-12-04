@@ -106,7 +106,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         Date dataValidadeCNH = dateChooserValidadeCNH.getDate();
         CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
         CNH cnh = new CNH(numeroRegistroCNH, categoriaCNH, dataValidadeCNH);
-        cnh.setFoto(fileFoto);
+
         motorista.setCnh(cnh);
         motorista.setAtivo(checkBoxAtivo.isSelected());
 
@@ -118,11 +118,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
             textFieldNumeroRegistro.setText("" + motorista.getCnh().getNumeroRegistro());
             comboBoxCategoriaCNH.setSelectedIndex(motorista.getCnh().getCategoria().ordinal());
             dateChooserValidadeCNH.setDate(motorista.getCnh().getDataValidade());
-
-            if (motorista.getCnh().getFoto() != null) {
-                textFieldFoto.setText(motorista.getCnh().getFoto().getPath());
-                showImageOnLabel(motorista.getCnh().getFoto());
-            }
         }
         checkBoxAtivo.setSelected(motorista.isAtivo());
         panelFormEndereco.updateFormData();

@@ -1,11 +1,13 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Configuracoes;
+import application.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import model.entidades.Cliente;
 import model.entidades.Locacao;
+import model.entidades.Motorista;
 import model.entidades.Vistoria;
 import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.StatusVeiculo;
@@ -21,17 +23,8 @@ import util.Utilities;
  */
 public class LocacaoCSV implements LocacaoDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public LocacaoCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.locacao");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "locacoes.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void registrar(Locacao locacao) throws DBException {
@@ -84,6 +77,42 @@ public class LocacaoCSV implements LocacaoDAO {
     }
 
     @Override
+    public List<Locacao> buscar(Cliente cliente) {
+        CONEXAO.open(ARQUIVO_DB);
+
+        List<Locacao> locacoesEncontradas = new ArrayList<>();
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
+            if (locacaoEncontrada.getCliente().equals(cliente)) {
+                locacoesEncontradas.add(locacaoEncontrada);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return locacoesEncontradas;
+    }
+
+    @Override
+    public List<Locacao> buscar(Motorista motorista) {
+        CONEXAO.open(ARQUIVO_DB);
+
+        List<Locacao> locacoesEncontradas = new ArrayList<>();
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Locacao locacaoEncontrada = new Locacao(linha.split(";"));
+            if (locacaoEncontrada.getMotorista().equals(motorista)) {
+                locacoesEncontradas.add(locacaoEncontrada);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return locacoesEncontradas;
+    }
+
+    @Override
     public List<Locacao> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
 
@@ -115,7 +144,7 @@ public class LocacaoCSV implements LocacaoDAO {
     }
 
     private void atualizar(Locacao locacao) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\locacao-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-locacoes.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);

@@ -12,6 +12,7 @@ public class Marca {
     private Integer id;
     private String descricao;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Marca() {
     }
 
@@ -24,7 +25,9 @@ public class Marca {
         id = Utilities.tryParseToInteger(csv[0]);
         descricao = csv[1];
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getId() {
         return id;
     }
@@ -40,12 +43,9 @@ public class Marca {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    // </editor-fold>
 
-    public String toCSV() {
-        return "" + id + ";"
-                + descricao;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hasCode">  
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -69,6 +69,12 @@ public class Marca {
         int hash = 5;
         hash = 79 * hash + Objects.hashCode(this.id);
         return hash;
+    }
+    // </editor-fold>
+
+    public String toCSV() {
+        return "" + id + ";"
+                + descricao;
     }
 
     @Override

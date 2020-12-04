@@ -1,9 +1,12 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import application.Programa;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import model.entidades.ItemVistoria;
 import model.entidades.Vistoria;
+import model.servicos.persistencia.DAOFactory;
+import model.servicos.persistencia.ImagemDAO;
 import model.servicos.persistencia.VistoriaDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
@@ -13,12 +16,13 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public class VistoriaCSV implements VistoriaDAO {
-
+    
     private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "vistorias.csv");
     private final File ARQUIVO_ITEM_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "itens-vistoria.csv");
     private final CSVConnection CONEXAO = new CSVConnection();
     private final CSVConnection CONEXAO_ITENS = new CSVConnection();
-
+    private final ImagemDAO IMAGEM_DAO = DAOFactory.createImagemDAO();
+    
     @Override
     public void inserir(Vistoria vistoria) {
         if (vistoria.getId() == null) {
@@ -34,20 +38,24 @@ public class VistoriaCSV implements VistoriaDAO {
             CONEXAO_ITENS.writer().newLine();
         }
         CONEXAO_ITENS.close();
+        for (BufferedImage imagem : vistoria.getImagens()) {
+            IMAGEM_DAO.inserir(imagem, vistoria);
+        }
     }
-
+    
     @Override
     public Vistoria buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
         CONEXAO.open(ARQUIVO_DB);
-
+        
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Vistoria vistoriaEncontrada = new Vistoria(linha.split(";"));
             if (vistoriaEncontrada.getId().equals(id)) {
                 addItens(vistoriaEncontrada);
+                addImagens(vistoriaEncontrada);
                 CONEXAO.close();
                 return vistoriaEncontrada;
             }
@@ -56,10 +64,10 @@ public class VistoriaCSV implements VistoriaDAO {
         CONEXAO.close();
         return null;
     }
-
+    
     private void addItens(Vistoria vistoria) {
         CONEXAO_ITENS.open(ARQUIVO_ITEM_DB);
-
+        
         String linha = CONEXAO_ITENS.reader().readLine();
         while (linha != null) {
             String[] csv = linha.split(";");
@@ -72,7 +80,13 @@ public class VistoriaCSV implements VistoriaDAO {
         }
         CONEXAO_ITENS.close();
     }
-
+    
+    private void addImagens(Vistoria vistoria) {
+        for (BufferedImage imagem : IMAGEM_DAO.buscar(vistoria)) {
+            vistoria.addImagem(imagem);
+        }
+    }
+    
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
         Integer ultimoID = 0;

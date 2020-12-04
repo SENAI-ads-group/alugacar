@@ -1,6 +1,7 @@
 package model.entidades;
 
 import application.Configuracoes;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class Vistoria {
     private List<ItemVistoria> itens = Configuracoes.loadItensVistoria();
     private double kmVeiculo;
     private double quantidadeCombustivel;
+    private List<BufferedImage> imagens = new ArrayList<>();
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Vistoria() {
@@ -62,8 +64,12 @@ public class Vistoria {
     public void setQuantidadeCombustivel(double quantidadeCombustivel) {
         this.quantidadeCombustivel = quantidadeCombustivel;
     }
-    // </editor-fold>
 
+    public List<BufferedImage> getImagens() {
+        return imagens;
+    }
+    // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
@@ -97,6 +103,14 @@ public class Vistoria {
 
     public void removeItem(ItemVistoria item) {
         itens.remove(item);
+    }
+
+    public void addImagem(BufferedImage imagem) {
+        imagens.add(imagem);
+    }
+
+    public void removeImagem(BufferedImage imagem) {
+        imagens.remove(imagem);
     }
 
     public boolean isAdequada() {

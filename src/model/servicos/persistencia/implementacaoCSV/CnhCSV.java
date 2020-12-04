@@ -24,10 +24,8 @@ public class CnhCSV implements CnhDAO {
             throw new DBException("A CNH " + cnh.getNumeroRegistro() + " já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
-
         CONEXAO.writer().write(cnh.toCSV());
         CONEXAO.writer().newLine();
-
         CONEXAO.close();
     }
 

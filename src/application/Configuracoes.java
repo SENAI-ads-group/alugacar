@@ -28,6 +28,10 @@ public class Configuracoes {
 
             String databasePath = "\\\\" + properties.getProperty("servidor") + "/" + properties.getProperty("database") + "/";
             properties.put("absoluteDatabasePath", databasePath);
+
+            String databaseImagePath = "\\\\" + properties.getProperty("servidor") + "/" + properties.getProperty("database") + "/" + "imagens/";
+            properties.put("absoluteDatabaseImagePath", databaseImagePath);
+
             return properties;
         } catch (IOException ex) {
             return null;

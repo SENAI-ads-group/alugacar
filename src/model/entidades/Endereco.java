@@ -103,7 +103,7 @@ public class Endereco {
                 + complemento + ";"
                 + bairro + ";"
                 + cidade + ";"
-                + uf.toString() + ";"
+                + uf.toCSV() + ";"
                 + cep;
     }
 

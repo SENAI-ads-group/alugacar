@@ -1,6 +1,7 @@
 package model.entidades;
 
 import java.util.Objects;
+import util.Utilities;
 
 /**
  *
@@ -8,6 +9,7 @@ import java.util.Objects;
  */
 public class ItemVistoria {
 
+    private Integer id;
     private String descricao;
     private boolean obrigatorio;
     private boolean adequado;
@@ -19,13 +21,22 @@ public class ItemVistoria {
     }
 
     public ItemVistoria(String[] csv) {
-        descricao = csv[0];
-        obrigatorio = Boolean.parseBoolean(csv[1]);
-        adequado = Boolean.parseBoolean(csv[2]);
+        id = Utilities.tryParseToInteger(csv[0]);
+        descricao = csv[1];
+        obrigatorio = Boolean.parseBoolean(csv[2]);
+        adequado = Boolean.parseBoolean(csv[3]);
     }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="getters e setters">  
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getDescricao() {
         return descricao;
     }
@@ -72,10 +83,7 @@ public class ItemVistoria {
             return false;
         }
         final ItemVistoria other = (ItemVistoria) obj;
-        if (this.obrigatorio != other.obrigatorio) {
-            return false;
-        }
-        if (!Objects.equals(this.descricao, other.descricao)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
@@ -83,7 +91,8 @@ public class ItemVistoria {
     // </editor-fold>
 
     public String toCSV() {
-        return descricao + ";"
+        return "" + id + ";"
+                + descricao + ";"
                 + obrigatorio + ";"
                 + adequado;
     }

@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.exceptions.DBException;
 import ui.FrameLoader;
-import ui.dialogs.DialogMotoristaForm;
+import ui.dialogs.DialogFormularioMotorista;
 import ui.listeners.DataChangeListener;
 import util.Utilities;
 import model.servicos.persistencia.MotoristaDAO;
@@ -57,9 +57,9 @@ public final class PanelMotoristasList extends javax.swing.JPanel implements Dat
     }
 
     public void createMotoristaForm(Motorista motorista) {
-        DialogMotoristaForm dialogForm = new DialogMotoristaForm(FrameLoader.getFrameMain(), true, motorista);
+        DialogFormularioMotorista dialogForm = new DialogFormularioMotorista(FrameLoader.getFrameMain(), true, motorista);
         dialogForm.subscribeListener(this);
-        dialogForm.updateFormData();
+        dialogForm.atualizarFormulario();
         dialogForm.setVisible(true);
     }
 

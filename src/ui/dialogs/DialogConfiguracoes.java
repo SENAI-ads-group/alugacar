@@ -1,76 +1,23 @@
 package ui.dialogs;
 
-import model.servicos.persistencia.DAOFactory;
-import model.exceptions.DBException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import model.entidades.Modelo;
-import model.exceptions.ValidacaoException;
-import ui.listeners.DataChangeListener;
-import model.servicos.persistencia.ModeloDAO;
-import ui.panels.formularios.FormularioModelo;
+import ui.panels.formularios.FormularioConfiguracaoGeral;
 import util.PanelUtilities;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public class DialogModeloForm extends javax.swing.JDialog {
+public class DialogConfiguracoes extends javax.swing.JDialog {
 
-    private Modelo modelo;
-    private final ModeloDAO DAO = DAOFactory.createModeloDAO();
-
-    private FormularioModelo formModelo;
-
-    private final List<DataChangeListener> listeners = new ArrayList<>();
-
-    public DialogModeloForm(java.awt.Frame parent, boolean modal, Modelo modelo) {
+    public DialogConfiguracoes(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.modelo = modelo;
         initComponents();
         loadPanels();
     }
 
-    public void setModelo(Modelo modelo) {
-        this.modelo = modelo;
-    }
-
     private void loadPanels() {
-        formModelo = new FormularioModelo(modelo);
-        PanelUtilities.loadPanelToPanel(formModelo, panelCenterTab1);
-    }
-
-    private void persistEntity() throws DBException, ValidacaoException {
-        getFormData();
-        if (modelo.getId() == null) {
-            DAO.inserir(modelo);
-        } else {
-            DAO.atualizar(modelo);
-        }
-    }
-
-    public Modelo getFormData() throws ValidacaoException {
-        modelo = formModelo.getDadosFormulario();
-        return modelo;
-    }
-
-    public void updateFormData() {
-        formModelo.atualizarFormulario();
-    }
-
-    public void subscribeListener(DataChangeListener listener) {
-        listeners.add(listener);
-    }
-
-    public void notifyListeners() {
-        if (listeners.size() > 0) {
-            listeners.forEach((listener) -> {
-                listener.onDataChanged();
-            });
-        }
+        FormularioConfiguracaoGeral formGeral = new FormularioConfiguracaoGeral();
+        PanelUtilities.loadPanelToPanel(formGeral, panelCenterTab1);
     }
 
     @SuppressWarnings("unchecked")
@@ -83,6 +30,16 @@ public class DialogModeloForm extends javax.swing.JDialog {
         panelBorderLeftTab1 = new javax.swing.JPanel();
         panelCenterTab1 = new javax.swing.JPanel();
         panelBorderRightTab1 = new javax.swing.JPanel();
+        panelTab2 = new javax.swing.JPanel();
+        panelTopTab2 = new javax.swing.JPanel();
+        panelBorderLeftTab2 = new javax.swing.JPanel();
+        panelCenterTab2 = new javax.swing.JPanel();
+        panelBorderRightTab2 = new javax.swing.JPanel();
+        panelTab3 = new javax.swing.JPanel();
+        panelTopTab3 = new javax.swing.JPanel();
+        panelBorderLeftTab3 = new javax.swing.JPanel();
+        panelCenterTab3 = new javax.swing.JPanel();
+        panelBorderRightTab3 = new javax.swing.JPanel();
         panelButtons = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         buttonCancelar = new javax.swing.JButton();
@@ -90,7 +47,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de modelo de veículo");
+        setTitle("Configurações de sistema");
         setMinimumSize(new java.awt.Dimension(440, 420));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setResizable(false);
@@ -153,7 +110,109 @@ public class DialogModeloForm extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Modelo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Geral", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+
+        panelTab2.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab2.setMaximumSize(new java.awt.Dimension(400, 280));
+        panelTab2.setMinimumSize(new java.awt.Dimension(400, 280));
+        panelTab2.setPreferredSize(new java.awt.Dimension(400, 280));
+        panelTab2.setLayout(new java.awt.BorderLayout());
+
+        panelTopTab2.setBackground(new java.awt.Color(255, 255, 255));
+        panelTopTab2.setPreferredSize(new java.awt.Dimension(400, 10));
+        panelTab2.add(panelTopTab2, java.awt.BorderLayout.PAGE_START);
+
+        panelBorderLeftTab2.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderLeftTab2.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderLeftTab2.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderLeftTab2Layout = new javax.swing.GroupLayout(panelBorderLeftTab2);
+        panelBorderLeftTab2.setLayout(panelBorderLeftTab2Layout);
+        panelBorderLeftTab2Layout.setHorizontalGroup(
+            panelBorderLeftTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderLeftTab2Layout.setVerticalGroup(
+            panelBorderLeftTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab2.add(panelBorderLeftTab2, java.awt.BorderLayout.LINE_START);
+
+        panelCenterTab2.setBackground(new java.awt.Color(250, 250, 250));
+        panelCenterTab2.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab2.setLayout(new javax.swing.BoxLayout(panelCenterTab2, javax.swing.BoxLayout.LINE_AXIS));
+        panelTab2.add(panelCenterTab2, java.awt.BorderLayout.CENTER);
+
+        panelBorderRightTab2.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderRightTab2.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderRightTab2.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderRightTab2Layout = new javax.swing.GroupLayout(panelBorderRightTab2);
+        panelBorderRightTab2.setLayout(panelBorderRightTab2Layout);
+        panelBorderRightTab2Layout.setHorizontalGroup(
+            panelBorderRightTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderRightTab2Layout.setVerticalGroup(
+            panelBorderRightTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
+
+        tabbedPane.addTab("Taxas e descontos", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab2, "Informações pessoais básicas do motorista"); // NOI18N
+
+        panelTab3.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab3.setMaximumSize(new java.awt.Dimension(400, 280));
+        panelTab3.setMinimumSize(new java.awt.Dimension(400, 280));
+        panelTab3.setPreferredSize(new java.awt.Dimension(400, 280));
+        panelTab3.setLayout(new java.awt.BorderLayout());
+
+        panelTopTab3.setBackground(new java.awt.Color(255, 255, 255));
+        panelTopTab3.setPreferredSize(new java.awt.Dimension(400, 10));
+        panelTab3.add(panelTopTab3, java.awt.BorderLayout.PAGE_START);
+
+        panelBorderLeftTab3.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderLeftTab3.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderLeftTab3.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderLeftTab3Layout = new javax.swing.GroupLayout(panelBorderLeftTab3);
+        panelBorderLeftTab3.setLayout(panelBorderLeftTab3Layout);
+        panelBorderLeftTab3Layout.setHorizontalGroup(
+            panelBorderLeftTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderLeftTab3Layout.setVerticalGroup(
+            panelBorderLeftTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab3.add(panelBorderLeftTab3, java.awt.BorderLayout.LINE_START);
+
+        panelCenterTab3.setBackground(new java.awt.Color(250, 250, 250));
+        panelCenterTab3.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab3.setLayout(new javax.swing.BoxLayout(panelCenterTab3, javax.swing.BoxLayout.LINE_AXIS));
+        panelTab3.add(panelCenterTab3, java.awt.BorderLayout.CENTER);
+
+        panelBorderRightTab3.setBackground(new java.awt.Color(255, 255, 255));
+        panelBorderRightTab3.setMaximumSize(new java.awt.Dimension(20, 272));
+        panelBorderRightTab3.setMinimumSize(new java.awt.Dimension(20, 272));
+
+        javax.swing.GroupLayout panelBorderRightTab3Layout = new javax.swing.GroupLayout(panelBorderRightTab3);
+        panelBorderRightTab3.setLayout(panelBorderRightTab3Layout);
+        panelBorderRightTab3Layout.setHorizontalGroup(
+            panelBorderRightTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        panelBorderRightTab3Layout.setVerticalGroup(
+            panelBorderRightTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 272, Short.MAX_VALUE)
+        );
+
+        panelTab3.add(panelBorderRightTab3, java.awt.BorderLayout.LINE_END);
+
+        tabbedPane.addTab("Vistoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab3, "Informações pessoais básicas do motorista"); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -202,26 +261,12 @@ public class DialogModeloForm extends javax.swing.JDialog {
 
         getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
 
-        getAccessibleContext().setAccessibleName("Formulário de modelo de veículo");
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
-        try {
-            persistEntity();
-            this.dispose();
-            notifyListeners();
-        } catch (ValidacaoException ex) {
-            Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormModelo")) {
-                tabbedPane.setIconAt(0, iconError);
-                formModelo.exibirMensagensErro(ex.getErrors());
-            }
-        } catch (DBException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
-        }
+
     }//GEN-LAST:event_buttonConfirmarActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
@@ -235,11 +280,21 @@ public class DialogModeloForm extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel panelBorderLeftTab1;
+    private javax.swing.JPanel panelBorderLeftTab2;
+    private javax.swing.JPanel panelBorderLeftTab3;
     private javax.swing.JPanel panelBorderRightTab1;
+    private javax.swing.JPanel panelBorderRightTab2;
+    private javax.swing.JPanel panelBorderRightTab3;
     private javax.swing.JPanel panelButtons;
     private javax.swing.JPanel panelCenterTab1;
+    private javax.swing.JPanel panelCenterTab2;
+    private javax.swing.JPanel panelCenterTab3;
     private javax.swing.JPanel panelTab1;
+    private javax.swing.JPanel panelTab2;
+    private javax.swing.JPanel panelTab3;
     private javax.swing.JPanel panelTopTab1;
+    private javax.swing.JPanel panelTopTab2;
+    private javax.swing.JPanel panelTopTab3;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }

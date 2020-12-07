@@ -2,9 +2,11 @@ package model.entidades;
 
 import application.Configuracoes;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 
 /**
@@ -14,10 +16,10 @@ import util.Utilities;
 public class Vistoria {
 
     private Integer id;
-    private List<ItemVistoria> itens = Configuracoes.loadItensVistoria();
+    private List<ItemVistoria> itens = DAOFactory.createItemVistoriaDAO().buscarTodos();
     private double kmVeiculo;
     private double quantidadeCombustivel;
-    private List<BufferedImage> imagens = new ArrayList<>();
+    private List<File> imagens = new ArrayList<>();
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Vistoria() {
@@ -65,11 +67,15 @@ public class Vistoria {
         this.quantidadeCombustivel = quantidadeCombustivel;
     }
 
-    public List<BufferedImage> getImagens() {
+    public List<File> getImagens() {
         return imagens;
     }
+
+    public File getImagem(int index) {
+        return imagens.get(index);
+    }
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
@@ -105,7 +111,11 @@ public class Vistoria {
         itens.remove(item);
     }
 
-    public void addImagem(BufferedImage imagem) {
+    public void addImagem(int index, File imagem) {
+        imagens.add(index, imagem);
+    }
+
+    public void addImagem(File imagem) {
         imagens.add(imagem);
     }
 

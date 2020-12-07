@@ -1,6 +1,6 @@
 package model.entidades;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
 import model.entidades.enums.CategoriaCNH;
 import java.util.Date;
 import java.util.Objects;
@@ -15,7 +15,8 @@ public class CNH {
     private Integer numeroRegistro;
     private CategoriaCNH categoria;
     private Date dataValidade;
-    private BufferedImage foto;
+    private File fotoFrente;
+    private File fotoVerso;
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
     public CNH() {
@@ -59,12 +60,20 @@ public class CNH {
         this.dataValidade = dataValidade;
     }
 
-    public BufferedImage getFoto() {
-        return foto;
+    public File getFotoFrente() {
+        return fotoFrente;
     }
 
-    public void setFoto(BufferedImage foto) {
-        this.foto = foto;
+    public void setFotoFrente(File fotoFrente) {
+        this.fotoFrente = fotoFrente;
+    }
+
+    public File getFotoVerso() {
+        return fotoVerso;
+    }
+
+    public void setFotoVerso(File fotoVerso) {
+        this.fotoVerso = fotoVerso;
     }
     // </editor-fold>
 

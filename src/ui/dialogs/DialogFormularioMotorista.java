@@ -1,135 +1,84 @@
 package ui.dialogs;
 
-import model.entidades.CNH;
 import model.entidades.Endereco;
 import model.entidades.Motorista;
 import model.entidades.PessoaFisica;
-import model.entidades.enums.CategoriaCNH;
 import model.servicos.persistencia.DAOFactory;
 import model.exceptions.DBException;
-import java.awt.Image;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import model.entidades.CNH;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormEndereco;
-import ui.panels.formularios.PanelFormPessoaFisica;
+import ui.panels.formularios.FormularioEndereco;
+import ui.panels.formularios.FormularioPessoaFisica;
 import util.DateUtilities;
 import util.PanelUtilities;
-import util.Utilities;
 import model.servicos.persistencia.MotoristaDAO;
+import ui.panels.formularios.FormularioCNH;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public class DialogMotoristaForm extends javax.swing.JDialog {
+public class DialogFormularioMotorista extends javax.swing.JDialog {
 
-    private Motorista motorista;
+    private Motorista entidade;
     private final MotoristaDAO DAO = DAOFactory.createMotoristaDAO();
+    private FormularioEndereco formularioEndereco;
+    private FormularioPessoaFisica formularioPessoaFisica;
+    private FormularioCNH formularioCNH;
+    private final List<DataChangeListener> listeners = new ArrayList<>();
 
-    private PanelFormEndereco panelFormEndereco;
-    private PanelFormPessoaFisica panelFormPessoaFisica;
-    private File fileFoto;
-
-    private final List<DataChangeListener> listeners;
-
-    public DialogMotoristaForm(java.awt.Frame parent, boolean modal, Motorista motorista) {
+    public DialogFormularioMotorista(java.awt.Frame parent, boolean modal, Motorista entidade) {
         super(parent, modal);
-        this.motorista = motorista;
+        this.entidade = entidade;
         initComponents();
-        initCombobox();
-        loadPanels();
-
-        listeners = new ArrayList<>();
+        carregarFormularios();
     }
 
-    private void loadPanels() {
-        panelFormEndereco = new PanelFormEndereco(motorista.getPessoa().getEndereco());
-        panelFormPessoaFisica = new PanelFormPessoaFisica(motorista.getPessoa());
+    private void carregarFormularios() {
+        formularioEndereco = new FormularioEndereco(entidade.getPessoa().getEndereco());
+        formularioPessoaFisica = new FormularioPessoaFisica(entidade.getPessoa());
+        formularioCNH = new FormularioCNH(entidade.getCnh());
 
-        PanelUtilities.loadPanelToPanel(panelFormPessoaFisica, panelCenterTab1);
-        PanelUtilities.loadPanelToPanel(panelFormEndereco, panelCenterTab3);
+        PanelUtilities.loadPanelToPanel(formularioPessoaFisica, panelCenterTab1);
+        PanelUtilities.loadPanelToPanel(formularioCNH, panelCenterTab2);
+        PanelUtilities.loadPanelToPanel(formularioEndereco, panelCenterTab3);
     }
 
-    private void initCombobox() {
-        comboBoxCategoriaCNH.setModel(new DefaultComboBoxModel(CategoriaCNH.values()));
-    }
-
-    private void persistEntity() throws DBException, ValidacaoException {
-        motorista = getFormData();
-        if (motorista.getId() == null) {
-            DAO.inserir(motorista);
+    private void persistirEntidade() throws DBException, ValidacaoException {
+        entidade = getEntidade();
+        if (entidade.getId() == null) {
+            DAO.inserir(entidade);
         } else {
-            DAO.atualizar(motorista);
+            DAO.atualizar(entidade);
         }
     }
 
-    public Motorista getFormData() throws ValidacaoException {
-        PessoaFisica pessoa = panelFormPessoaFisica.getFormData();
+    public Motorista getEntidade() throws ValidacaoException {
+        PessoaFisica pessoa = formularioPessoaFisica.getDadosFormulario();
         if (DateUtilities.getAge(pessoa.getDataNascimento()) < Motorista.IDADE_MINIMA) {
             ValidacaoException exception = new ValidacaoException("PanelFormPessoaFisica");
             exception.addError("dataNascimento", "Idade mínima " + Motorista.IDADE_MINIMA + " anos");
             throw exception;
         }
-        ValidacaoException exceptionCNH = new ValidacaoException("CNH");
-        if (Utilities.textFieldIsEmpty(textFieldNumeroRegistro)) {
-            exceptionCNH.addError("numeroRegistro", "Registro não informado");
-        }
-        if (Utilities.textFieldIsEmpty(textFieldFoto)) {
-            exceptionCNH.addError("foto", "Foto não selecionada");
-        }
-        if (dateChooserValidadeCNH.getDate() == null) {
-            exceptionCNH.addError("validadeCNH", "Data não selecionada");
-        } else if (dateChooserValidadeCNH.getDate().before(new Date())) {
-            exceptionCNH.addError("validadeCNH", "Data inválida");
-        }
+        CNH cnh = formularioCNH.getDadosFormulario();
+        Endereco endereco = formularioEndereco.getDadosFormulario();
 
-        clearErrors();
-        if (exceptionCNH.getErrors().size() > 0) {
-            throw exceptionCNH;
-        }
-        Endereco endereco = panelFormEndereco.getFormData();
         pessoa.setEndereco(endereco);
-        motorista.setPessoa(pessoa);
-        Integer numeroRegistroCNH = Utilities.tryParseToInteger(textFieldNumeroRegistro.getText());
-        Date dataValidadeCNH = dateChooserValidadeCNH.getDate();
-        CategoriaCNH categoriaCNH = CategoriaCNH.valueOf(comboBoxCategoriaCNH.getSelectedItem().toString());
-        CNH cnh = new CNH(numeroRegistroCNH, categoriaCNH, dataValidadeCNH);
-
-        motorista.setCnh(cnh);
-        motorista.setAtivo(checkBoxAtivo.isSelected());
-
-        return motorista;
+        entidade.setPessoa(pessoa);
+        entidade.setCnh(cnh);
+        return entidade;
     }
 
-    public void updateFormData() {
-        if (motorista.getCnh() != null) {
-            textFieldNumeroRegistro.setText("" + motorista.getCnh().getNumeroRegistro());
-            comboBoxCategoriaCNH.setSelectedIndex(motorista.getCnh().getCategoria().ordinal());
-            dateChooserValidadeCNH.setDate(motorista.getCnh().getDataValidade());
-        }
-        checkBoxAtivo.setSelected(motorista.isAtivo());
-        panelFormEndereco.updateFormData();
-        panelFormPessoaFisica.updateFormData();
-
-    }
-
-    public void showImageOnLabel(File fileImage) {
-        ImageIcon imageIcon = new ImageIcon(fileImage.getPath());
-        Image image = imageIcon.getImage().getScaledInstance(labelShowFoto.getWidth(), labelShowFoto.getHeight(), Image.SCALE_DEFAULT);
-        labelShowFoto.setIcon(new ImageIcon(image));
-        labelShowFoto.repaint();
+    public void atualizarFormulario() {
+        formularioCNH.atualizarFormulario();
+        formularioEndereco.atualizarFormulario();
+        formularioPessoaFisica.atualizarFormulario();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -142,26 +91,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
                 listener.onDataChanged();
             });
         }
-    }
-
-    public void setErrors(Map<String, String> errors) {
-        Set<String> fields = errors.keySet();
-
-        if (fields.contains("numeroRegistro")) {
-            labelErroNumRegistro.setText(errors.get("numeroRegistro"));
-        }
-        if (fields.contains("foto")) {
-            labelErroFoto.setText(errors.get("foto"));
-        }
-        if (fields.contains("validadeCNH")) {
-            labelErroValidadeCNH.setText(errors.get("validadeCNH"));
-        }
-    }
-
-    public void clearErrors() {
-        labelErroNumRegistro.setText("");
-        labelErroFoto.setText("");
-        labelErroValidadeCNH.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -178,22 +107,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         panelTopTab2 = new javax.swing.JPanel();
         panelBorderLeftTab2 = new javax.swing.JPanel();
         panelCenterTab2 = new javax.swing.JPanel();
-        panelCNH = new javax.swing.JPanel();
-        textFieldNumeroRegistro = new javax.swing.JTextField();
-        labelNumRegistro = new javax.swing.JLabel();
-        labelDataValidade = new javax.swing.JLabel();
-        comboBoxCategoriaCNH = new javax.swing.JComboBox<>();
-        labelCategoria = new javax.swing.JLabel();
-        textFieldFoto = new javax.swing.JTextField();
-        labelFoto = new javax.swing.JLabel();
-        buttonBuscarFoto = new javax.swing.JButton();
-        dateChooserValidadeCNH = new com.toedter.calendar.JDateChooser();
-        labelShowFoto = new javax.swing.JLabel();
-        labelErroNumRegistro = new javax.swing.JLabel();
-        labelErroFoto = new javax.swing.JLabel();
-        labelErroCategoriaCNH = new javax.swing.JLabel();
-        labelErroValidadeCNH = new javax.swing.JLabel();
-        checkBoxAtivo = new javax.swing.JCheckBox();
         panelBorderRightTab2 = new javax.swing.JPanel();
         panelTab3 = new javax.swing.JPanel();
         panelTopTab3 = new javax.swing.JPanel();
@@ -208,19 +121,17 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de motorista");
-        setMaximumSize(new java.awt.Dimension(440, 420));
-        setMinimumSize(new java.awt.Dimension(440, 420));
+        setMinimumSize(new java.awt.Dimension(470, 445));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        setPreferredSize(new java.awt.Dimension(440, 420));
         setResizable(false);
-        setSize(new java.awt.Dimension(440, 420));
+        setSize(new java.awt.Dimension(470, 445));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(430, 325));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(430, 325));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(430, 325));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -245,7 +156,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         );
         panelBorderLeftTab1Layout.setVerticalGroup(
             panelBorderLeftTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderLeftTab1, java.awt.BorderLayout.LINE_START);
@@ -267,7 +178,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         );
         panelBorderRightTab1Layout.setVerticalGroup(
             panelBorderRightTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
@@ -296,107 +207,14 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         );
         panelBorderLeftTab2Layout.setVerticalGroup(
             panelBorderLeftTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         panelTab2.add(panelBorderLeftTab2, java.awt.BorderLayout.LINE_START);
 
         panelCenterTab2.setBackground(new java.awt.Color(250, 250, 250));
-        panelCenterTab2.setPreferredSize(new java.awt.Dimension(400, 300));
+        panelCenterTab2.setPreferredSize(new java.awt.Dimension(400, 290));
         panelCenterTab2.setLayout(new javax.swing.BoxLayout(panelCenterTab2, javax.swing.BoxLayout.LINE_AXIS));
-
-        panelCNH.setBackground(new java.awt.Color(255, 255, 255));
-        panelCNH.setMaximumSize(new java.awt.Dimension(400, 280));
-        panelCNH.setMinimumSize(new java.awt.Dimension(400, 280));
-        panelCNH.setPreferredSize(new java.awt.Dimension(400, 280));
-        panelCNH.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        textFieldNumeroRegistro.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldNumeroRegistro.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldNumeroRegistro.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(textFieldNumeroRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
-
-        labelNumRegistro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelNumRegistro.setText("Número de registro");
-        panelCNH.add(labelNumRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        labelDataValidade.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelDataValidade.setText("Data validade");
-        panelCNH.add(labelDataValidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
-
-        comboBoxCategoriaCNH.setMinimumSize(new java.awt.Dimension(150, 25));
-        comboBoxCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(comboBoxCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
-
-        labelCategoria.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelCategoria.setText("Categoria");
-        panelCNH.add(labelCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
-
-        textFieldFoto.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldFoto.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldFoto.setPreferredSize(new java.awt.Dimension(140, 25));
-        panelCNH.add(textFieldFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
-
-        labelFoto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        labelFoto.setText("Foto");
-        panelCNH.add(labelFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 110, -1));
-
-        buttonBuscarFoto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonBuscarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pasta-24x24.png"))); // NOI18N
-        buttonBuscarFoto.setBorderPainted(false);
-        buttonBuscarFoto.setFocusPainted(false);
-        buttonBuscarFoto.setFocusable(false);
-        buttonBuscarFoto.setPreferredSize(new java.awt.Dimension(30, 25));
-        buttonBuscarFoto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBuscarFotoActionPerformed(evt);
-            }
-        });
-        panelCNH.add(buttonBuscarFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
-
-        dateChooserValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 25));
-        panelCNH.add(dateChooserValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
-
-        labelShowFoto.setMaximumSize(new java.awt.Dimension(170, 90));
-        labelShowFoto.setMinimumSize(new java.awt.Dimension(170, 90));
-        labelShowFoto.setPreferredSize(new java.awt.Dimension(170, 90));
-        panelCNH.add(labelShowFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, -1, 120));
-
-        labelErroNumRegistro.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroNumRegistro.setForeground(java.awt.Color.red);
-        labelErroNumRegistro.setMaximumSize(new java.awt.Dimension(170, 15));
-        labelErroNumRegistro.setMinimumSize(new java.awt.Dimension(170, 15));
-        labelErroNumRegistro.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroNumRegistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
-
-        labelErroFoto.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroFoto.setForeground(java.awt.Color.red);
-        labelErroFoto.setMaximumSize(new java.awt.Dimension(170, 15));
-        labelErroFoto.setMinimumSize(new java.awt.Dimension(170, 15));
-        labelErroFoto.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroFoto, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 105, -1, -1));
-
-        labelErroCategoriaCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroCategoriaCNH.setForeground(java.awt.Color.red);
-        labelErroCategoriaCNH.setMaximumSize(new java.awt.Dimension(170, 15));
-        labelErroCategoriaCNH.setMinimumSize(new java.awt.Dimension(170, 15));
-        labelErroCategoriaCNH.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroCategoriaCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, -1, -1));
-
-        labelErroValidadeCNH.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        labelErroValidadeCNH.setForeground(java.awt.Color.red);
-        labelErroValidadeCNH.setMaximumSize(new java.awt.Dimension(170, 15));
-        labelErroValidadeCNH.setMinimumSize(new java.awt.Dimension(170, 15));
-        labelErroValidadeCNH.setPreferredSize(new java.awt.Dimension(170, 15));
-        panelCNH.add(labelErroValidadeCNH, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
-
-        checkBoxAtivo.setBackground(new java.awt.Color(255, 255, 255));
-        checkBoxAtivo.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        checkBoxAtivo.setText("Ativo");
-        panelCNH.add(checkBoxAtivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
-
-        panelCenterTab2.add(panelCNH);
-
         panelTab2.add(panelCenterTab2, java.awt.BorderLayout.CENTER);
 
         panelBorderRightTab2.setBackground(new java.awt.Color(255, 255, 255));
@@ -411,12 +229,12 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         );
         panelBorderRightTab2Layout.setVerticalGroup(
             panelBorderRightTab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Motorista e CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2, "Informaçõoes sobre o motorista e sua CNH"); // NOI18N
+        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2, "Informaçõoes sobre o motorista e sua CNH"); // NOI18N
 
         panelTab3.setBackground(new java.awt.Color(153, 153, 153));
         panelTab3.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -440,7 +258,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         );
         panelBorderLeftTab3Layout.setVerticalGroup(
             panelBorderLeftTab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         panelTab3.add(panelBorderLeftTab3, java.awt.BorderLayout.LINE_START);
@@ -462,7 +280,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         );
         panelBorderRightTab4Layout.setVerticalGroup(
             panelBorderRightTab4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
+            .addGap(0, 277, Short.MAX_VALUE)
         );
 
         panelTab3.add(panelBorderRightTab4, java.awt.BorderLayout.LINE_END);
@@ -472,9 +290,9 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setMinimumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setPreferredSize(new java.awt.Dimension(400, 50));
+        panelButtons.setMaximumSize(new java.awt.Dimension(430, 50));
+        panelButtons.setMinimumSize(new java.awt.Dimension(430, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(430, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
         panelButtons.setLayout(new java.awt.BorderLayout());
 
@@ -514,7 +332,7 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 325, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -525,22 +343,22 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         tabbedPane.setIconAt(1, new ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")));
         tabbedPane.setIconAt(2, new ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")));
         try {
-            persistEntity();
+            persistirEntidade();
             this.dispose();
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormPessoaFisica")) {
+            if (ex.getMessage().equals("PessoaFisica")) {
                 tabbedPane.setIconAt(0, iconError);
-                panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
+                formularioPessoaFisica.exibirMensagensErro(ex.getErrors());
             }
             if (ex.getMessage().equals("CNH")) {
                 tabbedPane.setIconAt(1, iconError);
-                setErrors(ex.getErrors());
+                formularioCNH.exibirMensagensErro(ex.getErrors());
             }
-            if (ex.getMessage().equals("PanelFormEndereco")) {
+            if (ex.getMessage().equals("Endereco")) {
                 tabbedPane.setIconAt(2, iconError);
-                panelFormEndereco.setErrorsMessages(ex.getErrors());
+                formularioEndereco.exibirMensagensErro(ex.getErrors());
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
@@ -551,38 +369,12 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
-    private void buttonBuscarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarFotoActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("imagem", "jpg", "jpeg", "png"));
-
-        int retorno = fileChooser.showOpenDialog(this);
-        if (retorno == JFileChooser.APPROVE_OPTION) {
-            fileFoto = (fileChooser.getSelectedFile());
-            textFieldFoto.setText(fileFoto.getPath());
-            showImageOnLabel(fileFoto);
-        }
-    }//GEN-LAST:event_buttonBuscarFotoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonBuscarFoto;
     private javax.swing.JButton buttonCancelar;
     private javax.swing.JButton buttonConfirmar;
-    private javax.swing.JCheckBox checkBoxAtivo;
-    private javax.swing.JComboBox<String> comboBoxCategoriaCNH;
-    private com.toedter.calendar.JDateChooser dateChooserValidadeCNH;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel labelCategoria;
-    private javax.swing.JLabel labelDataValidade;
-    private javax.swing.JLabel labelErroCategoriaCNH;
-    private javax.swing.JLabel labelErroFoto;
-    private javax.swing.JLabel labelErroNumRegistro;
-    private javax.swing.JLabel labelErroValidadeCNH;
-    private javax.swing.JLabel labelFoto;
-    private javax.swing.JLabel labelNumRegistro;
-    private javax.swing.JLabel labelShowFoto;
     private javax.swing.JPanel panelBorderLeftTab1;
     private javax.swing.JPanel panelBorderLeftTab2;
     private javax.swing.JPanel panelBorderLeftTab3;
@@ -590,7 +382,6 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private javax.swing.JPanel panelBorderRightTab2;
     private javax.swing.JPanel panelBorderRightTab4;
     private javax.swing.JPanel panelButtons;
-    private javax.swing.JPanel panelCNH;
     private javax.swing.JPanel panelCenterTab1;
     private javax.swing.JPanel panelCenterTab2;
     private javax.swing.JPanel panelCenterTab3;
@@ -601,7 +392,5 @@ public class DialogMotoristaForm extends javax.swing.JDialog {
     private javax.swing.JPanel panelTopTab2;
     private javax.swing.JPanel panelTopTab3;
     private javax.swing.JTabbedPane tabbedPane;
-    private javax.swing.JTextField textFieldFoto;
-    private javax.swing.JTextField textFieldNumeroRegistro;
     // End of variables declaration//GEN-END:variables
 }

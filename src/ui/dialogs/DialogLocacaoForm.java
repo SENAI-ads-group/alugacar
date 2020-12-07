@@ -11,7 +11,7 @@ import model.entidades.Locacao;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.LocacaoDAO;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormLocacao;
+import ui.panels.formularios.FormularioLocacao;
 import util.PanelUtilities;
 
 /**
@@ -23,7 +23,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
     private Locacao locacao;
     private final LocacaoDAO DAO = DAOFactory.createLocacaoDAO();
 
-    private PanelFormLocacao formLocacao;
+    private FormularioLocacao formLocacao;
 
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
     }
 
     private void loadPanels() {
-        formLocacao = new PanelFormLocacao(locacao);
+        formLocacao = new FormularioLocacao(locacao);
         PanelUtilities.loadPanelToPanel(formLocacao, panelCenterTab1);
     }
 

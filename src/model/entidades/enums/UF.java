@@ -31,15 +31,20 @@ public enum UF {
     SP("São Paulo"),
     SE("Sergipe"),
     TO("Tocantins");
-    
+
     String descricao;
 
     private UF(String descricao) {
         this.descricao = descricao;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String toCSV() {
+        return name();
     }
-    
+
+    @Override
+    public String toString() {
+        return name() + " - " + descricao;
+    }
+
 }

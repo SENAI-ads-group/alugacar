@@ -9,17 +9,18 @@ import model.entidades.Modelo;
 import model.entidades.Veiculo;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.DAOFactory;
+import util.FieldUtilities;
 import util.Utilities;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public final class PanelFormVeiculo extends javax.swing.JPanel {
+public final class FormularioVeiculo extends javax.swing.JPanel {
 
     private Veiculo veiculo;
 
-    public PanelFormVeiculo(Veiculo veiculo) {
+    public FormularioVeiculo(Veiculo veiculo) {
         initComponents();
         this.veiculo = veiculo;
         initCombobox();
@@ -97,16 +98,16 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
 
     public Veiculo getFormData() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        if (Utilities.textFieldIsEmpty(textFieldPlaca)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldPlaca)) {
             exception.addError("placa", "Placa não informada");
         }
-        if (Utilities.textFieldIsEmpty(textFieldRenavam)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldRenavam)) {
             exception.addError("renavam", "Renavam não informado");
         }
-        if (Utilities.textFieldIsEmpty(textFieldPrecoCompra) || Utilities.tryParseToDouble(textFieldPrecoCompra.getText()).equals(0.0)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldPrecoCompra) || Utilities.tryParseToDouble(textFieldPrecoCompra.getText()).equals(0.0)) {
             exception.addError("precoCompra", "Preço de compra não informado");
         }
-        if (Utilities.textFieldIsEmpty(textFieldKMAtual)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldKMAtual)) {
             exception.addError("KM", "KM não informado");
         }
         if (comboBoxModelo.getSelectedItem() == null) {
@@ -194,7 +195,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldPlaca.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldPlaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
 
-        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelNome.setText("Placa");
         add(labelNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -205,7 +206,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldRenavam.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldRenavam, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
 
-        labelRenavam.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelRenavam.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelRenavam.setText("Renavam");
         add(labelRenavam, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
 
@@ -216,7 +217,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldKMAtual.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldKMAtual, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, -1));
 
-        labelRG.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelRG.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelRG.setText("Quilometragem atual");
         add(labelRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
 
@@ -248,7 +249,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         labelErroKMAtual.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroKMAtual, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 170, -1));
 
-        labelAnoFabricacao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelAnoFabricacao.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelAnoFabricacao.setText("Ano de fabricação");
         add(labelAnoFabricacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, -1, -1));
 
@@ -273,7 +274,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         });
         add(comboBoxMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, -1, -1));
 
-        labelMarca.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMarca.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelMarca.setText("Marca");
         add(labelMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
@@ -284,7 +285,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         textFieldPrecoCompra.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldPrecoCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
 
-        labelPrecoCompra.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelPrecoCompra.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelPrecoCompra.setText("Preço de compra");
         add(labelPrecoCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, -1, -1));
 
@@ -312,7 +313,7 @@ public final class PanelFormVeiculo extends javax.swing.JPanel {
         });
         add(comboBoxModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
 
-        labelModelo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelModelo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelModelo.setText("Modelo");
         add(labelModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, -1, -1));
     }// </editor-fold>//GEN-END:initComponents

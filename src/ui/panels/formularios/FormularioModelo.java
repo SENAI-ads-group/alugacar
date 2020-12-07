@@ -10,35 +10,26 @@ import model.entidades.Modelo;
 import model.entidades.enums.Combustivel;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.DAOFactory;
-import util.Utilities;
+import util.FieldUtilities;
 
 /**
  *
  * @author patrick-ribeiro
  */
-public final class PanelFormModelo extends javax.swing.JPanel {
+public final class FormularioModelo extends javax.swing.JPanel {
 
     private Modelo modelo;
 
-    public PanelFormModelo(Modelo modelo) {
+    public FormularioModelo(Modelo modelo) {
         initComponents();
         this.modelo = modelo;
-        initCombobox();
     }
 
-    public void setVeiculo(Modelo modelo) {
+    public void setModelo(Modelo modelo) {
         this.modelo = modelo;
     }
 
-    public void initCombobox() {
-        Object[] itemsMarca = DAOFactory.createMarcaDAO().buscarTodos().toArray();
-        Object[] itemsCategoria = DAOFactory.createCategoriaDAO().buscarTodos().toArray();
-        comboBoxMarca.setModel(new DefaultComboBoxModel(itemsMarca));
-        comboBoxCategoria.setModel(new DefaultComboBoxModel(itemsCategoria));
-        comboBoxCombustivel.setModel(new DefaultComboBoxModel<>(Combustivel.values()));
-    }
-
-    public void updateFormData() {
+    public void atualizarFormulario() {
         if (modelo == null) {
             throw new IllegalStateException("O modelo está nulo");
         }
@@ -59,13 +50,13 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         }
     }
 
-    public Modelo getFormData() throws ValidacaoException {
+    public Modelo getDadosFormulario() throws ValidacaoException {
         if (modelo == null) {
             modelo = new Modelo();
         }
-        clearErrors();
+        limparErros();
         validarCampos();
-        if (!Utilities.textFieldIsEmpty(textFieldCodigoFipe)) {
+        if (!FieldUtilities.textFieldIsEmpty(textFieldCodigoFipe)) {
             modelo.setCodigoFipe(textFieldCodigoFipe.getText());
         }
         modelo.setDescricao(textFieldDescricao.getText());
@@ -77,19 +68,9 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         return modelo;
     }
 
-    public void clearErrors() {
-        labelErroAnoModelo.setText("");
-        labelErroCombustivel.setText("");
-        labelErroMarca.setText("");
-        labelErroPlaca.setText("");
-        labelErroAnoModelo.setText("");
-        labelErroDescricao.setText("");
-        labelErroCategoria.setText("");
-    }
-
-    public void validarCampos() throws ValidacaoException {
+    private void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        if (Utilities.textFieldIsEmpty(textFieldDescricao)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldDescricao)) {
             exception.addError("descricao", "Descrição não informada");
         }
         if (comboBoxCombustivel.getSelectedItem() == null) {
@@ -107,22 +88,31 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         }
     }
 
-    public void setErrorsMessages(Map<String, String> errors) {
-        Set<String> fields = errors.keySet();
+    public void exibirMensagensErro(Map<String, String> erros) {
+        Set<String> fields = erros.keySet();
 
         if (fields.contains("descricao")) {
-            labelErroDescricao.setText(errors.get("descricao"));
+            labelErroDescricao.setText(erros.get("descricao"));
         }
         if (fields.contains("combustivel")) {
-            labelErroCombustivel.setText(errors.get("combustivel"));
+            labelErroCombustivel.setText(erros.get("combustivel"));
         }
         if (fields.contains("categoria")) {
-            labelErroCategoria.setText(errors.get("categoria"));
+            labelErroCategoria.setText(erros.get("categoria"));
         }
         if (fields.contains("marca")) {
-            labelErroMarca.setText(errors.get("categoria"));
+            labelErroMarca.setText(erros.get("categoria"));
         }
+    }
 
+    private void limparErros() {
+        labelErroAnoModelo.setText("");
+        labelErroCombustivel.setText("");
+        labelErroMarca.setText("");
+        labelErroPlaca.setText("");
+        labelErroAnoModelo.setText("");
+        labelErroDescricao.setText("");
+        labelErroCategoria.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -212,6 +202,7 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         yearChooserModelo.setStartYear(1900);
         add(yearChooserModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
 
+        comboBoxMarca.setModel(new DefaultComboBoxModel(DAOFactory.createMarcaDAO().buscarTodos().toArray()));
         comboBoxMarca.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxMarca.setPreferredSize(new java.awt.Dimension(170, 25));
         add(comboBoxMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, -1, -1));
@@ -234,6 +225,7 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         labelErroCategoria.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 185, 170, -1));
 
+        comboBoxCategoria.setModel(new DefaultComboBoxModel(DAOFactory.createCategoriaDAO().buscarTodos().toArray()));
         comboBoxCategoria.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxCategoria.setPreferredSize(new java.awt.Dimension(170, 25));
         add(comboBoxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
@@ -246,6 +238,7 @@ public final class PanelFormModelo extends javax.swing.JPanel {
         labelCombustivel.setText("Combustível");
         add(labelCombustivel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
 
+        comboBoxCombustivel.setModel(new DefaultComboBoxModel<>(Combustivel.values()));
         comboBoxCombustivel.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxCombustivel.setPreferredSize(new java.awt.Dimension(170, 25));
         add(comboBoxCombustivel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, -1));

@@ -1,7 +1,5 @@
 package model.servicos.persistencia;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
 import model.entidades.CNH;
 import model.entidades.Vistoria;
 
@@ -11,11 +9,11 @@ import model.entidades.Vistoria;
  */
 public interface ImagemDAO {
 
-    void inserir(BufferedImage image, Vistoria vistoria);
+    void exportar(Vistoria vistoria);
 
-    void inserir(BufferedImage image, CNH cnh);
+    void exportar(CNH cnh);
 
-    List<BufferedImage> buscar(Vistoria vistoria);
+    void importar(Vistoria vistoria);
 
-    List<BufferedImage> buscar(CNH cnh);
+    void importar(CNH cnh);
 }

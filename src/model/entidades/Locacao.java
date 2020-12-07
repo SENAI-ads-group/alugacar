@@ -233,17 +233,17 @@ public class Locacao {
     public String toCSV() {
         switch (status) {
             case INICIADA:
-                return toCsvStatusAberto();
+                return toCSVIniciado();
             case FINALIZADA:
-                return toCsvStatusFinalizado();
+                return toCSVFinalizado();
             case PENDENTE:
-                return toCsvstatusPendente();
+                return toCSVPendente();
             default:
                 throw new IllegalStateException("Status inválido");
         }
     }
 
-    private String toCsvstatusPendente() {
+    private String toCSVPendente() {
         return "" + id + ";"
                 + status.toCSV() + ";"
                 + tipo.toCSV() + ";"
@@ -255,7 +255,7 @@ public class Locacao {
                 + cliente.getId();
     }
 
-    private String toCsvStatusAberto() {
+    private String toCSVIniciado() {
         tipo.getContrato().setLocacao(this);
         return "" + id + ";"
                 + status.toCSV() + ";"
@@ -266,11 +266,10 @@ public class Locacao {
                 + veiculo.getId() + ";"
                 + motorista.getId() + ";"
                 + cliente.getId() + ";"
-                + vistoriaEntrega.getId() + ";"
-                + tipo.getContrato().getValorBruto();
+                + vistoriaEntrega.getId();
     }
 
-    private String toCsvStatusFinalizado() {
+    private String toCSVFinalizado() {
         tipo.getContrato().setLocacao(this);
         return "" + id + ";"
                 + status.toCSV() + ";"
@@ -282,8 +281,7 @@ public class Locacao {
                 + motorista.getId() + ";"
                 + cliente.getId() + ";"
                 + vistoriaEntrega.getId() + ";"
-                + vistoriaDevolucao.getId() + ";"
-                + tipo.getContrato().getValorTotal();
+                + vistoriaDevolucao.getId();
     }
 
 }

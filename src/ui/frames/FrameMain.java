@@ -1,6 +1,7 @@
 package ui.frames;
 
 import java.awt.Component;
+import ui.dialogs.DialogConfiguracoes;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
@@ -261,6 +262,9 @@ public class FrameMain extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelMenuItemConfiguracoesMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemConfiguracoesMousePressed(evt);
+            }
         });
         panelMenuItemConfiguracoes.setLayout(new java.awt.BorderLayout());
 
@@ -354,6 +358,10 @@ public class FrameMain extends javax.swing.JFrame {
         listLocacoes.updateTable();
     }//GEN-LAST:event_panelMenuItemLocacaoMousePressed
 
+    private void panelMenuItemConfiguracoesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemConfiguracoesMousePressed
+        DialogConfiguracoes dialog = new DialogConfiguracoes(this, true);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_panelMenuItemConfiguracoesMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel labelIconCategorias;

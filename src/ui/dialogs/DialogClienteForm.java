@@ -15,9 +15,9 @@ import model.entidades.PessoaJuridica;
 import model.entidades.enums.TipoCliente;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormEndereco;
-import ui.panels.formularios.PanelFormPessoaFisica;
-import ui.panels.formularios.PanelFormPessoaJuridica;
+import ui.panels.formularios.FormularioEndereco;
+import ui.panels.formularios.FormularioPessoaFisica;
+import ui.panels.formularios.FormularioPessoaJuridica;
 import util.DateUtilities;
 import util.PanelUtilities;
 import model.servicos.persistencia.ClienteDAO;
@@ -31,9 +31,9 @@ public class DialogClienteForm extends javax.swing.JDialog {
     private Cliente cliente;
     private final ClienteDAO persistenceService = DAOFactory.createClienteDAO();
 
-    private PanelFormEndereco panelFormEndereco;
-    private PanelFormPessoaFisica panelFormPessoaFisica;
-    private PanelFormPessoaJuridica panelFormPessoaJuridica;
+    private FormularioEndereco panelFormEndereco;
+    private FormularioPessoaFisica panelFormPessoaFisica;
+    private FormularioPessoaJuridica panelFormPessoaJuridica;
 
     private final List<DataChangeListener> listeners;
 
@@ -47,15 +47,15 @@ public class DialogClienteForm extends javax.swing.JDialog {
     }
 
     private void loadPanels(TipoCliente tipoCliente) {
-        panelFormEndereco = new PanelFormEndereco(cliente.getPessoa().getEndereco());
+        panelFormEndereco = new FormularioEndereco(cliente.getPessoa().getEndereco());
         if (tipoCliente == TipoCliente.PESSOA_FISICA) {
-            panelFormPessoaFisica = new PanelFormPessoaFisica((PessoaFisica) cliente.getPessoa());
+            panelFormPessoaFisica = new FormularioPessoaFisica((PessoaFisica) cliente.getPessoa());
             PanelUtilities.loadPanelToPanel(panelFormPessoaFisica, panelCenterTab1);
             tabbedPane.setTitleAt(0, "Informações pessoais");
             tabbedPane.setToolTipTextAt(0, "Informações pessoais básicas sobre o cliente");
             tabbedPane.setIconAt(0, new ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")));
         } else if (tipoCliente == TipoCliente.PESSOA_JURIDICA) {
-            panelFormPessoaJuridica = new PanelFormPessoaJuridica((PessoaJuridica) cliente.getPessoa());
+            panelFormPessoaJuridica = new FormularioPessoaJuridica((PessoaJuridica) cliente.getPessoa());
             PanelUtilities.loadPanelToPanel(panelFormPessoaJuridica, panelCenterTab1);
         }
         updateTabIcons();
@@ -74,7 +74,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
     public Cliente getFormData() throws ValidacaoException {
         Pessoa pessoa = null;
         if (cliente.getTipoCliente() == TipoCliente.PESSOA_FISICA) {
-            pessoa = panelFormPessoaFisica.getFormData();
+            pessoa = panelFormPessoaFisica.getDadosFormulario();
             if (DateUtilities.getAge(((PessoaFisica) pessoa).getDataNascimento()) < Cliente.IDADE_MINIMA) {
                 ValidacaoException exception = new ValidacaoException("PanelFormPessoaFisica");
                 exception.addError("dataNascimento", "Idade mínima " + Cliente.IDADE_MINIMA + " anos");
@@ -83,7 +83,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
         } else {
             pessoa = panelFormPessoaJuridica.getFormData();
         }
-        Endereco endereco = panelFormEndereco.getFormData();
+        Endereco endereco = panelFormEndereco.getDadosFormulario();
         pessoa.setEndereco(endereco);
         cliente.setPessoa(pessoa);
 
@@ -91,9 +91,9 @@ public class DialogClienteForm extends javax.swing.JDialog {
     }
 
     public void updateFormData() {
-        panelFormEndereco.updateFormData();
+        panelFormEndereco.atualizarFormulario();
         if (panelFormPessoaFisica != null) {
-            panelFormPessoaFisica.updateFormData();
+            panelFormPessoaFisica.atualizarFormulario();
         }
         if (panelFormPessoaJuridica != null) {
             panelFormPessoaJuridica.updateFormData();
@@ -147,17 +147,18 @@ public class DialogClienteForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de cliente");
-        setMinimumSize(new java.awt.Dimension(440, 420));
+        setMinimumSize(new java.awt.Dimension(470, 410));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(470, 410));
         setResizable(false);
-        setSize(new java.awt.Dimension(440, 420));
+        setSize(new java.awt.Dimension(470, 410));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(430, 290));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(430, 290));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(430, 290));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -267,7 +268,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
         panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
         panelButtons.setMinimumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setPreferredSize(new java.awt.Dimension(400, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(430, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
         panelButtons.setLayout(new java.awt.BorderLayout());
 
@@ -307,7 +308,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -323,7 +324,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormPessoaFisica")) {
                 tabbedPane.setIconAt(0, iconError);
-                panelFormPessoaFisica.setErrorsMessages(ex.getErrors());
+                panelFormPessoaFisica.exibirMensagensErro(ex.getErrors());
             }
             if (ex.getMessage().equals("PanelFormPessoaJuridica")) {
                 tabbedPane.setIconAt(0, iconError);
@@ -331,7 +332,7 @@ public class DialogClienteForm extends javax.swing.JDialog {
             }
             if (ex.getMessage().equals("PanelFormEndereco")) {
                 tabbedPane.setIconAt(1, iconError);
-                panelFormEndereco.setErrorsMessages(ex.getErrors());
+                panelFormEndereco.exibirMensagensErro(ex.getErrors());
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);

@@ -13,12 +13,12 @@ import util.Utilities;
  *
  * @author patrick-ribeiro
  */
-public final class PanelFormVistoria extends javax.swing.JPanel {
+public final class FormularioVistoria extends javax.swing.JPanel {
 
     private Vistoria vistoria;
     private Locacao locacao;
 
-    public PanelFormVistoria(Vistoria vistoria, Locacao locacao) {
+    public FormularioVistoria(Vistoria vistoria, Locacao locacao) {
         initComponents();
         this.vistoria = vistoria;
         this.locacao = locacao;

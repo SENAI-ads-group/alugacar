@@ -17,30 +17,19 @@ import model.servicos.persistencia.DAOFactory;
  *
  * @author patrick-ribeiro
  */
-public final class PanelFormLocacao extends javax.swing.JPanel {
-    
+public final class FormularioLocacao extends javax.swing.JPanel {
+
     private Locacao locacao;
-    
-    public PanelFormLocacao(Locacao locacao) {
+
+    public FormularioLocacao(Locacao locacao) {
         initComponents();
         this.locacao = locacao;
-        initCombobox();
     }
-    
+
     public void setLocacao(Locacao locacao) {
         this.locacao = locacao;
     }
-    
-    public void initCombobox() {
-        Object[] itensVeiculo = DAOFactory.createVeiculoDAO().buscar(StatusVeiculo.DISPONIVEL).toArray();
-        Object[] itensCliente = DAOFactory.createClienteDAO().buscarTodos().toArray();
-        Object[] itensMotorista = DAOFactory.createMotoristaDAO().buscarTodos().toArray();
-        comboBoxVeiculo.setModel(new DefaultComboBoxModel(itensVeiculo));
-        comboBoxMotorista.setModel(new DefaultComboBoxModel(itensMotorista));
-        comboBoxCliente.setModel(new DefaultComboBoxModel(itensCliente));
-        comboBoxTipoLocacao.setModel(new DefaultComboBoxModel<>(TipoLocacao.values()));
-    }
-    
+
     public void updateFormData() {
         if (locacao == null) {
             throw new IllegalStateException("O modelo está nulo");
@@ -50,7 +39,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         comboBoxVeiculo.setSelectedItem(locacao.getVeiculo());
         comboBoxTipoLocacao.setSelectedItem(locacao.getTipo());
     }
-    
+
     public Locacao getFormData() throws ValidacaoException {
         if (locacao == null) {
             locacao = new Locacao(TipoLocacao.DIARIA);
@@ -65,7 +54,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         locacao.setTipo(comboBoxTipoLocacao.getItemAt(comboBoxTipoLocacao.getSelectedIndex()));
         return locacao;
     }
-    
+
     public void clearErrors() {
         labelErroDataEntrega.setText("");
         labelErroMarca.setText("");
@@ -73,10 +62,10 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         labelErroCategoria.setText("");
         labelErroTipoLocacao.setText("");
     }
-    
+
     public void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        
+
         if (dateChooserEntrega.getDate() == null) {
             exception.addError("dataEntrega", "Data não informada");
         }
@@ -84,15 +73,15 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
             exception.addError("dataDevolucao", "Data não informada");
         }
     }
-    
+
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-        
+
         if (fields.contains("descricao")) {
             labelErroDataDevolucao.setText(errors.get("descricao"));
-        }        
+        }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -127,7 +116,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         labelErroMarca.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroMarca.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroMarca.setPreferredSize(new java.awt.Dimension(200, 15));
-        add(labelErroMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, -1, -1));
+        add(labelErroMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
         labelErroDataDevolucao.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroDataDevolucao.setForeground(java.awt.Color.red);
@@ -143,46 +132,49 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         labelErroDataEntrega.setPreferredSize(new java.awt.Dimension(200, 15));
         add(labelErroDataEntrega, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
 
+        comboBoxVeiculo.setModel(new DefaultComboBoxModel(DAOFactory.createVeiculoDAO().buscar(StatusVeiculo.DISPONIVEL).toArray()));
         comboBoxVeiculo.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxVeiculo.setPreferredSize(new java.awt.Dimension(200, 25));
-        add(comboBoxVeiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, -1, -1));
+        add(comboBoxVeiculo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
 
         labelErroTipoLocacao.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroTipoLocacao.setForeground(java.awt.Color.red);
         labelErroTipoLocacao.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroTipoLocacao.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroTipoLocacao.setPreferredSize(new java.awt.Dimension(200, 15));
-        add(labelErroTipoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 185, -1, -1));
+        add(labelErroTipoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 170, -1, -1));
 
-        labelMarca.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMarca.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelMarca.setText("Veículo");
         labelMarca.setToolTipText("Veículo a ser locado");
         labelMarca.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+        add(labelMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
         labelErroCategoria.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroCategoria.setForeground(java.awt.Color.red);
         labelErroCategoria.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroCategoria.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroCategoria.setPreferredSize(new java.awt.Dimension(200, 15));
-        add(labelErroCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 115, -1, -1));
+        add(labelErroCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 105, -1, -1));
 
+        comboBoxTipoLocacao.setModel(new DefaultComboBoxModel<>(TipoLocacao.values()));
         comboBoxTipoLocacao.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxTipoLocacao.setPreferredSize(new java.awt.Dimension(200, 25));
-        add(comboBoxTipoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, -1, -1));
+        add(comboBoxTipoLocacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, -1, -1));
 
+        comboBoxCliente.setModel(new DefaultComboBoxModel(DAOFactory.createClienteDAO().buscarTodos().toArray()));
         comboBoxCliente.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxCliente.setPreferredSize(new java.awt.Dimension(200, 25));
-        add(comboBoxCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, -1, -1));
+        add(comboBoxCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, -1, -1));
 
-        labelCategoria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelCategoria.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelCategoria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-info-12x12.png"))); // NOI18N
         labelCategoria.setText("Modalidade de precificação");
         labelCategoria.setToolTipText("<html>Modalidade com qual será calculado os custos da locação<br>\n<span>Diária:</span> custos calculados de acordo com a quantidade de dias de locação;<br>\n<span>KM rodado:</span> custos calculados de acordo com a quantidade de quilômetros percorridos pelo veículo no prazo da locação</html>");
         labelCategoria.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 140, -1, -1));
+        add(labelCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, -1, -1));
 
-        labelDataEntrega.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelDataEntrega.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelDataEntrega.setText("Data de entrega");
         labelDataEntrega.setToolTipText("Data de previsão de entrega do veículo");
         labelDataEntrega.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -204,7 +196,7 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         dateChooserDevolucao.setPreferredSize(new java.awt.Dimension(200, 25));
         add(dateChooserDevolucao, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, -1));
 
-        labelDataEntrega1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelDataEntrega1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelDataEntrega1.setText("Previsão de devolução");
         labelDataEntrega1.setToolTipText("Data de previsão de devolução do veículo");
         labelDataEntrega1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -215,23 +207,24 @@ public final class PanelFormLocacao extends javax.swing.JPanel {
         labelErroCategoria1.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroCategoria1.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroCategoria1.setPreferredSize(new java.awt.Dimension(200, 15));
-        add(labelErroCategoria1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 185, -1, -1));
+        add(labelErroCategoria1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, -1, -1));
 
+        comboBoxMotorista.setModel(new DefaultComboBoxModel(DAOFactory.createMotoristaDAO().buscarTodos().toArray()));
         comboBoxMotorista.setMinimumSize(new java.awt.Dimension(150, 25));
         comboBoxMotorista.setPreferredSize(new java.awt.Dimension(200, 25));
-        add(comboBoxMotorista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 160, -1, -1));
+        add(comboBoxMotorista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
-        labelMotorista.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMotorista.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelMotorista.setText("Motorista");
         labelMotorista.setToolTipText("Motorista responsável pelo veículo a ser locado");
         labelMotorista.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelMotorista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
+        add(labelMotorista, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, -1, -1));
 
-        labelCategoria2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelCategoria2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelCategoria2.setText("Cliente");
         labelCategoria2.setToolTipText("Cliente responsável pela locação");
         labelCategoria2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelCategoria2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, -1, -1));
+        add(labelCategoria2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 

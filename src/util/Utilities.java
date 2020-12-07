@@ -24,7 +24,4 @@ public class Utilities {
         }
     }
 
-    public static boolean textFieldIsEmpty(JTextField textField) {
-        return textField.getText() == null || textField.getText().trim().equals("");
-    }
 }

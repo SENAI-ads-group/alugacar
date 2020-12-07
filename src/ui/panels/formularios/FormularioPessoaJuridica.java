@@ -4,17 +4,18 @@ import java.util.Map;
 import java.util.Set;
 import model.entidades.PessoaJuridica;
 import model.exceptions.ValidacaoException;
+import util.FieldUtilities;
 import util.Utilities;
 
 /**
  *
  * @author Patrick-Ribeiro
  */
-public class PanelFormPessoaJuridica extends javax.swing.JPanel {
+public class FormularioPessoaJuridica extends javax.swing.JPanel {
 
     private PessoaJuridica pessoa;
 
-    public PanelFormPessoaJuridica(PessoaJuridica pessoa) {
+    public FormularioPessoaJuridica(PessoaJuridica pessoa) {
         initComponents();
         this.pessoa = pessoa;
     }
@@ -27,8 +28,8 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         if (pessoa != null) {
             textFieldNome.setText(pessoa.getNome());
             textFieldEmail.setText(pessoa.getEmail());
-            textFieldCNPJ.setText(pessoa.getCnpj());
-            textFieldTelefone.setText(pessoa.getTelefone());
+            formattedTextFieldCNPJ.setText(pessoa.getCnpj());
+            formattedTextFieldTelefone.setText(pessoa.getTelefone());
             textFieldInscricaoEstadual.setText(pessoa.getInscricaoEstadual());
             textFieldRazaoSocial.setText(pessoa.getRazaoSocial());
         }
@@ -39,24 +40,28 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
             pessoa = new PessoaJuridica();
         }
         ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        if (Utilities.textFieldIsEmpty(textFieldNome)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldNome)) {
             exception.addError("nome", "Nome fantasia não informado");
         }
-        if (Utilities.textFieldIsEmpty(textFieldCNPJ)) {
+        if (FieldUtilities.formattedTextFieldIsEmpty(formattedTextFieldCNPJ)) {
             exception.addError("CNPJ", "CNPJ não informado");
+        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldCNPJ)) {
+            exception.addError("CNPJ", "CNPJ inválido");
         }
-        if (Utilities.textFieldIsEmpty(textFieldInscricaoEstadual)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldInscricaoEstadual)) {
             exception.addError("IE", "IE não informada");
         }
-        if (Utilities.textFieldIsEmpty(textFieldTelefone)) {
+        if (FieldUtilities.formattedTextFieldIsEmpty(formattedTextFieldTelefone)) {
             exception.addError("telefone", "Telefone não informado");
+        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldTelefone)) {
+            exception.addError("telefone", "Telefone inválido");
         }
-        if (Utilities.textFieldIsEmpty(textFieldRazaoSocial)) {
+        if (FieldUtilities.textFieldIsEmpty(textFieldRazaoSocial)) {
             exception.addError("razaoSocial", "Razão social não informada");
         }
         pessoa.setNome(textFieldNome.getText());
-        pessoa.setCnpj(textFieldCNPJ.getText());
-        pessoa.setTelefone(textFieldTelefone.getText());
+        pessoa.setCnpj(formattedTextFieldCNPJ.getText());
+        pessoa.setTelefone(formattedTextFieldTelefone.getText());
         pessoa.setInscricaoEstadual(textFieldInscricaoEstadual.getText());
         pessoa.setEmail(textFieldEmail.getText());
         pessoa.setRazaoSocial(textFieldRazaoSocial.getText());
@@ -101,13 +106,13 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
     private void initComponents() {
 
         textFieldNome = new javax.swing.JTextField();
+        formattedTextFieldCNPJ = new javax.swing.JFormattedTextField();
         labelNome = new javax.swing.JLabel();
-        textFieldTelefone = new javax.swing.JTextField();
+        formattedTextFieldTelefone = new javax.swing.JFormattedTextField();
         textFieldRazaoSocial = new javax.swing.JTextField();
         labelRazaoSocial = new javax.swing.JLabel();
         textFieldEmail = new javax.swing.JTextField();
         labelEmail = new javax.swing.JLabel();
-        textFieldCNPJ = new javax.swing.JTextField();
         labelCPF = new javax.swing.JLabel();
         labelTelefone = new javax.swing.JLabel();
         textFieldInscricaoEstadual = new javax.swing.JTextField();
@@ -130,15 +135,19 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         textFieldNome.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
 
+        formattedTextFieldCNPJ.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        formattedTextFieldCNPJ.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(formattedTextFieldCNPJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
+        util.FieldUtilities.setFieldCNPJ(formattedTextFieldCNPJ);
+
         labelNome.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelNome.setText("Nome Fantasia");
         add(labelNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        textFieldTelefone.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldTelefone.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldTelefone.setName(""); // NOI18N
-        textFieldTelefone.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, -1));
+        formattedTextFieldTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        formattedTextFieldTelefone.setPreferredSize(new java.awt.Dimension(170, 25));
+        add(formattedTextFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, -1));
+        util.FieldUtilities.setFieldTelefone(formattedTextFieldTelefone);
 
         textFieldRazaoSocial.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldRazaoSocial.setMinimumSize(new java.awt.Dimension(170, 25));
@@ -159,11 +168,6 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         labelEmail.setText("Email");
         add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
 
-        textFieldCNPJ.setMaximumSize(new java.awt.Dimension(170, 25));
-        textFieldCNPJ.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldCNPJ.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldCNPJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
-
         labelCPF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelCPF.setText("CNPJ");
         add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 65, -1, -1));
@@ -177,6 +181,7 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
         textFieldInscricaoEstadual.setName(""); // NOI18N
         textFieldInscricaoEstadual.setPreferredSize(new java.awt.Dimension(170, 25));
         add(textFieldInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 85, -1, -1));
+        util.FieldUtilities.setFieldOnlyInteger(textFieldInscricaoEstadual, 9);
 
         labelInscricaoEstadual.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         labelInscricaoEstadual.setText("Inscrição Estadual");
@@ -227,6 +232,8 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField formattedTextFieldCNPJ;
+    private javax.swing.JFormattedTextField formattedTextFieldTelefone;
     private javax.swing.JLabel labelCPF;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelErroCNPJ;
@@ -239,11 +246,9 @@ public class PanelFormPessoaJuridica extends javax.swing.JPanel {
     private javax.swing.JLabel labelNome;
     private javax.swing.JLabel labelRazaoSocial;
     private javax.swing.JLabel labelTelefone;
-    private javax.swing.JTextField textFieldCNPJ;
     private javax.swing.JTextField textFieldEmail;
     private javax.swing.JTextField textFieldInscricaoEstadual;
     private javax.swing.JTextField textFieldNome;
     private javax.swing.JTextField textFieldRazaoSocial;
-    private javax.swing.JTextField textFieldTelefone;
     // End of variables declaration//GEN-END:variables
 }

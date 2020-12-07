@@ -4,6 +4,7 @@ import model.servicos.persistencia.implementacaoCSV.CnhCSV;
 import model.servicos.persistencia.implementacaoCSV.CategoriaCSV;
 import model.servicos.persistencia.implementacaoCSV.ClienteCSV;
 import model.servicos.persistencia.implementacaoCSV.ImagemCSV;
+import model.servicos.persistencia.implementacaoCSV.ItemVistoriaCSV;
 import model.servicos.persistencia.implementacaoCSV.LocacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.MarcaCSV;
@@ -61,6 +62,10 @@ public class DAOFactory {
 
     public static ImagemDAO createImagemDAO() {
         return new ImagemCSV();
+    }
+
+    public static ItemVistoriaDAO createItemVistoriaDAO() {
+        return new ItemVistoriaCSV();
     }
 
 }

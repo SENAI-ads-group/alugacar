@@ -8,8 +8,6 @@ import model.servicos.persistencia.DAOFactory;
 import model.exceptions.DBException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -24,7 +22,7 @@ import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.VistoriaDAO;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormVistoria;
+import ui.panels.formularios.FormularioVistoria;
 import util.PanelUtilities;
 
 /**
@@ -37,7 +35,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
     private Locacao locacao;
     private final VistoriaDAO DAO_VISTORIA = DAOFactory.createVistoriaDAO();
     private final LocacaoDAO DAO_LOCACAO = DAOFactory.createLocacaoDAO();
-    private PanelFormVistoria formVistoria;
+    private FormularioVistoria formVistoria;
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
     public DialogVistoriaForm(java.awt.Frame parent, boolean modal, Locacao locacao, Vistoria vistoria) {
@@ -50,7 +48,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
     }
 
     private void loadPanels() {
-        formVistoria = new PanelFormVistoria(vistoria, locacao);
+        formVistoria = new FormularioVistoria(vistoria, locacao);
         PanelUtilities.loadPanelToPanel(formVistoria, panelCenterTab1);
     }
 
@@ -285,6 +283,11 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
         labelFoto2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFoto2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/images/vistoria-diagonal-frontal-direita-195x150.jpg"))); // NOI18N
+        labelFoto2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                labelFoto2MousePressed(evt);
+            }
+        });
         panelFoto2.add(labelFoto2, java.awt.BorderLayout.CENTER);
 
         panelFotos.add(panelFoto2);
@@ -300,6 +303,11 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
         labelFoto3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFoto3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/images/vistoria-diagonal-traseira-esquerda-195x150.jpg"))); // NOI18N
+        labelFoto3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                labelFoto3MousePressed(evt);
+            }
+        });
         panelFoto3.add(labelFoto3, java.awt.BorderLayout.CENTER);
 
         panelFotos.add(panelFoto3);
@@ -315,6 +323,11 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
         labelFoto4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFoto4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/images/vistoria-diagonal-traseira-direita-195x150.jpg"))); // NOI18N
+        labelFoto4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                labelFoto4MousePressed(evt);
+            }
+        });
         panelFoto4.add(labelFoto4, java.awt.BorderLayout.CENTER);
 
         panelFotos.add(panelFoto4);
@@ -330,6 +343,11 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
         labelFoto5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFoto5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/images/vistoria-traseira-195x150.jpg"))); // NOI18N
+        labelFoto5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                labelFoto5MousePressed(evt);
+            }
+        });
         panelFoto5.add(labelFoto5, java.awt.BorderLayout.CENTER);
 
         panelFotos.add(panelFoto5);
@@ -345,6 +363,11 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
         labelFoto6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelFoto6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/images/vistoria-dianteira-195x150.jpg"))); // NOI18N
+        labelFoto6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                labelFoto6MousePressed(evt);
+            }
+        });
         panelFoto6.add(labelFoto6, java.awt.BorderLayout.CENTER);
 
         panelFotos.add(panelFoto6);
@@ -451,11 +474,77 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto1);
+                vistoria.addImagem(0, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_labelFoto1MousePressed
+
+    private void labelFoto2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFoto2MousePressed
+        File fileSelected = showFileChooser();
+        if (fileSelected != null) {
+            try {
+                BufferedImage image = ImageIO.read(fileSelected);
+                showImagem(image, labelFoto2);
+                vistoria.addImagem(1, fileSelected);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_labelFoto2MousePressed
+
+    private void labelFoto3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFoto3MousePressed
+        File fileSelected = showFileChooser();
+        if (fileSelected != null) {
+            try {
+                BufferedImage image = ImageIO.read(fileSelected);
+                showImagem(image, labelFoto3);
+                vistoria.addImagem(2, fileSelected);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_labelFoto3MousePressed
+
+    private void labelFoto4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFoto4MousePressed
+        File fileSelected = showFileChooser();
+        if (fileSelected != null) {
+            try {
+                BufferedImage image = ImageIO.read(fileSelected);
+                showImagem(image, labelFoto4);
+                vistoria.addImagem(3, fileSelected);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_labelFoto4MousePressed
+
+    private void labelFoto5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFoto5MousePressed
+        File fileSelected = showFileChooser();
+        if (fileSelected != null) {
+            try {
+                BufferedImage image = ImageIO.read(fileSelected);
+                showImagem(image, labelFoto5);
+                vistoria.addImagem(4, fileSelected);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_labelFoto5MousePressed
+
+    private void labelFoto6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFoto6MousePressed
+        File fileSelected = showFileChooser();
+        if (fileSelected != null) {
+            try {
+                BufferedImage image = ImageIO.read(fileSelected);
+                showImagem(image, labelFoto6);
+                vistoria.addImagem(5, fileSelected);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_labelFoto6MousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

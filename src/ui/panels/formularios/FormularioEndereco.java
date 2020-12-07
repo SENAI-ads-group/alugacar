@@ -2,75 +2,85 @@ package ui.panels.formularios;
 
 import java.util.Map;
 import java.util.Set;
+import javax.swing.DefaultComboBoxModel;
 import model.entidades.Endereco;
 import model.entidades.enums.UF;
-import javax.swing.DefaultComboBoxModel;
 import model.exceptions.ValidacaoException;
-import util.Utilities;
+import util.FieldUtilities;
 
 /**
  *
  * @author usuario
  */
-public class PanelFormEndereco extends javax.swing.JPanel {
+public class FormularioEndereco extends javax.swing.JPanel {
 
     private Endereco endereco;
 
-    public PanelFormEndereco(Endereco endereco) {
+    public FormularioEndereco(Endereco endereco) {
         initComponents();
         this.endereco = endereco;
-        comboBoxUF.setModel(new DefaultComboBoxModel(UF.values()));
     }
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 
-    public void updateFormData() {
+    public void atualizarFormulario() {
         if (endereco != null) {
             textFieldLogradouro.setText(endereco.getLogradouro());
             textFieldNumero.setText(endereco.getNumero());
             textFieldComplemento.setText(endereco.getComplemento());
             textFieldBairro.setText(endereco.getBairro());
             textFieldCidade.setText(endereco.getCidade());
-            textFieldCEP.setText(endereco.getCep());
+            formattedTextFieldCEP.setText(endereco.getCep());
             comboBoxUF.setSelectedIndex(endereco.getUf().ordinal());
         }
     }
 
-    public Endereco getFormData() {
+    public Endereco getDadosFormulario() throws ValidacaoException {
         if (endereco == null) {
             endereco = new Endereco();
         }
-        ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-        if (Utilities.textFieldIsEmpty(textFieldLogradouro)) {
-            exception.addError("logradouro", "Logradouro não informado");
-        }
-        if (Utilities.textFieldIsEmpty(textFieldCEP)) {
-            exception.addError("CEP", "CEP não informado");
-        }
-        if (Utilities.textFieldIsEmpty(textFieldBairro)) {
-            exception.addError("bairro", "Bairro não informado");
-        }
-        if (Utilities.textFieldIsEmpty(textFieldCidade)) {
-            exception.addError("cidade", "Cidade não informada");
-        }
+        validarCampos();
         endereco.setLogradouro(textFieldLogradouro.getText());
         endereco.setNumero(textFieldNumero.getText());
         endereco.setComplemento(textFieldComplemento.getText());
         endereco.setBairro(textFieldBairro.getText());
         endereco.setCidade(textFieldCidade.getText());
-        endereco.setCep(textFieldCEP.getText());
-        endereco.setUf(UF.valueOf(comboBoxUF.getSelectedItem().toString()));
+        endereco.setCep(formattedTextFieldCEP.getText());
+        endereco.setUf(comboBoxUF.getItemAt(comboBoxUF.getSelectedIndex()));
 
-        clearErrors();
-        if (exception.getErrors().size() > 0) {
-            throw exception;
-        }
         return endereco;
     }
 
-    public void setErrorsMessages(Map<String, String> errors) {
+    private void validarCampos() throws ValidacaoException {
+        ValidacaoException exception = new ValidacaoException("Endereco");
+        if (FieldUtilities.textFieldIsEmpty(textFieldLogradouro)) {
+            exception.addError("logradouro", "Logradouro não informado");
+        }
+        if (FieldUtilities.formattedTextFieldIsEmpty(formattedTextFieldCEP)) {
+            exception.addError("CEP", "CEP não informado");
+        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldCEP)) {
+            exception.addError("CEP", "CEP inválido");
+        }
+        if (FieldUtilities.textFieldIsEmpty(textFieldBairro)) {
+            exception.addError("bairro", "Bairro não informado");
+        }
+        if (FieldUtilities.textFieldIsEmpty(textFieldCidade)) {
+            exception.addError("cidade", "Cidade não informada");
+        }
+        if (FieldUtilities.textFieldIsEmpty(textFieldNumero) && FieldUtilities.textFieldIsEmpty(textFieldComplemento)) {
+            exception.addError("numero", "Informe número ou complemento");
+            exception.addError("complemento", "Informe número ou complemento");
+        }
+
+        limparErros();
+        if (exception.getErrors().size() > 0) {
+            throw exception;
+        }
+    }
+
+    public void exibirMensagensErro(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
 
         if (fields.contains("logradouro")) {
@@ -85,9 +95,15 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         if (fields.contains("cidade")) {
             labelErroCidade.setText(errors.get("cidade"));
         }
+        if (fields.contains("numero")) {
+            labelErroNumero.setText(errors.get("numero"));
+        }
+        if (fields.contains("complemento")) {
+            labelErroComplemento.setText(errors.get("complemento"));
+        }
     }
 
-    public void clearErrors() {
+    public void limparErros() {
         labelErroLogradouro.setText("");
         labelErroNumero.setText("");
         labelErroCEP.setText("");
@@ -110,7 +126,6 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         labelCidade = new javax.swing.JLabel();
         textFieldCidade = new javax.swing.JTextField();
         labelCEP = new javax.swing.JLabel();
-        textFieldCEP = new javax.swing.JTextField();
         comboBoxUF = new javax.swing.JComboBox<>();
         labelBairro = new javax.swing.JLabel();
         labelErroCidade = new javax.swing.JLabel();
@@ -119,109 +134,114 @@ public class PanelFormEndereco extends javax.swing.JPanel {
         labelErroComplemento = new javax.swing.JLabel();
         labelErroLogradouro = new javax.swing.JLabel();
         labelErroBairro = new javax.swing.JLabel();
+        formattedTextFieldCEP = new javax.swing.JFormattedTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(360, 280));
-        setMinimumSize(new java.awt.Dimension(360, 280));
-        setPreferredSize(new java.awt.Dimension(360, 280));
+        setMaximumSize(new java.awt.Dimension(390, 280));
+        setMinimumSize(new java.awt.Dimension(390, 280));
+        setPreferredSize(new java.awt.Dimension(390, 280));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        textFieldLogradouro.setPreferredSize(new java.awt.Dimension(170, 25));
+        textFieldLogradouro.setPreferredSize(new java.awt.Dimension(190, 25));
         add(textFieldLogradouro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
 
-        labelLogradouro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelLogradouro.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelLogradouro.setText("Logradouro");
         add(labelLogradouro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        textFieldNumero.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
+        textFieldNumero.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
+        FieldUtilities.setFieldOnlyInteger(textFieldNumero, 4);
 
-        labelNumero.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelNumero.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelNumero.setText("Número");
-        add(labelNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
+        add(labelNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
-        textFieldBairro.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
+        textFieldBairro.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
-        labelUF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelUF.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelUF.setText("UF");
-        add(labelUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 195, -1, -1));
+        add(labelUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, -1, -1));
 
-        textFieldComplemento.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
+        textFieldComplemento.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
 
-        labelComplemento.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelComplemento.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelComplemento.setText("Complemento");
-        add(labelComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 65, -1, -1));
+        add(labelComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
-        labelCidade.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelCidade.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelCidade.setText("Cidade");
-        add(labelCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, -1, -1));
+        add(labelCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, -1, -1));
 
-        textFieldCidade.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, -1));
+        textFieldCidade.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, -1, -1));
 
-        labelCEP.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelCEP.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelCEP.setText("CEP");
-        add(labelCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 65, -1, -1));
+        add(labelCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
-        textFieldCEP.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 85, -1, -1));
-
+        comboBoxUF.setModel(new DefaultComboBoxModel(UF.values()));
         comboBoxUF.setMinimumSize(new java.awt.Dimension(150, 25));
-        comboBoxUF.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(comboBoxUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 215, -1, -1));
+        comboBoxUF.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(comboBoxUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, -1, -1));
 
-        labelBairro.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelBairro.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelBairro.setText("Bairro");
-        add(labelBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
+        add(labelBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, -1, -1));
 
         labelErroCidade.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroCidade.setForeground(java.awt.Color.red);
         labelErroCidade.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroCidade.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroCidade.setPreferredSize(new java.awt.Dimension(170, 15));
-        add(labelErroCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 175, -1, -1));
+        labelErroCidade.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroCidade, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 165, -1, -1));
 
         labelErroNumero.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroNumero.setForeground(java.awt.Color.red);
         labelErroNumero.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroNumero.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroNumero.setPreferredSize(new java.awt.Dimension(170, 15));
-        add(labelErroNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, -1, -1));
+        labelErroNumero.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 45, -1, -1));
 
         labelErroCEP.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroCEP.setForeground(java.awt.Color.red);
         labelErroCEP.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroCEP.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroCEP.setPreferredSize(new java.awt.Dimension(170, 15));
-        add(labelErroCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, -1, -1));
+        labelErroCEP.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 105, -1, -1));
 
         labelErroComplemento.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroComplemento.setForeground(java.awt.Color.red);
         labelErroComplemento.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroComplemento.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroComplemento.setPreferredSize(new java.awt.Dimension(170, 15));
-        add(labelErroComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, -1, -1));
+        labelErroComplemento.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroComplemento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
         labelErroLogradouro.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroLogradouro.setForeground(java.awt.Color.red);
         labelErroLogradouro.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroLogradouro.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroLogradouro.setPreferredSize(new java.awt.Dimension(170, 15));
+        labelErroLogradouro.setPreferredSize(new java.awt.Dimension(190, 15));
         add(labelErroLogradouro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
 
         labelErroBairro.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroBairro.setForeground(java.awt.Color.red);
         labelErroBairro.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroBairro.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroBairro.setPreferredSize(new java.awt.Dimension(170, 15));
-        add(labelErroBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 175, -1, -1));
+        labelErroBairro.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroBairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 165, -1, -1));
+
+        formattedTextFieldCEP.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(formattedTextFieldCEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, -1));
+        FieldUtilities.setFieldCEP(formattedTextFieldCEP);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comboBoxUF;
+    private javax.swing.JComboBox<UF> comboBoxUF;
+    private javax.swing.JFormattedTextField formattedTextFieldCEP;
     private javax.swing.JLabel labelBairro;
     private javax.swing.JLabel labelCEP;
     private javax.swing.JLabel labelCidade;
@@ -236,7 +256,6 @@ public class PanelFormEndereco extends javax.swing.JPanel {
     private javax.swing.JLabel labelNumero;
     private javax.swing.JLabel labelUF;
     private javax.swing.JTextField textFieldBairro;
-    private javax.swing.JTextField textFieldCEP;
     private javax.swing.JTextField textFieldCidade;
     private javax.swing.JTextField textFieldComplemento;
     private javax.swing.JTextField textFieldLogradouro;

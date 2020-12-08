@@ -24,11 +24,11 @@ public class ImagemCSV implements ImagemDAO {
         if (vistoria.getId() == null) {
             throw new DBException("O id da vistoria está nulo");
         }
-        List<File> files = vistoria.getImagens();
-        for (File file : files) {
-            String nomeArquivo = vistoria.getId() + ";" + files.indexOf(file) + ".jpg";
+        File[] files = vistoria.getImagens();
+        for (int i = 0; i < files.length; i++) {
+            String nomeArquivo = vistoria.getId() + ";" + i + ".jpg";
             File destino = new File(CAMINHO_DB_VISTORIA + nomeArquivo);
-            FileUtils.copyFile(file, destino);
+            FileUtils.copyFile(files[i], destino);
         }
     }
 
@@ -55,12 +55,13 @@ public class ImagemCSV implements ImagemDAO {
             throw new DBException("O id da vistoria está nulo");
         }
         File[] arrayFiles = new File(CAMINHO_DB_VISTORIA).listFiles();
-        for (int i = 0; i < arrayFiles.length; i++) {
-            File file = arrayFiles[i];
-            String nomeArquivo = file.getName();
-            Integer idFile = Utilities.tryParseToInteger(nomeArquivo.split(";")[0]);
-            if (idFile.equals(vistoria.getId())) {
-                vistoria.addImagem(i, file);
+        for (File file : arrayFiles) {
+            String[] csvNomeArquivo = file.getName().split(";");
+
+            int idFile = Utilities.tryParseToInteger(csvNomeArquivo[0]);
+            int indexFile = Utilities.tryParseToInteger(retirarExtensaoArquivo(csvNomeArquivo[1], "jpg"));
+            if (vistoria.getId().equals(idFile)) {
+                vistoria.setImagem(indexFile, file);
             }
         }
     }
@@ -85,5 +86,12 @@ public class ImagemCSV implements ImagemDAO {
             }
         }
 
+    }
+
+    private String retirarExtensaoArquivo(String nomeArquivo, String extensao) {
+        int inicio = 0;
+        int fim = (nomeArquivo.length() - extensao.length() - 1); //1 representa o . exemplo: .jpeg
+        String nomeArquivoFormatado = nomeArquivo.substring(inicio, fim);
+        return nomeArquivoFormatado;
     }
 }

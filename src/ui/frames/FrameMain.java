@@ -3,6 +3,7 @@ package ui.frames;
 import java.awt.Component;
 import ui.dialogs.DialogConfiguracoes;
 import ui.listeners.MouseListenerPanelButtonMenu;
+import ui.panels.ListagemChecklist;
 import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
 import ui.panels.PanelLocacoesList;
@@ -59,6 +60,9 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemRelatorios = new javax.swing.JPanel();
         labelIconRelatorios = new javax.swing.JLabel();
         labelMenuRelatorios = new javax.swing.JLabel();
+        panelMenuItemChecklist = new javax.swing.JPanel();
+        labelIconChecklist = new javax.swing.JLabel();
+        labelMenuChecklist = new javax.swing.JLabel();
         panelMenuItemConfiguracoes = new javax.swing.JPanel();
         labelIconConfiguracoes = new javax.swing.JLabel();
         labelMenuConfiguracoes = new javax.swing.JLabel();
@@ -257,6 +261,26 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenu.add(panelMenuItemRelatorios);
 
+        panelMenuItemChecklist.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemChecklist.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemChecklistMousePressed(evt);
+            }
+        });
+        panelMenuItemChecklist.setLayout(new java.awt.BorderLayout());
+
+        labelIconChecklist.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconChecklist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-28x28.png"))); // NOI18N
+        labelIconChecklist.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemChecklist.add(labelIconChecklist, java.awt.BorderLayout.LINE_START);
+
+        labelMenuChecklist.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuChecklist.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuChecklist.setText("Checklist");
+        panelMenuItemChecklist.add(labelMenuChecklist, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemChecklist);
+
         panelMenuItemConfiguracoes.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -363,8 +387,15 @@ public class FrameMain extends javax.swing.JFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_panelMenuItemConfiguracoesMousePressed
 
+    private void panelMenuItemChecklistMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemChecklistMousePressed
+        ListagemChecklist listagemChecklist = new ListagemChecklist();
+        PanelUtilities.loadPanelToPanel(listagemChecklist, panelLoader);
+        listagemChecklist.atualizarListagem();
+    }//GEN-LAST:event_panelMenuItemChecklistMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel labelIconCategorias;
+    private javax.swing.JLabel labelIconChecklist;
     private javax.swing.JLabel labelIconClientes;
     private javax.swing.JLabel labelIconConfiguracoes;
     private javax.swing.JLabel labelIconDashboard;
@@ -375,6 +406,7 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelIconRelatorios;
     private javax.swing.JLabel labelIconVeiculos;
     private javax.swing.JLabel labelMenuCategorias;
+    private javax.swing.JLabel labelMenuChecklist;
     private javax.swing.JLabel labelMenuClientes;
     private javax.swing.JLabel labelMenuConfiguracoes;
     private javax.swing.JLabel labelMenuDashboard;
@@ -389,6 +421,7 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelLoader;
     private javax.swing.JPanel panelMenu;
     private javax.swing.JPanel panelMenuItemCategorias;
+    private javax.swing.JPanel panelMenuItemChecklist;
     private javax.swing.JPanel panelMenuItemClientes;
     private javax.swing.JPanel panelMenuItemConfiguracoes;
     private javax.swing.JPanel panelMenuItemDashboard;

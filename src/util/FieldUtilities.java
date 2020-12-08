@@ -34,7 +34,7 @@ public class FieldUtilities {
         textField.setDocument(new PlainDocument() {
             @Override
             public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws BadLocationException {
-                str = str.replaceAll("[^a-zA-Z]", "");
+                str = str.replaceAll("[^a-zA-Z ]", "");
                 if (limit <= 0) {
                     super.insertString(offset, str, attr);
                 } else if (getLength() + str.length() <= limit) {

@@ -94,7 +94,7 @@ public class VistoriaCSV implements VistoriaDAO {
             String[] csv = linha.split(";");
             Integer idVistoria = Utilities.tryParseToInteger(csv[0]);
             if (idVistoria.equals(vistoria.getId())) {
-                String[] csvItem = {csv[1], csv[2], csv[3], csv[4]};
+                String[] csvItem = {csv[1], csv[2], csv[3], csv[4], csv[5]};
                 vistoria.addItem(new ItemVistoria(csvItem));
             }
             linha = CONEXAO_ITENS.reader().readLine();

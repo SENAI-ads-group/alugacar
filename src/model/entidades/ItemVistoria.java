@@ -10,21 +10,26 @@ import util.Utilities;
 public class ItemVistoria {
 
     private Integer id;
+    private String nome;
     private String descricao;
     private boolean obrigatorio;
     private boolean adequado;
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
+    public ItemVistoria() {
+    }
+
     public ItemVistoria(String descricao, boolean obrigatorio) {
-        this.descricao = descricao;
+        this.nome = descricao;
         this.obrigatorio = obrigatorio;
     }
 
     public ItemVistoria(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
-        descricao = csv[1];
-        obrigatorio = Boolean.parseBoolean(csv[2]);
-        adequado = Boolean.parseBoolean(csv[3]);
+        nome = csv[1];
+        descricao = csv[2];
+        obrigatorio = Boolean.parseBoolean(csv[3]);
+        adequado = Boolean.parseBoolean(csv[4]);
     }
     // </editor-fold>
 
@@ -35,6 +40,14 @@ public class ItemVistoria {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -66,7 +79,7 @@ public class ItemVistoria {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.descricao);
+        hash = 53 * hash + Objects.hashCode(this.nome);
         hash = 53 * hash + (this.obrigatorio ? 1 : 0);
         return hash;
     }
@@ -92,6 +105,7 @@ public class ItemVistoria {
 
     public String toCSV() {
         return "" + id + ";"
+                + nome + ";"
                 + descricao + ";"
                 + obrigatorio + ";"
                 + adequado;
@@ -100,7 +114,7 @@ public class ItemVistoria {
     @Override
     public String toString() {
         String string = (adequado) ? "adequado" : "não adequado";
-        return descricao + string;
+        return nome + string;
     }
 
 }

@@ -1,7 +1,5 @@
 package model.entidades;
 
-import application.Configuracoes;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class Vistoria {
     private List<ItemVistoria> itens = DAOFactory.createItemVistoriaDAO().buscarTodos();
     private double kmVeiculo;
     private double quantidadeCombustivel;
-    private List<File> imagens = new ArrayList<>();
+    private File[] imagens = new File[6];
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Vistoria() {
@@ -67,12 +65,16 @@ public class Vistoria {
         this.quantidadeCombustivel = quantidadeCombustivel;
     }
 
-    public List<File> getImagens() {
+    public File[] getImagens() {
         return imagens;
     }
 
-    public File getImagem(int index) {
-        return imagens.get(index);
+    public void setImagens(File[] imagens) {
+        this.imagens = imagens;
+    }
+
+    public void setImagem(int index, File imagem) {
+        imagens[index] = imagem;
     }
     // </editor-fold>
 
@@ -109,18 +111,6 @@ public class Vistoria {
 
     public void removeItem(ItemVistoria item) {
         itens.remove(item);
-    }
-
-    public void addImagem(int index, File imagem) {
-        imagens.add(index, imagem);
-    }
-
-    public void addImagem(File imagem) {
-        imagens.add(imagem);
-    }
-
-    public void removeImagem(BufferedImage imagem) {
-        imagens.remove(imagem);
     }
 
     public boolean isAdequada() {

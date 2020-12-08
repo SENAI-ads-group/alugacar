@@ -3,6 +3,7 @@ package ui.panels.formularios;
 import java.awt.Component;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import model.entidades.ItemVistoria;
 import model.entidades.Locacao;
 import model.entidades.Vistoria;
@@ -61,31 +62,42 @@ public final class FormularioVistoria extends javax.swing.JPanel {
         if (vistoria == null) {
             vistoria = new Vistoria();
         }
-        clearErrors();
-        validarCampos();
+        limparErros();
         getItensForm();
+        validarCampos();
         vistoria.setKmVeiculo(Utilities.tryParseToDouble(textFieldKM.getText()));
         return vistoria;
     }
 
-    public void clearErrors() {
-        labelErroLocacao.setText("");
-        labelErroKM.setText("");
-
-    }
-
     public void validarCampos() throws ValidacaoException {
-        ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
-
+        ValidacaoException exception = new ValidacaoException("Vistoria");
+        Double km = Utilities.tryParseToDouble(textFieldKM.getText());
+        if (km < locacao.getVeiculo().getKMRodado()) {
+            exception.addError("km", "KM inválido");
+        }
+        if (!vistoria.isAdequada()) {
+            exception.addError("checklist", "Checklist recusado");
+        }
+        if (exception.getErrors().size() > 0) {
+            throw exception;
+        }
     }
 
     public void setErrorsMessages(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
 
-        if (fields.contains("descricao")) {
-            labelErroKM.setText(errors.get("descricao"));
+        if (fields.contains("km")) {
+            labelErroKM.setText(errors.get("km"));
         }
+        if (fields.contains("checklist")) {
+            JOptionPane.showMessageDialog(this, "O checklist foi recusado devido a existirem itens obrigatórios não adequados",
+                    errors.get("checklist"), JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    public void limparErros() {
+        labelErroLocacao.setText("");
+        labelErroKM.setText("");
     }
 
     @SuppressWarnings("unchecked")

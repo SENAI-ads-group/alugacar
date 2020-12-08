@@ -7,28 +7,29 @@ import model.entidades.ItemVistoria;
  * @author patrick-ribeiro
  */
 public class PanelItemVistoria extends javax.swing.JPanel {
-    
+
     private ItemVistoria item;
-    
+
     public PanelItemVistoria(ItemVistoria item) {
         initComponents();
         this.item = item;
     }
-    
+
     public void setItem(ItemVistoria item) {
         this.item = item;
     }
-    
+
     public void updateItemForm() {
         checkBoxAdequado.setSelected(item.isAdequado());
-        checkBoxAdequado.setText(item.getDescricao());
+        checkBoxAdequado.setText(item.getNome());
+        checkBoxAdequado.setToolTipText(item.getDescricao());
     }
-    
+
     public ItemVistoria getItem() {
         item.setAdequado(checkBoxAdequado.isSelected());
         return item;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

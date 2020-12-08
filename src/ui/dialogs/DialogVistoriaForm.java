@@ -66,6 +66,14 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
 
     public Vistoria getFormData() throws ValidacaoException {
         vistoria = formVistoria.getFormData();
+
+        ValidacaoException ex = new ValidacaoException("Fotos");
+        for (File file : vistoria.getImagens()) {
+            if (file == null) {
+                ex.addError("foto", "É necessário importar todas as fotos solicitadas na aba de fotos");
+                throw ex;
+            }
+        }
         return vistoria;
     }
 
@@ -455,9 +463,12 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormVistoria")) {
+            if (ex.getMessage().equals("Vistoria")) {
                 tabbedPane.setIconAt(0, iconError);
                 formVistoria.setErrorsMessages(ex.getErrors());
+            }
+            if (ex.getMessage().equals("Fotos")) {
+                JOptionPane.showMessageDialog(rootPane, ex.getErrors().get("foto"), "Importação necessária", JOptionPane.ERROR_MESSAGE);
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir vistoria", JOptionPane.ERROR_MESSAGE);
@@ -474,7 +485,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto1);
-                vistoria.addImagem(0, fileSelected);
+                vistoria.setImagem(0, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }
@@ -487,7 +498,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto2);
-                vistoria.addImagem(1, fileSelected);
+                vistoria.setImagem(1, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }
@@ -500,7 +511,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto3);
-                vistoria.addImagem(2, fileSelected);
+                vistoria.setImagem(2, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }
@@ -513,7 +524,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto4);
-                vistoria.addImagem(3, fileSelected);
+                vistoria.setImagem(3, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }
@@ -526,7 +537,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto5);
-                vistoria.addImagem(4, fileSelected);
+                vistoria.setImagem(4, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }
@@ -539,7 +550,7 @@ public class DialogVistoriaForm extends javax.swing.JDialog {
             try {
                 BufferedImage image = ImageIO.read(fileSelected);
                 showImagem(image, labelFoto6);
-                vistoria.addImagem(5, fileSelected);
+                vistoria.setImagem(5, fileSelected);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao selecionar foto", JOptionPane.ERROR_MESSAGE);
             }

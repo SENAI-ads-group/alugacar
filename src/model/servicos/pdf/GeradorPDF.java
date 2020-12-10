@@ -1,5 +1,6 @@
 package model.servicos.pdf;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -16,13 +17,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Image;
 import model.entidades.Cliente;
+import model.entidades.Desconto;
+import model.entidades.ItemVistoria;
 import model.entidades.Locacao;
 import model.entidades.Motorista;
 import model.entidades.PessoaFisica;
 import model.entidades.PessoaJuridica;
+import model.entidades.Taxa;
 import model.entidades.Veiculo;
 import model.entidades.Vistoria;
+import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.TipoCliente;
 import model.entidades.enums.TipoLocacao;
 import util.DateUtilities;
@@ -33,9 +39,9 @@ import util.DateUtilities;
  */
 public class GeradorPDF {
 
-    public static final Font BOLD_UNDERLINED = new Font(FontFamily.HELVETICA, 14, Font.BOLDITALIC);
-    public static final Font SUB_TITLE = new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
-    public static final Font NORMAL = new Font(FontFamily.COURIER, 12);
+    public static final Font FONTE_TITULO = new Font(FontFamily.TIMES_ROMAN, 14, Font.BOLD);
+    public static final Font FONTE_SUBTITULO = new Font(FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+    public static final Font FONTE_TEXTO = new Font(FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
 
     public static void gerarContratoPDF(Locacao locacao, String localDestino) {
         Document documentoPDF = new Document();
@@ -45,36 +51,30 @@ public class GeradorPDF {
 
             documentoPDF.setPageSize(PageSize.A4);
 
-            documentoPDF.add(getTabelaCliente(locacao.getCliente()));
-            documentoPDF.add(getTabelaMotorista(locacao.getMotorista()));
-            documentoPDF.add(getTabelaVeiculo(locacao.getVeiculo()));
             documentoPDF.add(getTabelaLocacao(locacao));
-            documentoPDF.add(getTabelaVistoria(locacao.getVistoriaEntrega()));
+            documentoPDF.add(new Paragraph(" "));
+            documentoPDF.add(getTabelaCliente(locacao.getCliente()));
+            documentoPDF.add(new Paragraph(" "));
+            documentoPDF.add(getTabelaMotorista(locacao.getMotorista()));
+            documentoPDF.add(new Paragraph(" "));
+            documentoPDF.add(getTabelaVeiculo(locacao.getVeiculo()));
+            if (locacao.getStatus() != StatusLocacao.PENDENTE) {
+                documentoPDF.newPage();
+                documentoPDF.add(getTabelaVistoria(locacao.getVistoriaEntrega(), "Vistoria de Entrega"));
+            }
+            if (locacao.getStatus() == StatusLocacao.FINALIZADA) {
+                documentoPDF.newPage();
+                documentoPDF.add(getTabelaVistoria(locacao.getVistoriaDevolucao(), "Vistoria de Devolução"));
+            }
             documentoPDF.newPage();
             if (locacao.getCliente().getPessoa() instanceof PessoaFisica) {
-                //documentoPDF.add(getCriarContratoPF(locacao,locacao.getCliente().getPessoa()pessoa);  
-                documentoPDF.add(getCriarContratoPF(locacao));
+                documentoPDF.add(getParagrafoPessoaFisica(locacao));
             } else {
-                documentoPDF.add(getCriarContratoPJ(locacao));
+                documentoPDF.add(getParagrafoPessoaJuridica(locacao));
             }
-
-
-            /*Verificar o status da locação antes de inserir as vistorias no PDF
-            Se o status for PENDENTE deve gerar apenas os dados do veículo, cliente, motorista,
-            cliente, data de registro, data de entrega (representa a previsão de entrega),
-            data de devolução (representa a previsão de devolução)
-            
-            Se for INICIADA não deve ser gerado além das informações principais, as taxas, descontos e vistoria de entrada
-            
-            Se for FINALIZADA dedve ser gerado todas as informações
-            
-            Consulte a entidade de Vistoria, Locacao e o serviço de contrato
-             */
-            Desktop.getDesktop().open(new File(localDestino + "\\contrato.pdf"));
-        } catch (DocumentException de) {
-            JOptionPane.showMessageDialog(null, "ERRO DocumentException: " + de.getMessage());
-        } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "ERRO IOException: " + ioe.getMessage());
+            Desktop.getDesktop().open(new File(localDestino + "/contrato.pdf"));
+        } catch (DocumentException | IOException ex) {
+            JOptionPane.showMessageDialog(null, "ERRO: " + ex.getMessage());
         } finally {
             documentoPDF.close();
         }
@@ -82,16 +82,8 @@ public class GeradorPDF {
 
     private static PdfPTable getTabelaCliente(Cliente cliente) {
         PdfPTable tabela = new PdfPTable(2);
-        tabela.addCell(getCellEspacamento());
 
-        PdfPCell cellCabecalho = new PdfPCell(new Paragraph("DADOS DO CLIENTE", NORMAL));
-        cellCabecalho.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cellCabecalho.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cellCabecalho.setBorder(PdfPTable.ALIGN_MIDDLE);
-        cellCabecalho.setColspan(2);
-
-        tabela.addCell(cellCabecalho);
-        tabela.addCell(getCellEspacamento());
+        adicionarCabecalho(tabela, new Paragraph("Informações do Cliente", FONTE_TITULO));
 
         tabela.addCell("ID : " + cliente.getId());
         tabela.addCell("Tipo : " + cliente.getTipoCliente().toString());
@@ -107,22 +99,13 @@ public class GeradorPDF {
         tabela.addCell("Telefone : " + cliente.getPessoa().getTelefone());
         tabela.addCell("E-mail : " + cliente.getPessoa().getEmail());
 
-        //tabela.setSpacingBefore(17);
-        tabela.addCell(getCellEspacamento());
         return tabela;
     }
 
     private static PdfPTable getTabelaMotorista(Motorista motorista) {
         PdfPTable tabela = new PdfPTable(2);
-        PdfPCell cellCabecalho = new PdfPCell(new Paragraph("DADOS DO MOTORISTA", NORMAL));
 
-        cellCabecalho.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cellCabecalho.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cellCabecalho.setBorder(PdfPTable.ALIGN_MIDDLE);
-        cellCabecalho.setColspan(2);
-
-        tabela.addCell(cellCabecalho);
-        tabela.addCell(getCellEspacamento());
+        adicionarCabecalho(tabela, new Paragraph("Informações do Motorista", FONTE_TITULO));
 
         tabela.addCell("Nome : " + motorista.getPessoa().getNome());
         tabela.addCell("CPF : " + motorista.getPessoa().getCpf());
@@ -133,21 +116,13 @@ public class GeradorPDF {
         tabela.addCell("E-mail : " + motorista.getPessoa().getEmail());
         tabela.addCell("Data de Nascimento : " + DateUtilities.formatData(motorista.getPessoa().getDataNascimento()));
 
-        tabela.addCell(getCellEspacamento());
         return tabela;
     }
 
     private static PdfPTable getTabelaVeiculo(Veiculo veiculo) {
         PdfPTable tabela = new PdfPTable(2);
 
-        PdfPCell cellCabecalho = new PdfPCell(new Paragraph("DADOS DO VEICULO", NORMAL));
-        cellCabecalho.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cellCabecalho.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cellCabecalho.setBorder(PdfPTable.ALIGN_MIDDLE);
-        cellCabecalho.setColspan(2);
-
-        tabela.addCell(cellCabecalho);
-        tabela.addCell(getCellEspacamento());
+        adicionarCabecalho(tabela, new Paragraph("Veículo Locado", FONTE_TITULO));
 
         tabela.addCell("Marca : " + veiculo.getModelo().getMarca());
         tabela.addCell("Categoria : " + veiculo.getModelo().getDescricao());
@@ -156,71 +131,88 @@ public class GeradorPDF {
         tabela.addCell("Ano de Fabricação : " + veiculo.getAnoFabricacao());
         tabela.addCell("Renavam : " + veiculo.getRenavam());
 
-        tabela.addCell(getCellEspacamento());
-        tabela.addCell(getCellEspacamento());
         return tabela;
     }
 
     private static PdfPTable getTabelaLocacao(Locacao locacao) {
         PdfPTable tabela = new PdfPTable(2);
 
-        PdfPCell cellCabecalho = new PdfPCell(new Paragraph("DADOS DA LOCAÇÃO", NORMAL));
-        cellCabecalho.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cellCabecalho.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cellCabecalho.setBorder(PdfPTable.ALIGN_MIDDLE);
-        cellCabecalho.setColspan(2);
+        adicionarCabecalho(tabela, new Paragraph("Informações da Locação", FONTE_TITULO));
 
-        tabela.addCell(cellCabecalho);
-        tabela.addCell(getCellEspacamento());
+        tabela.addCell("Data de entrega : " + DateUtilities.formatDataDia(locacao.getDataEntrega()));
+        tabela.addCell("Data da devolução : " + DateUtilities.formatDataDia(locacao.getDataDevolucao()));
+        tabela.addCell("Status atual : " + locacao.getStatus().toString());
 
-        //Implementar estrutura repetitiva para cada taxa e desconto
-        tabela.addCell("Data da retirada : " + locacao.getDataEntrega());
-        tabela.addCell("Data da devolução : " + locacao.getDataDevolucao());
-        tabela.addCell("Modalidade : " + locacao.getTipo());
+        tabela.addCell("Modalidade de precificação : " + locacao.getTipo());
         if (locacao.getTipo() == TipoLocacao.DIARIA) {
-            tabela.addCell("Valor da diária : ");
+            Paragraph paragraph = new Paragraph("Valor da diária : R$ "
+                    + locacao.getVeiculo().getModelo().getCategoria().getValorDiaria());
+            adicionarCelulaLinha(tabela, paragraph);
         } else if (locacao.getTipo() == locacao.getTipo().KM) {
-            tabela.addCell("Preço do KM rodado : ");
+            Paragraph paragraph = new Paragraph("Preço do KM rodado : R$ "
+                    + locacao.getVeiculo().getModelo().getCategoria().getValorKM());
+            adicionarCelulaLinha(tabela, paragraph);
         }
-        tabela.addCell("Status da Locação : ");
-        tabela.addCell(getCellEspacamento());
+        adicionarCabecalho(tabela, new Paragraph("Valores", FONTE_SUBTITULO));
+        for (Taxa taxa : locacao.getTaxas()) {
+            PdfPCell cellTaxa = new PdfPCell(new Paragraph("(+) " + taxa.getDescricao()
+                    + " R$" + taxa.getValor()));
+            cellTaxa.setColspan(2);
+            cellTaxa.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            tabela.addCell(cellTaxa);
+        }
+        for (Desconto desconto : locacao.getDescontos()) {
+            PdfPCell cellDesconto = new PdfPCell(new Paragraph("(-) " + desconto.getDescricao()
+                    + " R$" + desconto.getValor()));
+            cellDesconto.setColspan(2);
+            cellDesconto.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            tabela.addCell(cellDesconto);
+        }
+        PdfPCell cellValorBruto = new PdfPCell(new Paragraph("Valor bruto R$" + locacao.getValorBruto()));
+        cellValorBruto.setColspan(2);
+        cellValorBruto.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        tabela.addCell(cellValorBruto);
+
+        PdfPCell cellValorTotal = new PdfPCell(new Paragraph("Valor total R$" + locacao.getValorTotal()));
+        cellValorTotal.setColspan(2);
+        cellValorTotal.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        tabela.addCell(cellValorTotal);
+
         return tabela;
     }
 
-    private static PdfPTable getTabelaVistoria(Vistoria vistoria) {
-
+    private static PdfPTable getTabelaVistoria(Vistoria vistoria, String titulo) throws IOException, BadElementException {
         PdfPTable tabela = new PdfPTable(2);
 
-        PdfPCell cellCabecalho = new PdfPCell(new Paragraph("DADOS DA VISTORIA", NORMAL));
-        cellCabecalho.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cellCabecalho.setBackgroundColor(BaseColor.LIGHT_GRAY);
-        cellCabecalho.setBorder(PdfPTable.ALIGN_MIDDLE);
-        cellCabecalho.setColspan(2);
+        adicionarCabecalho(tabela, new Paragraph(titulo, FONTE_TITULO));
 
-        tabela.addCell(getCellEspacamento());
-        tabela.addCell(cellCabecalho);
-        tabela.addCell(getCellEspacamento());
+        // <editor-fold defaultstate="collapsed" desc="Quilometragem"> 
+        PdfPCell cellQuilometragem = new PdfPCell(new Paragraph("Quilometragem do veículo: " + vistoria.getKmVeiculo()));
+        cellQuilometragem.setColspan(2);
+        tabela.addCell(cellQuilometragem);
+        // </editor-fold>
 
-        tabela.addCell("Tipo de Taxa");
-        tabela.addCell("Valor");
+        // <editor-fold defaultstate="collapsed" desc="Checklist"> 
+        adicionarCabecalho(tabela, new Paragraph("Checklist", FONTE_SUBTITULO));
+        for (ItemVistoria item : vistoria.getItens()) {
+            PdfPCell cellItem = new PdfPCell(new Paragraph(item.toString(), FONTE_TEXTO));
+            cellItem.setColspan(2);
+            tabela.addCell(cellItem);
+        }
+        // </editor-fold>
 
-        tabela.addCell(getCellEspacamento());
-        /*Image imagem = Image.getInstance("C:\\Users\\Alexsander\\Desktop\\teste.jpg");
-            imagem.scalePercent(15);*/
-        //adicionando imagem
-        //Image imagens = Image.getInstance("C:\\Users\\Alexsander\\Desktop\\teste.jpg");
-        //documentoPDF.add(imagens);
+        // <editor-fold defaultstate="collapsed" desc="Imagens"> 
+        adicionarCabecalho(tabela, new Paragraph("Imagens", FONTE_SUBTITULO));
+        for (File imagemFile : vistoria.getImagens()) {
+            com.itextpdf.text.Image imagem = Image.getInstance(imagemFile.getAbsolutePath());
+            tabela.addCell(imagem);
+        }
+        // </editor-fold>
+
         return tabela;
     }
 
-    private static PdfPCell getCellEspacamento() {
-        PdfPCell cellEspacamento = new PdfPCell(new Paragraph("   "));
-        cellEspacamento.setColspan(2);
-        return cellEspacamento;
-    }
-
-    public static Paragraph getCriarContratoPF(Locacao locacao) {
-
+    public static Paragraph getParagrafoPessoaFisica(Locacao locacao) {
         PessoaFisica pf = (PessoaFisica) locacao.getCliente().getPessoa();
 
         String conteudoArquivo
@@ -245,7 +237,7 @@ public class GeradorPDF {
                 + " \n"
                 + "             \n"
                 + "             \n"
-                + "1.1. O LOCADOR declara ser o legítimo possuidor e/ou proprietário do veículo de modelo " + locacao.getVeiculo().getModelo() + ", marca " + locacao.getVeiculo().getModelo().getMarca() + ", ano " + locacao.getVeiculo().getModelo().getAno() + ", placa " + locacao.getVeiculo().getPlaca() + ", código fipe " + locacao.getVeiculo().getModelo().getCodigoFipe() + ", em perfeito estado e que resolveu dá-lo em locação ao LOCATÁRIO, do dia " + locacao.getDataEntrega() + " ao dia " + locacao.getDataDevolucao() + ", contados a partir da assinatura do presente contrato.\n"
+                + "1.1. O LOCADOR declara ser o legítimo possuidor e/ou proprietário do veículo de modelo " + locacao.getVeiculo().getModelo() + ", marca " + locacao.getVeiculo().getModelo().getMarca() + ", ano " + locacao.getVeiculo().getModelo().getAno() + ", placa " + locacao.getVeiculo().getPlaca() + ", código fipe " + locacao.getVeiculo().getModelo().getCodigoFipe() + ", em perfeito estado e que resolveu dá-lo em locação ao LOCATÁRIO, do dia " + DateUtilities.formatDataDia(locacao.getDataEntrega()) + " ao dia " + DateUtilities.formatDataDia(locacao.getDataDevolucao()) + ", contados a partir da assinatura do presente contrato.\n"
                 + "                      \n"
                 + "1.1.1. Findo prazo acima estipulado, o mesmo poderá ser renovado através de aditivo ou outro instrumento contratual ou o veículo deverá ser devolvido ao LOCADOR nas mesmas condições em que estava quando o recebeu, ou seja, em perfeitas condições de uso, respondendo pelos danos ou prejuízos causados.             \n"
                 + "                      \n"
@@ -313,7 +305,7 @@ public class GeradorPDF {
         return new Paragraph(conteudoArquivo);
     }
 
-    public static Paragraph getCriarContratoPJ(Locacao locacao) {
+    public static Paragraph getParagrafoPessoaJuridica(Locacao locacao) {
 
         PessoaJuridica pj = (PessoaJuridica) locacao.getCliente().getPessoa();
 
@@ -339,7 +331,7 @@ public class GeradorPDF {
                 + " \n"
                 + "             \n"
                 + "             \n"
-                + "1.1. O LOCADOR declara ser o legítimo possuidor e/ou proprietário do veículo de modelo " + locacao.getVeiculo().getModelo() + ", marca " + locacao.getVeiculo().getModelo().getMarca() + ", ano " + locacao.getVeiculo().getModelo().getAno() + ", placa " + locacao.getVeiculo().getPlaca() + ", código fipe " + locacao.getVeiculo().getModelo().getCodigoFipe() + ", em perfeito estado e que resolveu dá-lo em locação ao LOCATÁRIO, do dia " + locacao.getDataEntrega() + " ao dia " + locacao.getDataDevolucao() + ", contados a partir da assinatura do presente contrato.\n"
+                + "1.1. O LOCADOR declara ser o legítimo possuidor e/ou proprietário do veículo de modelo " + locacao.getVeiculo().getModelo() + ", marca " + locacao.getVeiculo().getModelo().getMarca() + ", ano " + locacao.getVeiculo().getModelo().getAno() + ", placa " + locacao.getVeiculo().getPlaca() + ", código fipe " + locacao.getVeiculo().getModelo().getCodigoFipe() + ", em perfeito estado e que resolveu dá-lo em locação ao LOCATÁRIO, do dia " + DateUtilities.formatDataDia(locacao.getDataEntrega()) + " ao dia " + DateUtilities.formatDataDia(locacao.getDataDevolucao()) + ", contados a partir da assinatura do presente contrato.\n"
                 + "                      \n"
                 + "1.1.1. Findo prazo acima estipulado, o mesmo poderá ser renovado através de aditivo ou outro instrumento contratual ou o veículo deverá ser devolvido ao LOCADOR nas mesmas condições em que estava quando o recebeu, ou seja, em perfeitas condições de uso, respondendo pelos danos ou prejuízos causados.             \n"
                 + "                      \n"
@@ -405,6 +397,22 @@ public class GeradorPDF {
                 + "CPF: ______________________________	   CPF:_______________________________\n";
 
         return new Paragraph(conteudoArquivo);
+    }
+
+    private static void adicionarCabecalho(PdfPTable tabela, Paragraph paragrafoTitulo) {
+        PdfPCell cellCabecalho = new PdfPCell(paragrafoTitulo);
+        cellCabecalho.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cellCabecalho.setVerticalAlignment(Element.ALIGN_CENTER);
+        cellCabecalho.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cellCabecalho.setBorder(PdfPTable.ALIGN_MIDDLE);
+        cellCabecalho.setColspan(tabela.getNumberOfColumns());
+        tabela.addCell(cellCabecalho);
+    }
+
+    private static void adicionarCelulaLinha(PdfPTable tabela, Paragraph paragraphLinha) {
+        PdfPCell cell = new PdfPCell(paragraphLinha);
+        cell.setColspan(2);
+        tabela.addCell(cell);
     }
 
 }

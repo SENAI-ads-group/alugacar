@@ -21,6 +21,14 @@ public class DateUtilities {
         return simpleDateFormat.format(data);
     }
 
+    public static String formatDataDia(Date data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        if (data == null) {
+            return null;
+        }
+        return sdf.format(data);
+    }
+
     public static Date tryParseToDate(String dataFormatada) {
         try {
             return simpleDateFormat.parse(dataFormatada);

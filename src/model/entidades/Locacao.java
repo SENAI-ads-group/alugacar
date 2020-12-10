@@ -312,7 +312,7 @@ public class Locacao {
             calendarEntrega.setTime(dataEntrega);
             calendarDevolucao.setTime(dataDevolucao);
 
-            int diasPercorridos = calendarDevolucao.get(Calendar.DAY_OF_YEAR) - calendarEntrega.get(Calendar.DAY_OF_YEAR);
+            int diasPercorridos = calendarDevolucao.get(Calendar.DAY_OF_YEAR) - calendarEntrega.get(Calendar.DAY_OF_YEAR) + 1; //adicionado +1 para contar o dia de hoje
             double valorDiaria = veiculo.getModelo().getCategoria().getValorDiaria();
             return valorDiaria * diasPercorridos;
         } else {

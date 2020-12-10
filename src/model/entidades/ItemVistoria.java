@@ -114,7 +114,7 @@ public class ItemVistoria {
     @Override
     public String toString() {
         String string = (adequado) ? "adequado" : "não adequado";
-        return nome + string;
+        return nome + " " + string;
     }
 
 }

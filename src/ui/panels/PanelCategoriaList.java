@@ -1,5 +1,6 @@
 package ui.panels;
 
+import java.awt.event.KeyEvent;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,16 +18,19 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class PanelCategoriaList extends javax.swing.JPanel implements DataChangeListener {
-
+    
     private final CategoriaDAO DAO = DAOFactory.createCategoriaDAO();
-
+    
     public PanelCategoriaList() {
         initComponents();
-        updateTable();
+        atualizarListagem();
     }
-
-    public void updateTable() {
-        List<Categoria> categorias = DAO.buscarTodos();
+    
+    public void atualizarListagem() {
+        atualizarListagem(DAO.buscarTodos());
+    }
+    
+    public void atualizarListagem(List<Categoria> categorias) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
         for (Categoria categoria : categorias) {
@@ -39,7 +43,7 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
             tableModel.addRow(row);
         }
         table.setModel(tableModel);
-
+        
         if (tableModel.getRowCount()
                 > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
@@ -50,19 +54,28 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
             buttonEditar.setEnabled(false);
         }
     }
-
+    
     public void createCategoriaForm(Categoria categoria) {
         DialogCategoriaForm dialogForm = new DialogCategoriaForm(FrameLoader.getFrameMain(), true, categoria);
         dialogForm.subscribeListener(this);
         dialogForm.updateFormData();
         dialogForm.setVisible(true);
     }
-
+    
     @Override
     public void onDataChanged() {
-        updateTable();
+        atualizarListagem();
     }
-
+    
+    private void pesquisar(String filtro) {
+        if (filtro != null && filtro.trim().length() > 0) {
+            atualizarListagem(DAO.buscar(textFieldPesquisa.getText()));
+        } else {
+            textFieldPesquisa.setText("");
+            atualizarListagem(DAO.buscarTodos());
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -72,6 +85,9 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
+        panelPesquisa = new javax.swing.JPanel();
+        buttonPesquisar = new javax.swing.JButton();
+        textFieldPesquisa = new javax.swing.JTextField();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -126,6 +142,34 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-28x28.png"))); // NOI18N
         labelTitleList.setText("Categorias de veículos");
 
+        panelPesquisa.setBackground(new java.awt.Color(255, 255, 255));
+        panelPesquisa.setPreferredSize(new java.awt.Dimension(100, 25));
+        panelPesquisa.setLayout(new java.awt.BorderLayout());
+
+        buttonPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pesquisa-24x24.png"))); // NOI18N
+        buttonPesquisar.setBorderPainted(false);
+        buttonPesquisar.setFocusPainted(false);
+        buttonPesquisar.setFocusable(false);
+        buttonPesquisar.setMaximumSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.setMinimumSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.setPreferredSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPesquisarActionPerformed(evt);
+            }
+        });
+        panelPesquisa.add(buttonPesquisar, java.awt.BorderLayout.EAST);
+
+        textFieldPesquisa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textFieldPesquisa.setPreferredSize(new java.awt.Dimension(200, 25));
+        textFieldPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldPesquisaKeyReleased(evt);
+            }
+        });
+        panelPesquisa.add(textFieldPesquisa, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
@@ -133,7 +177,9 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 612, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, Short.MAX_VALUE)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -150,7 +196,8 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelPesquisa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -210,21 +257,34 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
             int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão da categoria selecionada?", "Exclusão de categoria", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 DAO.excluir(idSelecionado);
-                updateTable();
+                atualizarListagem();
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir a categoria", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonExcluirActionPerformed
 
+    private void buttonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarActionPerformed
+        pesquisar(textFieldPesquisa.getText());
+    }//GEN-LAST:event_buttonPesquisarActionPerformed
+
+    private void textFieldPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldPesquisaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pesquisar(textFieldPesquisa.getText());
+        }
+    }//GEN-LAST:event_textFieldPesquisaKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
+    private javax.swing.JButton buttonPesquisar;
     private javax.swing.JLabel labelTitleList;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelPesquisa;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable table;
+    private javax.swing.JTextField textFieldPesquisa;
     // End of variables declaration//GEN-END:variables
 }

@@ -67,6 +67,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemCategorias = new javax.swing.JPanel();
         labelIconCategorias = new javax.swing.JLabel();
         labelMenuCategorias = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         scrollPaneCenter = new javax.swing.JScrollPane();
         panelCenter = new javax.swing.JPanel();
         panelLoader = new javax.swing.JPanel();
@@ -304,6 +305,11 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-logo-sistema-130x45.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 150));
+        panelLeft.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         getContentPane().add(panelLeft, java.awt.BorderLayout.LINE_START);
 
         scrollPaneCenter.setBorder(null);
@@ -339,7 +345,7 @@ public class FrameMain extends javax.swing.JFrame {
     private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed
         PanelClientesList listClientes = new PanelClientesList();
         PanelUtilities.loadPanelToPanel(listClientes, panelLoader);
-        listClientes.updateTable();
+        listClientes.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemClientesMousePressed
 
     private void panelMenuItemVeiculosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMousePressed
@@ -363,7 +369,7 @@ public class FrameMain extends javax.swing.JFrame {
     private void panelMenuItemCategoriasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemCategoriasMousePressed
         PanelCategoriaList listCategorias = new PanelCategoriaList();
         PanelUtilities.loadPanelToPanel(listCategorias, panelLoader);
-        listCategorias.updateTable();
+        listCategorias.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
     private void panelMenuItemLocacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemLocacaoMousePressed
@@ -391,6 +397,7 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemDescontosMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelIconCategorias;
     private javax.swing.JLabel labelIconChecklist;
     private javax.swing.JLabel labelIconClientes;

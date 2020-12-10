@@ -19,6 +19,8 @@ public interface CategoriaDAO {
 
     Categoria buscar(Integer id);
 
+    List<Categoria> buscar(String filtro);
+
     List<Categoria> buscarTodos();
 
 }

@@ -91,10 +91,11 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de categoria");
-        setMinimumSize(new java.awt.Dimension(440, 420));
+        setMinimumSize(new java.awt.Dimension(460, 420));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(460, 420));
         setResizable(false);
-        setSize(new java.awt.Dimension(440, 420));
+        setSize(new java.awt.Dimension(460, 420));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
@@ -195,7 +196,7 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
         jPanel1.add(buttonConfirmar);
 
         jLabel1.setToolTipText("");
-        jLabel1.setPreferredSize(new java.awt.Dimension(5, 5));
+        jLabel1.setPreferredSize(new java.awt.Dimension(15, 15));
         jPanel1.add(jLabel1);
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);

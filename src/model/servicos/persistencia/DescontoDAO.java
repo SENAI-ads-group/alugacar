@@ -1,7 +1,7 @@
 package model.servicos.persistencia;
 
 import java.util.List;
-import model.entidades.Taxa;
+import model.entidades.Desconto;
 
 /**
  *
@@ -9,13 +9,11 @@ import model.entidades.Taxa;
  */
 public interface DescontoDAO {
 
-    void inserir(Taxa taxa);
+    void inserir(Desconto desconto);
 
-    void atualizar(Taxa taxa);
+    void atualizar(Desconto desconto);
 
-    void excluir(Integer id);
+    Desconto buscar(Integer id);
 
-    Taxa buscar(Integer id);
-
-    List<Taxa> buscarTodos();
+    List<Desconto> buscarTodos();
 }

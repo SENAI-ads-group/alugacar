@@ -1,5 +1,6 @@
 package ui.panels;
 
+import java.awt.event.KeyEvent;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -20,11 +21,13 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
 
     public PanelMarcasList() {
         initComponents();
-        updateTable();
     }
 
-    public void updateTable() {
-        List<Marca> marcas = DAO.buscarTodos();
+    public void atualizarListagem() {
+        atualizarListagem(DAO.buscarTodos());
+    }
+
+    public void atualizarListagem(List<Marca> marcas) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
         for (Marca marca : marcas) {
@@ -64,7 +67,16 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
 
     @Override
     public void onDataChanged() {
-        updateTable();
+        atualizarListagem(DAO.buscarTodos());
+    }
+
+    private void pesquisar(String filtro) {
+        if (filtro != null && filtro.trim().length() > 0) {
+            atualizarListagem(DAO.buscar(textFieldPesquisa.getText()));
+        } else {
+            textFieldPesquisa.setText("");
+            atualizarListagem(DAO.buscarTodos());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -76,6 +88,9 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         buttonEditar = new javax.swing.JButton();
         buttonExcluir = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
+        panelPesquisa = new javax.swing.JPanel();
+        buttonPesquisar = new javax.swing.JButton();
+        textFieldPesquisa = new javax.swing.JTextField();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -130,6 +145,34 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-marcas-28x28.png"))); // NOI18N
         labelTitleList.setText("Marcas de veículos");
 
+        panelPesquisa.setBackground(new java.awt.Color(255, 255, 255));
+        panelPesquisa.setPreferredSize(new java.awt.Dimension(100, 25));
+        panelPesquisa.setLayout(new java.awt.BorderLayout());
+
+        buttonPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pesquisa-24x24.png"))); // NOI18N
+        buttonPesquisar.setBorderPainted(false);
+        buttonPesquisar.setFocusPainted(false);
+        buttonPesquisar.setFocusable(false);
+        buttonPesquisar.setMaximumSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.setMinimumSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.setPreferredSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPesquisarActionPerformed(evt);
+            }
+        });
+        panelPesquisa.add(buttonPesquisar, java.awt.BorderLayout.EAST);
+
+        textFieldPesquisa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textFieldPesquisa.setPreferredSize(new java.awt.Dimension(200, 25));
+        textFieldPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldPesquisaKeyReleased(evt);
+            }
+        });
+        panelPesquisa.add(textFieldPesquisa, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
@@ -137,7 +180,9 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 649, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 379, Short.MAX_VALUE)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -150,7 +195,9 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelTitleList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(panelPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelTitleList))
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,7 +249,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
         try {
             createMarcaForm(new Marca());
-            updateTable();
+            atualizarListagem(DAO.buscarTodos());
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
         }
@@ -212,7 +259,7 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         try {
             createMarcaForm(DAO.buscar(idSelecionado));
-            updateTable();
+            atualizarListagem(DAO.buscarTodos());
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
         }
@@ -224,21 +271,34 @@ public final class PanelMarcasList extends javax.swing.JPanel implements DataCha
             int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão da marca selecionada?", "Exclusão de marca", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 DAO.excluir(idSelecionado);
-                updateTable();
+                atualizarListagem(DAO.buscarTodos());
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir a marca", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonExcluirActionPerformed
 
+    private void buttonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarActionPerformed
+        pesquisar(textFieldPesquisa.getText());
+    }//GEN-LAST:event_buttonPesquisarActionPerformed
+
+    private void textFieldPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldPesquisaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pesquisar(textFieldPesquisa.getText());
+        }
+    }//GEN-LAST:event_textFieldPesquisaKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
+    private javax.swing.JButton buttonPesquisar;
     private javax.swing.JLabel labelTitleList;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelPesquisa;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable table;
+    private javax.swing.JTextField textFieldPesquisa;
     // End of variables declaration//GEN-END:variables
 }

@@ -87,18 +87,18 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de locação");
-        setMinimumSize(new java.awt.Dimension(500, 450));
+        setMinimumSize(new java.awt.Dimension(440, 420));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        setPreferredSize(new java.awt.Dimension(500, 500));
+        setPreferredSize(new java.awt.Dimension(440, 420));
         setResizable(false);
-        setSize(new java.awt.Dimension(500, 450));
+        setSize(new java.awt.Dimension(440, 420));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         tabbedPane.setMaximumSize(new java.awt.Dimension(1000, 500));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(460, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(460, 300));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(430, 300));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(430, 300));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -197,7 +197,7 @@ public class DialogLocacaoForm extends javax.swing.JDialog {
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 460, -1));
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 430, -1));
 
         pack();
         setLocationRelativeTo(null);

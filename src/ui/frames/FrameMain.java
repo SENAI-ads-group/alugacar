@@ -4,6 +4,7 @@ import java.awt.Component;
 import ui.dialogs.DialogConfiguracoes;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.ListagemChecklist;
+import ui.panels.ListagemTaxas;
 import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
 import ui.panels.PanelLocacoesList;
@@ -66,6 +67,9 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemConfiguracoes = new javax.swing.JPanel();
         labelIconConfiguracoes = new javax.swing.JLabel();
         labelMenuConfiguracoes = new javax.swing.JLabel();
+        panelMenuItemTaxas = new javax.swing.JPanel();
+        labelIconChecklist1 = new javax.swing.JLabel();
+        labelMenuChecklist1 = new javax.swing.JLabel();
         scrollPaneCenter = new javax.swing.JScrollPane();
         panelCenter = new javax.swing.JPanel();
         panelLoader = new javax.swing.JPanel();
@@ -80,7 +84,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelLeft.setPreferredSize(new java.awt.Dimension(150, 768));
         panelLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelMenu.setPreferredSize(new java.awt.Dimension(150, 350));
+        panelMenu.setPreferredSize(new java.awt.Dimension(150, 420));
         panelMenu.setLayout(new javax.swing.BoxLayout(panelMenu, javax.swing.BoxLayout.Y_AXIS));
 
         panelMenuItemDashboard.setPreferredSize(new java.awt.Dimension(150, 35));
@@ -304,6 +308,26 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenu.add(panelMenuItemConfiguracoes);
 
+        panelMenuItemTaxas.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemTaxas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemTaxasMousePressed(evt);
+            }
+        });
+        panelMenuItemTaxas.setLayout(new java.awt.BorderLayout());
+
+        labelIconChecklist1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconChecklist1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-28x28.png"))); // NOI18N
+        labelIconChecklist1.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemTaxas.add(labelIconChecklist1, java.awt.BorderLayout.LINE_START);
+
+        labelMenuChecklist1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuChecklist1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuChecklist1.setText("Taxas");
+        panelMenuItemTaxas.add(labelMenuChecklist1, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemTaxas);
+
         panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
 
         getContentPane().add(panelLeft, java.awt.BorderLayout.LINE_START);
@@ -393,9 +417,16 @@ public class FrameMain extends javax.swing.JFrame {
         listagemChecklist.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemChecklistMousePressed
 
+    private void panelMenuItemTaxasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemTaxasMousePressed
+        ListagemTaxas listagemTaxas = new ListagemTaxas();
+        PanelUtilities.loadPanelToPanel(listagemTaxas, panelLoader);
+        listagemTaxas.atualizarListagem();
+    }//GEN-LAST:event_panelMenuItemTaxasMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel labelIconCategorias;
     private javax.swing.JLabel labelIconChecklist;
+    private javax.swing.JLabel labelIconChecklist1;
     private javax.swing.JLabel labelIconClientes;
     private javax.swing.JLabel labelIconConfiguracoes;
     private javax.swing.JLabel labelIconDashboard;
@@ -407,6 +438,7 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelIconVeiculos;
     private javax.swing.JLabel labelMenuCategorias;
     private javax.swing.JLabel labelMenuChecklist;
+    private javax.swing.JLabel labelMenuChecklist1;
     private javax.swing.JLabel labelMenuClientes;
     private javax.swing.JLabel labelMenuConfiguracoes;
     private javax.swing.JLabel labelMenuDashboard;
@@ -430,6 +462,7 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelMenuItemModelos;
     private javax.swing.JPanel panelMenuItemMotoristas;
     private javax.swing.JPanel panelMenuItemRelatorios;
+    private javax.swing.JPanel panelMenuItemTaxas;
     private javax.swing.JPanel panelMenuItemVeiculos;
     private javax.swing.JScrollPane scrollPaneCenter;
     // End of variables declaration//GEN-END:variables

@@ -10,6 +10,7 @@ import model.servicos.persistencia.implementacaoCSV.LocacaoCSV;
 import model.servicos.persistencia.implementacaoCSV.MarcaCSV;
 import model.servicos.persistencia.implementacaoCSV.ModeloCSV;
 import model.servicos.persistencia.implementacaoCSV.MotoristaCSV;
+import model.servicos.persistencia.implementacaoCSV.TaxaCSV;
 import model.servicos.persistencia.implementacaoCSV.UsuarioCSV;
 import model.servicos.persistencia.implementacaoCSV.VeiculoCSV;
 import model.servicos.persistencia.implementacaoCSV.VistoriaCSV;
@@ -66,6 +67,10 @@ public class DAOFactory {
 
     public static ItemVistoriaDAO createItemVistoriaDAO() {
         return new ItemVistoriaCSV();
+    }
+
+    public static TaxaDAO createTaxaDAO() {
+        return new TaxaCSV();
     }
 
 }

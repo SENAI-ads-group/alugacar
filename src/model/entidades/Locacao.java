@@ -1,7 +1,12 @@
 package model.entidades;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Objects;
+import javax.swing.JOptionPane;
 import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.TipoLocacao;
 import model.servicos.persistencia.DAOFactory;
@@ -25,6 +30,8 @@ public class Locacao {
     private Motorista motorista;
     private Vistoria vistoriaEntrega;
     private Vistoria vistoriaDevolucao;
+    private List<Taxa> taxas = new ArrayList<>();
+    private List<Desconto> descontos = new ArrayList<>();
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
     public Locacao() {
@@ -33,7 +40,7 @@ public class Locacao {
     public Locacao(TipoLocacao tipoLocacao) {
         status = StatusLocacao.PENDENTE;
         this.tipo = tipoLocacao;
-        tipo.getContrato().setLocacao(this);
+        //tipo.getContrato().setLocacao(this);
     }
 
     public Locacao(TipoLocacao tipo, Date dataEntrega, Date dataDevolucao, Veiculo veiculo, Cliente cliente, Motorista motorista) {
@@ -43,7 +50,7 @@ public class Locacao {
         this.veiculo = veiculo;
         this.cliente = cliente;
         this.motorista = motorista;
-        tipo.getContrato().setLocacao(this);
+        //tipo.getContrato().setLocacao(this);
     }
 
     public Locacao(String[] csv) {
@@ -61,7 +68,7 @@ public class Locacao {
             default:
                 break;
         }
-        tipo.getContrato().setLocacao(this);
+        //tipo.getContrato().setLocacao(this);
     }
 
     private void instanciarLocacaoPendente(String[] csv) {
@@ -201,6 +208,22 @@ public class Locacao {
     public void setVistoriaDevolucao(Vistoria vistoriaDevolucao) {
         this.vistoriaDevolucao = vistoriaDevolucao;
     }
+
+    public List<Taxa> getTaxas() {
+        return taxas;
+    }
+
+    public void setTaxas(List<Taxa> taxas) {
+        this.taxas = taxas;
+    }
+
+    public List<Desconto> getDescontos() {
+        return descontos;
+    }
+
+    public void setDescontos(List<Desconto> descontos) {
+        this.descontos = descontos;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="equals e hashCode"> 
@@ -230,6 +253,79 @@ public class Locacao {
     }
     // </editor-fold>
 
+    public void addTaxa(Taxa taxa) {
+        taxas.add(taxa);
+    }
+
+    public void removeTaxa(Taxa taxa) {
+        taxas.remove(taxa);
+    }
+
+    public void addDesconto(Desconto desconto) {
+        descontos.add(desconto);
+    }
+
+    public void removeDesconto(Desconto desconto) {
+        descontos.remove(desconto);
+    }
+
+    public void checarVistorias() {
+        if (status != StatusLocacao.FINALIZADA) {
+            throw new IllegalStateException("A locação deve ser finalizada para o processamento");
+        }
+        for (int i = 0; i < vistoriaEntrega.getItens().size(); i++) {
+            ItemVistoria itemEntrega = vistoriaEntrega.getItem(i);
+            ItemVistoria itemDevolucao = vistoriaDevolucao.getItem(i);
+
+            if (!itemEntrega.isAdequado()) {
+                addDesconto(Desconto.getDescontoItemVistoria());
+                JOptionPane.showMessageDialog(null, "Adicionado desconto automático de R$ " + Desconto.getDescontoItemVistoria().getValor()
+                        + " devido o item " + itemEntrega.getNome() + " não estar adequado na vistoria de entrega.", "Adição de desconto", JOptionPane.WARNING_MESSAGE);
+            } else if (!itemDevolucao.isAdequado()) {
+                addTaxa(Taxa.getTaxaItemVistoria());
+                JOptionPane.showMessageDialog(null, "Adicionada taxa automática de R$ " + Taxa.getTaxaItemVistoria().getValor()
+                        + " devido o item " + itemDevolucao.getNome() + " não estar adequado na vistoria de devolução.", "Adição de taxa", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+    public double getValorTaxas() {
+        double valorTotal = 0;
+        for (Taxa taxa : taxas) {
+            valorTotal += taxa.getValor();
+        }
+        return valorTotal;
+    }
+
+    public double getValorDescontos() {
+        double valorTotal = 0;
+        for (Desconto desconto : descontos) {
+            valorTotal += desconto.getValor();
+        }
+        return valorTotal;
+    }
+
+    public double getValorBruto() {
+        if (tipo == TipoLocacao.DIARIA) {
+            Calendar calendarEntrega = new GregorianCalendar();
+            Calendar calendarDevolucao = new GregorianCalendar();
+            calendarEntrega.setTime(dataEntrega);
+            calendarDevolucao.setTime(dataDevolucao);
+
+            int diasPercorridos = calendarDevolucao.get(Calendar.DAY_OF_YEAR) - calendarEntrega.get(Calendar.DAY_OF_YEAR);
+            double valorDiaria = veiculo.getModelo().getCategoria().getValorDiaria();
+            return valorDiaria * diasPercorridos;
+        } else {
+            double kmRodado = vistoriaDevolucao.getKmVeiculo() - vistoriaEntrega.getKmVeiculo();
+            double valorKM = getVeiculo().getModelo().getCategoria().getValorKM();
+            return kmRodado * valorKM;
+        }
+    }
+
+    public double getValorTotal() {
+        return (getValorBruto() + getValorTaxas()) - getValorDescontos();
+    }
+
     public String toCSV() {
         switch (status) {
             case INICIADA:
@@ -256,7 +352,7 @@ public class Locacao {
     }
 
     private String toCSVIniciado() {
-        tipo.getContrato().setLocacao(this);
+        //tipo.getContrato().setLocacao(this);
         return "" + id + ";"
                 + status.toCSV() + ";"
                 + tipo.toCSV() + ";"
@@ -270,7 +366,7 @@ public class Locacao {
     }
 
     private String toCSVFinalizado() {
-        tipo.getContrato().setLocacao(this);
+        //tipo.getContrato().setLocacao(this);
         return "" + id + ";"
                 + status.toCSV() + ";"
                 + tipo.toCSV() + ";"

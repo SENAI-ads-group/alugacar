@@ -49,6 +49,14 @@ public class Vistoria {
         return itens;
     }
 
+    public void setItens(List<ItemVistoria> itens) {
+        this.itens = itens;
+    }
+
+    public ItemVistoria getItem(int index) {
+        return itens.get(index);
+    }
+
     public double getKmVeiculo() {
         return kmVeiculo;
     }

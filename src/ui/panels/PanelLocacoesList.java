@@ -1,21 +1,23 @@
 package ui.panels;
 
-import application.Configuracoes;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Locacao;
+import model.entidades.Taxa;
 import model.entidades.Vistoria;
 import model.entidades.enums.StatusLocacao;
-import model.servicos.pdf.GeradorPDF;
 import model.servicos.persistencia.LocacaoDAO;
+import model.servicos.persistencia.TaxaLocacaoDAO;
 import ui.FrameLoader;
 import ui.dialogs.DialogLocacaoForm;
 import ui.dialogs.DialogVistoriaForm;
+import ui.dialogs.DialogVisualizacaoLocacao;
 import ui.listeners.DataChangeListener;
 import util.DateUtilities;
 import util.Utilities;
+import model.servicos.persistencia.implementacaoCSV.TaxaLocacaoCSV;
 
 /**
  *
@@ -80,6 +82,8 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
         buttonVer = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
         buttonEntregarDevolver = new javax.swing.JButton();
+        buttonAdicionarTaxa = new javax.swing.JButton();
+        buttonAdicionarDesconto = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -134,6 +138,32 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
             }
         });
 
+        buttonAdicionarTaxa.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonAdicionarTaxa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-24x24.png"))); // NOI18N
+        buttonAdicionarTaxa.setText("Taxa");
+        buttonAdicionarTaxa.setBorderPainted(false);
+        buttonAdicionarTaxa.setFocusPainted(false);
+        buttonAdicionarTaxa.setFocusable(false);
+        buttonAdicionarTaxa.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonAdicionarTaxa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAdicionarTaxaActionPerformed(evt);
+            }
+        });
+
+        buttonAdicionarDesconto.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonAdicionarDesconto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-desconto-24x24.png"))); // NOI18N
+        buttonAdicionarDesconto.setText("Desconto");
+        buttonAdicionarDesconto.setBorderPainted(false);
+        buttonAdicionarDesconto.setFocusPainted(false);
+        buttonAdicionarDesconto.setFocusable(false);
+        buttonAdicionarDesconto.setPreferredSize(new java.awt.Dimension(95, 35));
+        buttonAdicionarDesconto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAdicionarDescontoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
@@ -141,7 +171,11 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 650, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 429, Short.MAX_VALUE)
+                .addComponent(buttonAdicionarDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonAdicionarTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEntregarDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonVer, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,7 +192,9 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonVer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonEntregarDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonEntregarDevolver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonAdicionarTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonAdicionarDesconto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -180,7 +216,7 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
                 java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -210,7 +246,9 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
     private void buttonVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVerActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         Locacao locacao = DAO.buscar(idSelecionado);
-        GeradorPDF.gerarContratoPDF(locacao, Configuracoes.getProperties().getProperty("canonicalPath"));
+        DialogVisualizacaoLocacao dialog = new DialogVisualizacaoLocacao(FrameLoader.getFrameMain(), true, locacao);
+        dialog.atualizarInformacoes();
+        dialog.setVisible(true);        
     }//GEN-LAST:event_buttonVerActionPerformed
 
     private void buttonEntregarDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntregarDevolverActionPerformed
@@ -226,8 +264,25 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
         }
     }//GEN-LAST:event_buttonEntregarDevolverActionPerformed
 
+    private void buttonAdicionarTaxaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarTaxaActionPerformed
+        Object[] itens = DAOFactory.createTaxaDAO().buscarTodos().toArray();
+        Taxa selectedValue = (Taxa) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha a taxa", "Adição de taxa",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        Locacao locacao = DAO.buscar(idSelecionado);
+        TaxaLocacaoDAO daoTaxa = new TaxaLocacaoCSV();
+        daoTaxa.exportar(locacao, selectedValue);
+        daoTaxa.importar(locacao);
+    }//GEN-LAST:event_buttonAdicionarTaxaActionPerformed
+
+    private void buttonAdicionarDescontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarDescontoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonAdicionarDescontoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAdicionarDesconto;
+    private javax.swing.JButton buttonAdicionarTaxa;
     private javax.swing.JButton buttonEntregarDevolver;
     private javax.swing.JButton buttonNovo;
     private javax.swing.JButton buttonVer;

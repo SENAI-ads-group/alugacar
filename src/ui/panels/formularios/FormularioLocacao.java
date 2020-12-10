@@ -32,8 +32,10 @@ public final class FormularioLocacao extends javax.swing.JPanel {
 
     public void updateFormData() {
         if (locacao == null) {
-            throw new IllegalStateException("O modelo está nulo");
+            throw new IllegalStateException("a locação está nulo");
         }
+        dateChooserEntrega.setDate(locacao.getDataEntrega());
+        dateChooserDevolucao.setDate(locacao.getDataDevolucao());
         comboBoxCliente.setSelectedItem(locacao.getCliente());
         comboBoxMotorista.setSelectedItem(locacao.getMotorista());
         comboBoxVeiculo.setSelectedItem(locacao.getVeiculo());

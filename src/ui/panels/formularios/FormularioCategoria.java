@@ -147,11 +147,12 @@ public final class FormularioCategoria extends javax.swing.JPanel {
         labelErroValorKM.setPreferredSize(new java.awt.Dimension(150, 15));
         add(labelErroValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 45, 170, -1));
 
+        formattedTextFieldValorDiaria.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         formattedTextFieldValorDiaria.setPreferredSize(new java.awt.Dimension(190, 25));
         add(formattedTextFieldValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
         FieldUtilities.setFieldMoeda(formattedTextFieldValorDiaria);
 
-        formattedTextFieldValorKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+        formattedTextFieldValorKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         formattedTextFieldValorKM.setPreferredSize(new java.awt.Dimension(190, 25));
         add(formattedTextFieldValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
     }// </editor-fold>//GEN-END:initComponents

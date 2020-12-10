@@ -27,4 +27,6 @@ public interface LocacaoDAO {
 
     List<Locacao> buscarTodos();
 
+    void atualizar(Locacao locacao);
+
 }

@@ -1,6 +1,6 @@
 package model.entidades;
 
-import application.Configuracoes;
+import aplicacao.Configuracoes;
 import java.util.Objects;
 import util.Utilities;
 

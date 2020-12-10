@@ -1,13 +1,13 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import com.alee.utils.FileUtils;
 import java.io.File;
 import java.util.List;
 import model.entidades.CNH;
 import model.entidades.Vistoria;
 import model.exceptions.DBException;
-import model.servicos.persistencia.ImagemDAO;
+import model.servicos.persistencia.interfaces.ImagemDAO;
 import util.Utilities;
 
 /**

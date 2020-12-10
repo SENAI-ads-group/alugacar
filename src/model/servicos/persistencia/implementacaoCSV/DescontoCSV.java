@@ -1,11 +1,11 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import java.io.File;
 import java.util.List;
 import model.entidades.Desconto;
 import model.exceptions.DBException;
-import model.servicos.persistencia.DescontoDAO;
+import model.servicos.persistencia.interfaces.DescontoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
 import java.util.ArrayList;

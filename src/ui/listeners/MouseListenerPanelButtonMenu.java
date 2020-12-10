@@ -37,7 +37,7 @@ public class MouseListenerPanelButtonMenu implements MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        component.setBackground(new Color(240, 240, 240));
+        component.setBackground(new Color(239, 239, 239));
     }
 
 }

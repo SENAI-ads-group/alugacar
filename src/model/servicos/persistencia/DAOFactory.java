@@ -1,5 +1,19 @@
 package model.servicos.persistencia;
 
+import model.servicos.persistencia.interfaces.VeiculoDAO;
+import model.servicos.persistencia.interfaces.ClienteDAO;
+import model.servicos.persistencia.interfaces.ModeloDAO;
+import model.servicos.persistencia.interfaces.ImagemDAO;
+import model.servicos.persistencia.interfaces.VistoriaDAO;
+import model.servicos.persistencia.interfaces.CnhDAO;
+import model.servicos.persistencia.interfaces.MarcaDAO;
+import model.servicos.persistencia.interfaces.MotoristaDAO;
+import model.servicos.persistencia.interfaces.DescontoDAO;
+import model.servicos.persistencia.interfaces.TaxaDAO;
+import model.servicos.persistencia.interfaces.CategoriaDAO;
+import model.servicos.persistencia.interfaces.ItemVistoriaDAO;
+import model.servicos.persistencia.interfaces.LocacaoDAO;
+import model.servicos.persistencia.interfaces.UsuarioDAO;
 import model.servicos.persistencia.implementacaoCSV.CnhCSV;
 import model.servicos.persistencia.implementacaoCSV.CategoriaCSV;
 import model.servicos.persistencia.implementacaoCSV.ClienteCSV;

@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import model.entidades.Motorista;
 import model.servicos.persistencia.DAOFactory;
 import model.exceptions.DBException;
@@ -9,8 +9,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import util.Utilities;
-import model.servicos.persistencia.MotoristaDAO;
-import model.servicos.persistencia.CnhDAO;
+import model.servicos.persistencia.interfaces.MotoristaDAO;
+import model.servicos.persistencia.interfaces.CnhDAO;
 
 /**
  *

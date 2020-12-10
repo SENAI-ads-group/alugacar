@@ -1,15 +1,15 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import model.entidades.CNH;
 import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import model.servicos.persistencia.CnhDAO;
+import model.servicos.persistencia.interfaces.CnhDAO;
 import model.servicos.persistencia.DAOFactory;
-import model.servicos.persistencia.ImagemDAO;
+import model.servicos.persistencia.interfaces.ImagemDAO;
 
 /**
  *

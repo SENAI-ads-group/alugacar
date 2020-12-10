@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import model.entidades.Marca;
 import java.io.File;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import model.exceptions.DBException;
 import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
-import model.servicos.persistencia.MarcaDAO;
+import model.servicos.persistencia.interfaces.MarcaDAO;
 
 /**
  *

@@ -1,11 +1,11 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import java.io.File;
 import model.entidades.Desconto;
 import model.entidades.Locacao;
 import model.entidades.Taxa;
-import model.servicos.persistencia.DescontoLocacaoDAO;
+import model.servicos.persistencia.interfaces.DescontoLocacaoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
 

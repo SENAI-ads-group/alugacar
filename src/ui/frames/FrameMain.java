@@ -2,16 +2,16 @@ package ui.frames;
 
 import java.awt.Component;
 import ui.listeners.MouseListenerPanelButtonMenu;
-import ui.panels.ListagemChecklist;
-import ui.panels.ListagemDescontos;
-import ui.panels.ListagemTaxas;
-import ui.panels.PanelCategoriaList;
-import ui.panels.PanelClientesList;
-import ui.panels.PanelLocacoesList;
-import ui.panels.PanelMarcasList;
-import ui.panels.PanelModelosList;
-import ui.panels.PanelMotoristasList;
-import ui.panels.PanelVeiculosList;
+import ui.paineis.ListagemChecklist;
+import ui.paineis.ListagemDescontos;
+import ui.paineis.ListagemTaxas;
+import ui.paineis.ListagemCategoria;
+import ui.paineis.ListagemClientes;
+import ui.paineis.PanelLocacoesList;
+import ui.paineis.ListagemMarcas;
+import ui.paineis.ListagemModelos;
+import ui.paineis.ListagemMotoristas;
+import ui.paineis.ListagemVeiculos;
 import util.PanelUtilities;
 
 /**
@@ -306,9 +306,10 @@ public class FrameMain extends javax.swing.JFrame {
         panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-logo-sistema-130x45.png"))); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(150, 150));
-        panelLeft.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-logo-sistema-130x50.png"))); // NOI18N
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
+        panelLeft.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, -1, -1));
 
         getContentPane().add(panelLeft, java.awt.BorderLayout.LINE_START);
 
@@ -337,37 +338,37 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemDashboardMousePressed
 
     private void panelMenuItemMotoristasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMousePressed
-        PanelMotoristasList listMotoristas = new PanelMotoristasList();
+        ListagemMotoristas listMotoristas = new ListagemMotoristas();
         PanelUtilities.loadPanelToPanel(listMotoristas, panelLoader);
         listMotoristas.updateTable();
     }//GEN-LAST:event_panelMenuItemMotoristasMousePressed
 
     private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed
-        PanelClientesList listClientes = new PanelClientesList();
+        ListagemClientes listClientes = new ListagemClientes();
         PanelUtilities.loadPanelToPanel(listClientes, panelLoader);
         listClientes.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemClientesMousePressed
 
     private void panelMenuItemVeiculosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMousePressed
-        PanelVeiculosList listVeiculos = new PanelVeiculosList();
+        ListagemVeiculos listVeiculos = new ListagemVeiculos();
         PanelUtilities.loadPanelToPanel(listVeiculos, panelLoader);
-        listVeiculos.updateTable();
+        listVeiculos.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemVeiculosMousePressed
 
     private void panelMenuItemModelosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemModelosMousePressed
-        PanelModelosList listModelos = new PanelModelosList();
+        ListagemModelos listModelos = new ListagemModelos();
         PanelUtilities.loadPanelToPanel(listModelos, panelLoader);
         listModelos.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemModelosMousePressed
 
     private void panelMenuItemMarcasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMarcasMousePressed
-        PanelMarcasList listMarcas = new PanelMarcasList();
+        ListagemMarcas listMarcas = new ListagemMarcas();
         PanelUtilities.loadPanelToPanel(listMarcas, panelLoader);
         listMarcas.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemMarcasMousePressed
 
     private void panelMenuItemCategoriasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemCategoriasMousePressed
-        PanelCategoriaList listCategorias = new PanelCategoriaList();
+        ListagemCategoria listCategorias = new ListagemCategoria();
         PanelUtilities.loadPanelToPanel(listCategorias, panelLoader);
         listCategorias.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed

@@ -1,6 +1,6 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +13,7 @@ import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.StatusVeiculo;
 import model.exceptions.DBException;
 import model.servicos.persistencia.DAOFactory;
-import model.servicos.persistencia.LocacaoDAO;
+import model.servicos.persistencia.interfaces.LocacaoDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
 

@@ -18,5 +18,8 @@ public interface MarcaDAO {
 
     Marca buscar(Integer id);
 
+    List<Marca> buscar(String filtro);
+
     List<Marca> buscarTodos();
+
 }

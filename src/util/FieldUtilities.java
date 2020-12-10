@@ -81,6 +81,14 @@ public class FieldUtilities {
         field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat("#,###.00"))));
     }
 
+    public static void setFieldPlaca(JFormattedTextField field) {
+        setFormattedTextFieldMask(field, "UUU-####");
+    }
+    
+    public static void setFieldRenavam(JFormattedTextField field) {
+        setFormattedTextFieldMask(field, "###########");
+    }
+
     public static boolean textFieldIsEmpty(JTextField textField) {
         return textField.getText() == null || textField.getText().trim().equals("");
     }

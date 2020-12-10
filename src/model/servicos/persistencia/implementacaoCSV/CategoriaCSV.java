@@ -7,6 +7,7 @@ import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import model.entidades.Marca;
 import util.Utilities;
 import model.servicos.persistencia.CategoriaDAO;
 import model.servicos.persistencia.DAOFactory;
@@ -116,6 +117,31 @@ public class CategoriaCSV implements CategoriaDAO {
     }
 
     @Override
+    public List<Categoria> buscar(String filtro) {
+        if (filtro == null) {
+            throw new IllegalStateException("Filtro de pesquisa vazio");
+        }
+        List<Categoria> categorias = new ArrayList<>();
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Categoria categoria = new Categoria(linha.split(";"));
+            if (categoria.getDescricao().contains(filtro) || ("" + categoria.getId()).contains(filtro)) {
+                categorias.add(categoria);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        if (categorias.size() > 0) {
+            return categorias;
+        } else {
+            return buscarTodos();
+        }
+    }
+
+    @Override
     public List<Categoria> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
 
@@ -134,14 +160,14 @@ public class CategoriaCSV implements CategoriaDAO {
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
 
-        Integer ultimoID = 1;
+        Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             ultimoID = Utilities.tryParseToInteger(linha.split(";")[0]);
             linha = CONEXAO.reader().readLine();
         }
         if (ultimoID == null) {
-            ultimoID = 1;
+            ultimoID = 0;
         }
 
         CONEXAO.close();

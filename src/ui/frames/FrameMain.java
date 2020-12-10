@@ -1,9 +1,9 @@
 package ui.frames;
 
 import java.awt.Component;
-import ui.dialogs.DialogConfiguracoes;
 import ui.listeners.MouseListenerPanelButtonMenu;
 import ui.panels.ListagemChecklist;
+import ui.panels.ListagemDescontos;
 import ui.panels.ListagemTaxas;
 import ui.panels.PanelCategoriaList;
 import ui.panels.PanelClientesList;
@@ -40,6 +40,15 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemLocacao = new javax.swing.JPanel();
         labelIconLocacao = new javax.swing.JLabel();
         labelMenuLocacao = new javax.swing.JLabel();
+        panelMenuItemChecklist = new javax.swing.JPanel();
+        labelIconChecklist = new javax.swing.JLabel();
+        labelMenuChecklist = new javax.swing.JLabel();
+        panelMenuItemTaxas = new javax.swing.JPanel();
+        labelIconTaxas = new javax.swing.JLabel();
+        labelMenuTaxas = new javax.swing.JLabel();
+        panelMenuItemDescontos = new javax.swing.JPanel();
+        labelIconDescontos = new javax.swing.JLabel();
+        labelMenuDescontos = new javax.swing.JLabel();
         panelMenuItemClientes = new javax.swing.JPanel();
         labelIconClientes = new javax.swing.JLabel();
         labelMenuClientes = new javax.swing.JLabel();
@@ -58,18 +67,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemCategorias = new javax.swing.JPanel();
         labelIconCategorias = new javax.swing.JLabel();
         labelMenuCategorias = new javax.swing.JLabel();
-        panelMenuItemRelatorios = new javax.swing.JPanel();
-        labelIconRelatorios = new javax.swing.JLabel();
-        labelMenuRelatorios = new javax.swing.JLabel();
-        panelMenuItemChecklist = new javax.swing.JPanel();
-        labelIconChecklist = new javax.swing.JLabel();
-        labelMenuChecklist = new javax.swing.JLabel();
-        panelMenuItemConfiguracoes = new javax.swing.JPanel();
-        labelIconConfiguracoes = new javax.swing.JLabel();
-        labelMenuConfiguracoes = new javax.swing.JLabel();
-        panelMenuItemTaxas = new javax.swing.JPanel();
-        labelIconChecklist1 = new javax.swing.JLabel();
-        labelMenuChecklist1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         scrollPaneCenter = new javax.swing.JScrollPane();
         panelCenter = new javax.swing.JPanel();
         panelLoader = new javax.swing.JPanel();
@@ -84,7 +82,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelLeft.setPreferredSize(new java.awt.Dimension(150, 768));
         panelLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelMenu.setPreferredSize(new java.awt.Dimension(150, 420));
+        panelMenu.setPreferredSize(new java.awt.Dimension(150, 385));
         panelMenu.setLayout(new javax.swing.BoxLayout(panelMenu, javax.swing.BoxLayout.Y_AXIS));
 
         panelMenuItemDashboard.setPreferredSize(new java.awt.Dimension(150, 35));
@@ -125,6 +123,66 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemLocacao.add(labelMenuLocacao, java.awt.BorderLayout.CENTER);
 
         panelMenu.add(panelMenuItemLocacao);
+
+        panelMenuItemChecklist.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemChecklist.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemChecklistMousePressed(evt);
+            }
+        });
+        panelMenuItemChecklist.setLayout(new java.awt.BorderLayout());
+
+        labelIconChecklist.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconChecklist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-28x28.png"))); // NOI18N
+        labelIconChecklist.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemChecklist.add(labelIconChecklist, java.awt.BorderLayout.LINE_START);
+
+        labelMenuChecklist.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuChecklist.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuChecklist.setText("Checklist");
+        panelMenuItemChecklist.add(labelMenuChecklist, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemChecklist);
+
+        panelMenuItemTaxas.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemTaxas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemTaxasMousePressed(evt);
+            }
+        });
+        panelMenuItemTaxas.setLayout(new java.awt.BorderLayout());
+
+        labelIconTaxas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconTaxas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-28x28.png"))); // NOI18N
+        labelIconTaxas.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemTaxas.add(labelIconTaxas, java.awt.BorderLayout.LINE_START);
+
+        labelMenuTaxas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuTaxas.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuTaxas.setText("Taxas");
+        panelMenuItemTaxas.add(labelMenuTaxas, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemTaxas);
+
+        panelMenuItemDescontos.setPreferredSize(new java.awt.Dimension(150, 35));
+        panelMenuItemDescontos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMenuItemDescontosMousePressed(evt);
+            }
+        });
+        panelMenuItemDescontos.setLayout(new java.awt.BorderLayout());
+
+        labelIconDescontos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelIconDescontos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-desconto-28x28.png"))); // NOI18N
+        labelIconDescontos.setPreferredSize(new java.awt.Dimension(50, 35));
+        panelMenuItemDescontos.add(labelIconDescontos, java.awt.BorderLayout.LINE_START);
+
+        labelMenuDescontos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelMenuDescontos.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelMenuDescontos.setText("Descontos");
+        panelMenuItemDescontos.add(labelMenuDescontos, java.awt.BorderLayout.CENTER);
+
+        panelMenu.add(panelMenuItemDescontos);
 
         panelMenuItemClientes.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemClientes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -245,90 +303,12 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenu.add(panelMenuItemCategorias);
 
-        panelMenuItemRelatorios.setPreferredSize(new java.awt.Dimension(150, 35));
-        panelMenuItemRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMenuItemRelatoriosMouseClicked(evt);
-            }
-        });
-        panelMenuItemRelatorios.setLayout(new java.awt.BorderLayout());
-
-        labelIconRelatorios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelIconRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-relatorios2-28x28.png"))); // NOI18N
-        labelIconRelatorios.setPreferredSize(new java.awt.Dimension(50, 35));
-        panelMenuItemRelatorios.add(labelIconRelatorios, java.awt.BorderLayout.LINE_START);
-
-        labelMenuRelatorios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelMenuRelatorios.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labelMenuRelatorios.setText("Relatórios");
-        panelMenuItemRelatorios.add(labelMenuRelatorios, java.awt.BorderLayout.CENTER);
-
-        panelMenu.add(panelMenuItemRelatorios);
-
-        panelMenuItemChecklist.setPreferredSize(new java.awt.Dimension(150, 35));
-        panelMenuItemChecklist.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                panelMenuItemChecklistMousePressed(evt);
-            }
-        });
-        panelMenuItemChecklist.setLayout(new java.awt.BorderLayout());
-
-        labelIconChecklist.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelIconChecklist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-28x28.png"))); // NOI18N
-        labelIconChecklist.setPreferredSize(new java.awt.Dimension(50, 35));
-        panelMenuItemChecklist.add(labelIconChecklist, java.awt.BorderLayout.LINE_START);
-
-        labelMenuChecklist.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelMenuChecklist.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labelMenuChecklist.setText("Checklist");
-        panelMenuItemChecklist.add(labelMenuChecklist, java.awt.BorderLayout.CENTER);
-
-        panelMenu.add(panelMenuItemChecklist);
-
-        panelMenuItemConfiguracoes.setPreferredSize(new java.awt.Dimension(150, 35));
-        panelMenuItemConfiguracoes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                panelMenuItemConfiguracoesMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                panelMenuItemConfiguracoesMousePressed(evt);
-            }
-        });
-        panelMenuItemConfiguracoes.setLayout(new java.awt.BorderLayout());
-
-        labelIconConfiguracoes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelIconConfiguracoes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-configuracoes-28x28.png"))); // NOI18N
-        labelIconConfiguracoes.setPreferredSize(new java.awt.Dimension(50, 35));
-        panelMenuItemConfiguracoes.add(labelIconConfiguracoes, java.awt.BorderLayout.LINE_START);
-
-        labelMenuConfiguracoes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelMenuConfiguracoes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labelMenuConfiguracoes.setText("Configurações");
-        panelMenuItemConfiguracoes.add(labelMenuConfiguracoes, java.awt.BorderLayout.CENTER);
-
-        panelMenu.add(panelMenuItemConfiguracoes);
-
-        panelMenuItemTaxas.setPreferredSize(new java.awt.Dimension(150, 35));
-        panelMenuItemTaxas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                panelMenuItemTaxasMousePressed(evt);
-            }
-        });
-        panelMenuItemTaxas.setLayout(new java.awt.BorderLayout());
-
-        labelIconChecklist1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelIconChecklist1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-28x28.png"))); // NOI18N
-        labelIconChecklist1.setPreferredSize(new java.awt.Dimension(50, 35));
-        panelMenuItemTaxas.add(labelIconChecklist1, java.awt.BorderLayout.LINE_START);
-
-        labelMenuChecklist1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelMenuChecklist1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labelMenuChecklist1.setText("Taxas");
-        panelMenuItemTaxas.add(labelMenuChecklist1, java.awt.BorderLayout.CENTER);
-
-        panelMenu.add(panelMenuItemTaxas);
-
         panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-logo-sistema-130x45.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(150, 150));
+        panelLeft.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         getContentPane().add(panelLeft, java.awt.BorderLayout.LINE_START);
 
@@ -352,14 +332,6 @@ public class FrameMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void panelMenuItemRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemRelatoriosMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_panelMenuItemRelatoriosMouseClicked
-
-    private void panelMenuItemConfiguracoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemConfiguracoesMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_panelMenuItemConfiguracoesMouseClicked
-
     private void panelMenuItemDashboardMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDashboardMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_panelMenuItemDashboardMousePressed
@@ -373,7 +345,7 @@ public class FrameMain extends javax.swing.JFrame {
     private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed
         PanelClientesList listClientes = new PanelClientesList();
         PanelUtilities.loadPanelToPanel(listClientes, panelLoader);
-        listClientes.updateTable();
+        listClientes.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemClientesMousePressed
 
     private void panelMenuItemVeiculosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMousePressed
@@ -385,19 +357,19 @@ public class FrameMain extends javax.swing.JFrame {
     private void panelMenuItemModelosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemModelosMousePressed
         PanelModelosList listModelos = new PanelModelosList();
         PanelUtilities.loadPanelToPanel(listModelos, panelLoader);
-        listModelos.updateTable();
+        listModelos.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemModelosMousePressed
 
     private void panelMenuItemMarcasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMarcasMousePressed
         PanelMarcasList listMarcas = new PanelMarcasList();
         PanelUtilities.loadPanelToPanel(listMarcas, panelLoader);
-        listMarcas.updateTable();
+        listMarcas.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemMarcasMousePressed
 
     private void panelMenuItemCategoriasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemCategoriasMousePressed
         PanelCategoriaList listCategorias = new PanelCategoriaList();
         PanelUtilities.loadPanelToPanel(listCategorias, panelLoader);
-        listCategorias.updateTable();
+        listCategorias.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
     private void panelMenuItemLocacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemLocacaoMousePressed
@@ -405,11 +377,6 @@ public class FrameMain extends javax.swing.JFrame {
         PanelUtilities.loadPanelToPanel(listLocacoes, panelLoader);
         listLocacoes.updateTable();
     }//GEN-LAST:event_panelMenuItemLocacaoMousePressed
-
-    private void panelMenuItemConfiguracoesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemConfiguracoesMousePressed
-        DialogConfiguracoes dialog = new DialogConfiguracoes(this, true);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_panelMenuItemConfiguracoesMousePressed
 
     private void panelMenuItemChecklistMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemChecklistMousePressed
         ListagemChecklist listagemChecklist = new ListagemChecklist();
@@ -423,30 +390,35 @@ public class FrameMain extends javax.swing.JFrame {
         listagemTaxas.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemTaxasMousePressed
 
+    private void panelMenuItemDescontosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDescontosMousePressed
+        ListagemDescontos listagemDescontos = new ListagemDescontos();
+        PanelUtilities.loadPanelToPanel(listagemDescontos, panelLoader);
+        listagemDescontos.atualizarListagem();
+    }//GEN-LAST:event_panelMenuItemDescontosMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelIconCategorias;
     private javax.swing.JLabel labelIconChecklist;
-    private javax.swing.JLabel labelIconChecklist1;
     private javax.swing.JLabel labelIconClientes;
-    private javax.swing.JLabel labelIconConfiguracoes;
     private javax.swing.JLabel labelIconDashboard;
+    private javax.swing.JLabel labelIconDescontos;
     private javax.swing.JLabel labelIconLocacao;
     private javax.swing.JLabel labelIconMarcas;
     private javax.swing.JLabel labelIconModelos;
     private javax.swing.JLabel labelIconMotoristas;
-    private javax.swing.JLabel labelIconRelatorios;
+    private javax.swing.JLabel labelIconTaxas;
     private javax.swing.JLabel labelIconVeiculos;
     private javax.swing.JLabel labelMenuCategorias;
     private javax.swing.JLabel labelMenuChecklist;
-    private javax.swing.JLabel labelMenuChecklist1;
     private javax.swing.JLabel labelMenuClientes;
-    private javax.swing.JLabel labelMenuConfiguracoes;
     private javax.swing.JLabel labelMenuDashboard;
+    private javax.swing.JLabel labelMenuDescontos;
     private javax.swing.JLabel labelMenuLocacao;
     private javax.swing.JLabel labelMenuMarcas;
     private javax.swing.JLabel labelMenuModelos;
     private javax.swing.JLabel labelMenuMotoristas;
-    private javax.swing.JLabel labelMenuRelatorios;
+    private javax.swing.JLabel labelMenuTaxas;
     private javax.swing.JLabel labelMenuVeiculos;
     private javax.swing.JPanel panelCenter;
     private javax.swing.JPanel panelLeft;
@@ -455,13 +427,12 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelMenuItemCategorias;
     private javax.swing.JPanel panelMenuItemChecklist;
     private javax.swing.JPanel panelMenuItemClientes;
-    private javax.swing.JPanel panelMenuItemConfiguracoes;
     private javax.swing.JPanel panelMenuItemDashboard;
+    private javax.swing.JPanel panelMenuItemDescontos;
     private javax.swing.JPanel panelMenuItemLocacao;
     private javax.swing.JPanel panelMenuItemMarcas;
     private javax.swing.JPanel panelMenuItemModelos;
     private javax.swing.JPanel panelMenuItemMotoristas;
-    private javax.swing.JPanel panelMenuItemRelatorios;
     private javax.swing.JPanel panelMenuItemTaxas;
     private javax.swing.JPanel panelMenuItemVeiculos;
     private javax.swing.JScrollPane scrollPaneCenter;

@@ -1,7 +1,7 @@
 package model.servicos.persistencia;
 
+import model.entidades.Desconto;
 import model.entidades.Locacao;
-import model.entidades.Taxa;
 
 /**
  *
@@ -11,7 +11,7 @@ public interface DescontoLocacaoDAO {
 
     void importar(Locacao locacao);
 
-    void exportar(Locacao locacao, Taxa taxa);
+    void exportar(Locacao locacao, Desconto desconto);
 
     void atualizarLocacao(Locacao locacao);
 

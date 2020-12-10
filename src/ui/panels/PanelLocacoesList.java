@@ -4,12 +4,14 @@ import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.entidades.Desconto;
 import model.entidades.Locacao;
 import model.entidades.Taxa;
 import model.entidades.Vistoria;
 import model.entidades.enums.StatusLocacao;
 import model.servicos.persistencia.LocacaoDAO;
 import model.servicos.persistencia.TaxaLocacaoDAO;
+import model.servicos.persistencia.implementacaoCSV.DescontoLocacaoCSV;
 import ui.FrameLoader;
 import ui.dialogs.DialogLocacaoForm;
 import ui.dialogs.DialogVistoriaForm;
@@ -248,7 +250,7 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
         Locacao locacao = DAO.buscar(idSelecionado);
         DialogVisualizacaoLocacao dialog = new DialogVisualizacaoLocacao(FrameLoader.getFrameMain(), true, locacao);
         dialog.atualizarInformacoes();
-        dialog.setVisible(true);        
+        dialog.setVisible(true);
     }//GEN-LAST:event_buttonVerActionPerformed
 
     private void buttonEntregarDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntregarDevolverActionPerformed
@@ -268,6 +270,7 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
         Object[] itens = DAOFactory.createTaxaDAO().buscarTodos().toArray();
         Taxa selectedValue = (Taxa) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha a taxa", "Adição de taxa",
                 JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         Locacao locacao = DAO.buscar(idSelecionado);
         TaxaLocacaoDAO daoTaxa = new TaxaLocacaoCSV();
@@ -276,7 +279,15 @@ public final class PanelLocacoesList extends javax.swing.JPanel implements DataC
     }//GEN-LAST:event_buttonAdicionarTaxaActionPerformed
 
     private void buttonAdicionarDescontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarDescontoActionPerformed
-        // TODO add your handling code here:
+        Object[] itens = DAOFactory.createDescontoDAO().buscarTodos().toArray();
+        Desconto selectedValue = (Desconto) JOptionPane.showInputDialog(FrameLoader.getFrameMain(), "Escolha o desconto", "Adição de desconto",
+                JOptionPane.INFORMATION_MESSAGE, null, itens, itens[0]);
+
+        Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
+        Locacao locacao = DAO.buscar(idSelecionado);
+        DescontoLocacaoCSV daoDesconto = new DescontoLocacaoCSV();
+        daoDesconto.exportar(locacao, selectedValue);
+        daoDesconto.importar(locacao);
     }//GEN-LAST:event_buttonAdicionarDescontoActionPerformed
 
 

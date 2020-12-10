@@ -154,6 +154,33 @@ public class ModeloCSV implements ModeloDAO {
     }
 
     @Override
+    public List<Modelo> buscar(String filtro) {
+        if (filtro == null) {
+            throw new IllegalStateException("Filtro de pesquisa vazio");
+        }
+        List<Modelo> modelos = new ArrayList<>();
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Modelo modelo = new Modelo(linha.split(";"));
+            if (modelo.getDescricao().contains(filtro) || ("" + modelo.getId()).contains(filtro)
+                    || modelo.getCodigoFipe().contains(filtro) || modelo.getCategoria().getDescricao().contains(filtro)
+                    || modelo.getMarca().getDescricao().contains(filtro)) {
+                modelos.add(modelo);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        if (modelos.size() > 0) {
+            return modelos;
+        } else {
+            return buscarTodos();
+        }
+    }
+
+    @Override
     public List<Modelo> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
         List<Modelo> modelos = new ArrayList<>();

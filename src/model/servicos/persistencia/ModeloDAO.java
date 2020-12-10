@@ -22,6 +22,8 @@ public interface ModeloDAO {
 
     List<Modelo> buscar(Marca marca);
 
+    List<Modelo> buscar(String filtro);
+
     List<Modelo> buscar(Categoria categoria);
 
     List<Modelo> buscarTodos();

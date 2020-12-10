@@ -322,15 +322,15 @@ public class DialogClienteForm extends javax.swing.JDialog {
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormPessoaFisica")) {
+            if (ex.getMessage().equals("PessoaFisica")) {
                 tabbedPane.setIconAt(0, iconError);
                 panelFormPessoaFisica.exibirMensagensErro(ex.getErrors());
             }
-            if (ex.getMessage().equals("PanelFormPessoaJuridica")) {
+            if (ex.getMessage().equals("PessoaJuridica")) {
                 tabbedPane.setIconAt(0, iconError);
                 panelFormPessoaJuridica.setErrorsMessages(ex.getErrors());
             }
-            if (ex.getMessage().equals("PanelFormEndereco")) {
+            if (ex.getMessage().equals("Endereco")) {
                 tabbedPane.setIconAt(1, iconError);
                 panelFormEndereco.exibirMensagensErro(ex.getErrors());
             }

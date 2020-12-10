@@ -70,6 +70,7 @@ public class LocacaoCSV implements LocacaoDAO {
             if (locacaoEncontrada.getId().equals(id)) {
                 CONEXAO.close();
                 new TaxaLocacaoCSV().importar(locacaoEncontrada);
+                new DescontoLocacaoCSV().importar(locacaoEncontrada);
                 return locacaoEncontrada;
             }
             linha = CONEXAO.reader().readLine();
@@ -88,6 +89,7 @@ public class LocacaoCSV implements LocacaoDAO {
             Locacao locacaoEncontrada = new Locacao(linha.split(";"));
             if (locacaoEncontrada.getCliente().equals(cliente)) {
                 new TaxaLocacaoCSV().importar(locacaoEncontrada);
+                new DescontoLocacaoCSV().importar(locacaoEncontrada);
                 locacoesEncontradas.add(locacaoEncontrada);
             }
             linha = CONEXAO.reader().readLine();
@@ -107,6 +109,7 @@ public class LocacaoCSV implements LocacaoDAO {
             Locacao locacaoEncontrada = new Locacao(linha.split(";"));
             if (locacaoEncontrada.getMotorista().equals(motorista)) {
                 new TaxaLocacaoCSV().importar(locacaoEncontrada);
+                new DescontoLocacaoCSV().importar(locacaoEncontrada);
                 locacoesEncontradas.add(locacaoEncontrada);
             }
             linha = CONEXAO.reader().readLine();
@@ -125,6 +128,7 @@ public class LocacaoCSV implements LocacaoDAO {
         while (linha != null) {
             Locacao locacaoEncontrada = new Locacao(linha.split(";"));
             new TaxaLocacaoCSV().importar(locacaoEncontrada);
+            new DescontoLocacaoCSV().importar(locacaoEncontrada);
             locacoesEncontradas.add(locacaoEncontrada);
             linha = CONEXAO.reader().readLine();
         }
@@ -175,6 +179,7 @@ public class LocacaoCSV implements LocacaoDAO {
         ARQUIVO_DB.delete();
         arquivoDBTemp.renameTo(ARQUIVO_DB);
         new TaxaLocacaoCSV().atualizarLocacao(locacao);
+        new DescontoLocacaoCSV().atualizarLocacao(locacao);
     }
 
     private Integer getUltimoID() {

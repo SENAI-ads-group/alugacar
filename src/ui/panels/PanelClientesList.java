@@ -1,5 +1,6 @@
 package ui.panels;
 
+import java.awt.event.KeyEvent;
 import model.servicos.persistencia.DAOFactory;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -25,11 +26,14 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
     public PanelClientesList() {
         initComponents();
-        updateTable();
+        atualizarListagem();
     }
 
-    public void updateTable() {
-        List<Cliente> clientes = DAO.buscarTodos();
+    public void atualizarListagem() {
+        atualizarListagem(DAO.buscarTodos());
+    }
+
+    public void atualizarListagem(List<Cliente> clientes) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
         clientes.stream().map((cliente) -> {
@@ -80,7 +84,16 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
 
     @Override
     public void onDataChanged() {
-        updateTable();
+        atualizarListagem();
+    }
+
+    private void pesquisar(String filtro) {
+        if (filtro != null && filtro.trim().length() > 0) {
+            atualizarListagem(DAO.buscar(textFieldPesquisa.getText()));
+        } else {
+            textFieldPesquisa.setText("");
+            atualizarListagem(DAO.buscarTodos());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -93,6 +106,9 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
         buttonExcluir = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
         buttonAtivarDesativar = new javax.swing.JButton();
+        panelPesquisa = new javax.swing.JPanel();
+        buttonPesquisar = new javax.swing.JButton();
+        textFieldPesquisa = new javax.swing.JTextField();
         scrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
 
@@ -160,6 +176,34 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             }
         });
 
+        panelPesquisa.setBackground(new java.awt.Color(255, 255, 255));
+        panelPesquisa.setPreferredSize(new java.awt.Dimension(100, 25));
+        panelPesquisa.setLayout(new java.awt.BorderLayout());
+
+        buttonPesquisar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pesquisa-24x24.png"))); // NOI18N
+        buttonPesquisar.setBorderPainted(false);
+        buttonPesquisar.setFocusPainted(false);
+        buttonPesquisar.setFocusable(false);
+        buttonPesquisar.setMaximumSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.setMinimumSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.setPreferredSize(new java.awt.Dimension(40, 30));
+        buttonPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonPesquisarActionPerformed(evt);
+            }
+        });
+        panelPesquisa.add(buttonPesquisar, java.awt.BorderLayout.LINE_END);
+
+        textFieldPesquisa.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textFieldPesquisa.setPreferredSize(new java.awt.Dimension(200, 25));
+        textFieldPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                textFieldPesquisaKeyReleased(evt);
+            }
+        });
+        panelPesquisa.add(textFieldPesquisa, java.awt.BorderLayout.CENTER);
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
@@ -167,7 +211,9 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitleList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 609, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
                 .addComponent(buttonAtivarDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -187,7 +233,9 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonAtivarDesativar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelTitleList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelTitleList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -258,7 +306,7 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             int option = JOptionPane.showConfirmDialog(this, "Confirma a exclusão do cliente selecionado?", "Exclusão de cliente", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
                 DAO.excluir(idSelecionado);
-                updateTable();
+                atualizarListagem();
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao excluir o cliente", JOptionPane.ERROR_MESSAGE);
@@ -271,20 +319,33 @@ public final class PanelClientesList extends javax.swing.JPanel implements DataC
             Cliente clienteSelecionado = DAO.buscar(idSelecionado);
             clienteSelecionado.setAtivo(!clienteSelecionado.isAtivo());
             DAO.atualizar(clienteSelecionado);
-            updateTable();
+            atualizarListagem();
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao ativar ou desativar cliente", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonAtivarDesativarActionPerformed
+
+    private void buttonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPesquisarActionPerformed
+        pesquisar(textFieldPesquisa.getText());
+    }//GEN-LAST:event_buttonPesquisarActionPerformed
+
+    private void textFieldPesquisaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldPesquisaKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            pesquisar(textFieldPesquisa.getText());
+        }
+    }//GEN-LAST:event_textFieldPesquisaKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAtivarDesativar;
     private javax.swing.JButton buttonEditar;
     private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
+    private javax.swing.JButton buttonPesquisar;
     private javax.swing.JLabel labelTitleList;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelPesquisa;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable table;
+    private javax.swing.JTextField textFieldPesquisa;
     // End of variables declaration//GEN-END:variables
 }

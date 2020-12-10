@@ -2,6 +2,7 @@ package ui.dialogs;
 
 import application.Configuracoes;
 import javax.swing.table.DefaultTableModel;
+import model.entidades.Desconto;
 import model.entidades.Locacao;
 import model.entidades.Taxa;
 import model.entidades.enums.TipoLocacao;
@@ -16,7 +17,6 @@ import util.DateUtilities;
 public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
 
     private Locacao locacao;
-    private ListagemTaxasVistoria formTaxas;
 
     public DialogVisualizacaoLocacao(java.awt.Frame parent, boolean modal, Locacao locacao) {
         super(parent, modal);
@@ -41,10 +41,11 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
         textFieldValorTotal.setText("R$ " + locacao.getValorTotal());
         textFieldVeiculo.setText(locacao.getVeiculo().toString());
         atualizarListagemTaxas();
+        atualizarListagemDescontos();
     }
 
     private void atualizarListagemTaxas() {
-        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) tableTaxas.getModel();
         tableModel.setNumRows(0);
         for (Taxa taxa : locacao.getTaxas()) {
             Object[] row = {
@@ -54,7 +55,21 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
 
             tableModel.addRow(row);
         }
-        table.setModel(tableModel);
+        tableTaxas.setModel(tableModel);
+    }
+
+    private void atualizarListagemDescontos() {
+        DefaultTableModel tableModel = (DefaultTableModel) tableDescontos.getModel();
+        tableModel.setNumRows(0);
+        for (Desconto desconto : locacao.getDescontos()) {
+            Object[] row = {
+                desconto.getDescricao(),
+                "R$ " + desconto.getValor()
+            };
+
+            tableModel.addRow(row);
+        }
+        tableDescontos.setModel(tableModel);
     }
 
     @SuppressWarnings("unchecked")
@@ -94,12 +109,14 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
         panelBorderLeftTab2 = new javax.swing.JPanel();
         panelCenterTab2 = new javax.swing.JPanel();
         scrollPane = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        tableTaxas = new javax.swing.JTable();
         panelBorderRightTab2 = new javax.swing.JPanel();
         panelTab3 = new javax.swing.JPanel();
         panelTopTab3 = new javax.swing.JPanel();
         panelBorderLeftTab3 = new javax.swing.JPanel();
         panelCenterTab3 = new javax.swing.JPanel();
+        scrollPane1 = new javax.swing.JScrollPane();
+        tableDescontos = new javax.swing.JTable();
         panelBorderRightTab3 = new javax.swing.JPanel();
         panelButtons = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -327,7 +344,7 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
         panelCenterTab2.setPreferredSize(new java.awt.Dimension(420, 300));
         panelCenterTab2.setLayout(new javax.swing.BoxLayout(panelCenterTab2, javax.swing.BoxLayout.LINE_AXIS));
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
+        tableTaxas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -343,8 +360,8 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
                 return types [columnIndex];
             }
         });
-        table.setFocusable(false);
-        scrollPane.setViewportView(table);
+        tableTaxas.setFocusable(false);
+        scrollPane.setViewportView(tableTaxas);
 
         panelCenterTab2.add(scrollPane);
 
@@ -399,6 +416,28 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
         panelCenterTab3.setBackground(new java.awt.Color(250, 250, 250));
         panelCenterTab3.setPreferredSize(new java.awt.Dimension(420, 300));
         panelCenterTab3.setLayout(new javax.swing.BoxLayout(panelCenterTab3, javax.swing.BoxLayout.LINE_AXIS));
+
+        tableDescontos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Descrição", "Valor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tableDescontos.setFocusable(false);
+        scrollPane1.setViewportView(tableDescontos);
+
+        panelCenterTab3.add(scrollPane1);
+
         panelTab3.add(panelCenterTab3, java.awt.BorderLayout.CENTER);
 
         panelBorderRightTab3.setBackground(new java.awt.Color(255, 255, 255));
@@ -453,8 +492,6 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
 
         getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 460, -1));
 
-        getAccessibleContext().setAccessibleName("Visualização de locação");
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -497,8 +534,10 @@ public class DialogVisualizacaoLocacao extends javax.swing.JDialog {
     private javax.swing.JPanel panelTopTab2;
     private javax.swing.JPanel panelTopTab3;
     private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JScrollPane scrollPane1;
     private javax.swing.JTabbedPane tabbedPane;
-    private javax.swing.JTable table;
+    private javax.swing.JTable tableDescontos;
+    private javax.swing.JTable tableTaxas;
     private javax.swing.JTextField textFieldCliente;
     private javax.swing.JTextField textFieldDataDevolucao;
     private javax.swing.JTextField textFieldDataEntrega;

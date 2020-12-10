@@ -19,6 +19,8 @@ public interface ClienteDAO {
 
     Cliente buscar(Integer id);
 
+    List<Cliente> buscar(String filtro);
+
     List<Cliente> buscarTodos();
 
 }

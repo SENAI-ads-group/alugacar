@@ -107,25 +107,7 @@ public class Modelo {
     }
     // </editor-fold>
 
-    public String toCSV() {
-        //id;codigoFipe;descricao;idMarca;idCategoria;ano;combustivel
-        return "" + id + ";"
-                + codigoFipe + ";"
-                + descricao + ";"
-                + marca.getId() + ";"
-                + categoria.getId() + ";"
-                + ano + ";"
-                + combustivel.toCSV();
-    }
-
-    @Override
-    public String toString() {
-        return marca.getDescricao() + " "
-                + descricao + " "
-                + ano + " "
-                + combustivel;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">
     @Override
     public int hashCode() {
         int hash = 7;
@@ -150,5 +132,23 @@ public class Modelo {
         }
         return true;
     }
+    // </editor-fold>
 
+    public String toCSV() {
+        return "" + id + ";"
+                + codigoFipe + ";"
+                + descricao + ";"
+                + marca.getId() + ";"
+                + categoria.getId() + ";"
+                + ano + ";"
+                + combustivel.toCSV();
+    }
+
+    @Override
+    public String toString() {
+        return marca.getDescricao() + " "
+                + descricao + " "
+                + ano + " "
+                + combustivel;
+    }
 }

@@ -20,6 +20,7 @@ public class Veiculo {
     private Double KMRodado;
     private StatusVeiculo statusVeiculo = StatusVeiculo.INDISPONIVEL;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">
     public Veiculo() {
     }
 
@@ -44,7 +45,9 @@ public class Veiculo {
         KMRodado = Utilities.tryParseToDouble(csv[6]);
         statusVeiculo = StatusVeiculo.valueOf(csv[7]);
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">
     public Integer getId() {
         return id;
     }
@@ -108,27 +111,9 @@ public class Veiculo {
     public void setStatusVeiculo(StatusVeiculo statusVeiculo) {
         this.statusVeiculo = statusVeiculo;
     }
+    // </editor-fold>
 
-    public void addKM(double km) {
-        KMRodado += km;
-    }
-
-    public String toCSV() {
-        return "" + id + ";"
-                + placa + ";"
-                + renavam + ";"
-                + precoCompra + ";"
-                + modelo.getId() + ";"
-                + anoFabricacao + ";"
-                + KMRodado + ";"
-                + statusVeiculo.toCSV();
-    }
-
-    @Override
-    public String toString() {
-        return modelo.getDescricao() + " " + modelo.getAno() + " " + placa;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">
     @Override
     public int hashCode() {
         int hash = 5;
@@ -152,6 +137,27 @@ public class Veiculo {
             return false;
         }
         return true;
+    }
+    // </editor-fold>
+
+    public void addKM(double km) {
+        KMRodado += km;
+    }
+
+    public String toCSV() {
+        return "" + id + ";"
+                + placa + ";"
+                + renavam + ";"
+                + precoCompra + ";"
+                + modelo.getId() + ";"
+                + anoFabricacao + ";"
+                + KMRodado + ";"
+                + statusVeiculo.toCSV();
+    }
+
+    @Override
+    public String toString() {
+        return modelo.getDescricao() + " " + modelo.getAno() + " " + placa;
     }
 
 }

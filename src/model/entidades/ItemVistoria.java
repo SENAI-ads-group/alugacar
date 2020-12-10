@@ -1,6 +1,7 @@
 package model.entidades;
 
 import java.util.Objects;
+import util.Utilities;
 
 /**
  *
@@ -8,19 +9,45 @@ import java.util.Objects;
  */
 public class ItemVistoria {
 
+    private Integer id;
+    private String nome;
     private String descricao;
     private boolean obrigatorio;
     private boolean adequado;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores">  
+    public ItemVistoria() {
+    }
+
     public ItemVistoria(String descricao, boolean obrigatorio) {
-        this.descricao = descricao;
+        this.nome = descricao;
         this.obrigatorio = obrigatorio;
     }
 
     public ItemVistoria(String[] csv) {
-        descricao = csv[0];
-        obrigatorio = Boolean.parseBoolean(csv[1]);
-        adequado = Boolean.parseBoolean(csv[2]);
+        id = Utilities.tryParseToInteger(csv[0]);
+        nome = csv[1];
+        descricao = csv[2];
+        obrigatorio = Boolean.parseBoolean(csv[3]);
+        adequado = Boolean.parseBoolean(csv[4]);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescricao() {
@@ -46,17 +73,13 @@ public class ItemVistoria {
     public void setAdequado(boolean adequado) {
         this.adequado = adequado;
     }
+    // </editor-fold>
 
-    public String toCSV() {
-        return descricao + ";"
-                + obrigatorio + ";"
-                + adequado;
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.descricao);
+        hash = 53 * hash + Objects.hashCode(this.nome);
         hash = 53 * hash + (this.obrigatorio ? 1 : 0);
         return hash;
     }
@@ -73,13 +96,25 @@ public class ItemVistoria {
             return false;
         }
         final ItemVistoria other = (ItemVistoria) obj;
-        if (this.obrigatorio != other.obrigatorio) {
-            return false;
-        }
-        if (!Objects.equals(this.descricao, other.descricao)) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
+    }
+    // </editor-fold>
+
+    public String toCSV() {
+        return "" + id + ";"
+                + nome + ";"
+                + descricao + ";"
+                + obrigatorio + ";"
+                + adequado;
+    }
+
+    @Override
+    public String toString() {
+        String string = (adequado) ? "adequado" : "não adequado";
+        return nome + " " + string;
     }
 
 }

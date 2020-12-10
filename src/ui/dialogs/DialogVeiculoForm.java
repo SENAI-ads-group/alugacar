@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import model.entidades.Veiculo;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormVeiculo;
+import ui.panels.formularios.FormularioVeiculo;
 import util.PanelUtilities;
 import model.servicos.persistencia.VeiculoDAO;
 
@@ -23,7 +23,7 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
     private Veiculo veiculo;
     private final VeiculoDAO persistenceService = DAOFactory.createVeiculoDAO();
 
-    private PanelFormVeiculo formVeiculo;
+    private FormularioVeiculo formVeiculo;
 
     private final List<DataChangeListener> listeners;
 
@@ -37,7 +37,7 @@ public class DialogVeiculoForm extends javax.swing.JDialog {
     }
 
     private void loadPanels() {
-        formVeiculo = new PanelFormVeiculo(veiculo);
+        formVeiculo = new FormularioVeiculo(veiculo);
         PanelUtilities.loadPanelToPanel(formVeiculo, panelCenterTab1);
     }
 

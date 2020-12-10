@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Configuracoes;
+import application.Programa;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.exceptions.DBException;
@@ -19,17 +19,8 @@ import model.servicos.persistencia.ModeloDAO;
  */
 public class ModeloCSV implements ModeloDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public ModeloCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.modelo");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "modelos.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(Modelo modelo) throws DBException {
@@ -49,7 +40,7 @@ public class ModeloCSV implements ModeloDAO {
 
     @Override
     public void atualizar(Modelo modelo) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\modelos-temp.txt");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-modelos.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);
@@ -83,7 +74,7 @@ public class ModeloCSV implements ModeloDAO {
         if (DAOFactory.createVeiculoDAO().buscar(buscar(id)).size() > 0) {
             throw new DBException("Não foi possível excluir o modelo pois está associado à um ou mais veículo(s)");
         }
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\marcas-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-modelos.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);

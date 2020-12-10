@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Configuracoes;
+import application.Programa;
 import model.entidades.Motorista;
 import model.servicos.persistencia.DAOFactory;
 import model.exceptions.DBException;
@@ -18,17 +18,8 @@ import model.servicos.persistencia.CnhDAO;
  */
 public class MotoristaCSV implements MotoristaDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public MotoristaCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.motorista");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "motoristas.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(Motorista motorista) throws DBException {
@@ -53,7 +44,7 @@ public class MotoristaCSV implements MotoristaDAO {
         if (motorista.getCnh() != null) {
             DAOFactory.createCnhDAO().atualizar(motorista.getCnh());
         }
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\motorista-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-motoristas.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 
         CONEXAO.open(ARQUIVO_DB);
@@ -70,6 +61,37 @@ public class MotoristaCSV implements MotoristaDAO {
             }
             conexaoTemp.writer().flush();
             conexaoTemp.writer().newLine();
+            linha = CONEXAO.reader().readLine();
+        }
+
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
+    }
+
+    @Override
+    public void excluir(int id) {
+        if (buscar(id) == null) {
+            throw new DBException("A marca não existe");
+        }
+        if (DAOFactory.createLocacaoDAO().buscar(buscar(id)).size() > 0) {
+            throw new DBException("O motorista não pode ser excluído pois está associado à uma ou mais locações");
+        }
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-modelos.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Motorista motoristaEncontrado = new Motorista(linha.split(";"));
+            if (!motoristaEncontrado.getId().equals(id)) {
+                conexaoTemp.writer().write(motoristaEncontrado.toCSV());
+                conexaoTemp.writer().flush();
+                conexaoTemp.writer().newLine();
+            }
             linha = CONEXAO.reader().readLine();
         }
 

@@ -11,7 +11,7 @@ import model.entidades.Modelo;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
 import model.servicos.persistencia.ModeloDAO;
-import ui.panels.formularios.PanelFormModelo;
+import ui.panels.formularios.FormularioModelo;
 import util.PanelUtilities;
 
 /**
@@ -23,7 +23,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
     private Modelo modelo;
     private final ModeloDAO DAO = DAOFactory.createModeloDAO();
 
-    private PanelFormModelo formModelo;
+    private FormularioModelo formModelo;
 
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
     }
 
     private void loadPanels() {
-        formModelo = new PanelFormModelo(modelo);
+        formModelo = new FormularioModelo(modelo);
         PanelUtilities.loadPanelToPanel(formModelo, panelCenterTab1);
     }
 
@@ -53,12 +53,12 @@ public class DialogModeloForm extends javax.swing.JDialog {
     }
 
     public Modelo getFormData() throws ValidacaoException {
-        modelo = formModelo.getFormData();
+        modelo = formModelo.getDadosFormulario();
         return modelo;
     }
 
     public void updateFormData() {
-        formModelo.updateFormData();
+        formModelo.atualizarFormulario();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -217,7 +217,7 @@ public class DialogModeloForm extends javax.swing.JDialog {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormModelo")) {
                 tabbedPane.setIconAt(0, iconError);
-                formModelo.setErrorsMessages(ex.getErrors());
+                formModelo.exibirMensagensErro(ex.getErrors());
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);

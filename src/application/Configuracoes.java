@@ -2,12 +2,11 @@ package application;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.Set;
-import model.entidades.ItemVistoria;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,34 +19,29 @@ public class Configuracoes {
             Properties properties = new Properties();
 
             String caminhoPastaRaiz = new File("").getCanonicalPath();
-            FileInputStream fileInput = new FileInputStream(caminhoPastaRaiz + "\\config.properties");
+            FileInputStream fileInput = new FileInputStream(caminhoPastaRaiz + "/config.properties");
             properties.load(fileInput);
 
             String canonicalPath = new File("").getCanonicalPath();
-            properties.put("canonicalPath", canonicalPath);
+            properties.put("pasta-raiz", canonicalPath);
+
+            String databasePath = "\\\\" + properties.getProperty("servidor") + "/" + properties.getProperty("database") + "/";
+            properties.put("absoluteDatabasePath", databasePath);
+
+            String databaseImagePath = "\\\\" + properties.getProperty("servidor") + "/" + properties.getProperty("database") + "/" + "imagens/";
+            properties.put("absoluteDatabaseImagePath", databaseImagePath);
+
             return properties;
         } catch (IOException ex) {
             return null;
         }
     }
 
-    public static List<ItemVistoria> loadItensVistoria() {
-        List<ItemVistoria> itens = new ArrayList<>();
-        try {
-            Properties properties = new Properties();
-            String caminhoPastaRaiz = new File("").getCanonicalPath();
-            FileInputStream fileInput = new FileInputStream(caminhoPastaRaiz + "\\vistoria.properties");
-            properties.load(fileInput);
-
-            Set<String> fields = properties.stringPropertyNames();
-            for (String str : fields) {
-                boolean obrigatorio = Boolean.parseBoolean(properties.getProperty(str));
-                itens.add(new ItemVistoria(str, obrigatorio));
-            }
+    public static void setProperties(Properties properties) {
+        try (FileOutputStream output = new FileOutputStream("/config.properties")) {
+            properties.store(output, null);
         } catch (IOException ex) {
-
-        } finally {
-            return itens;
+            Logger.getLogger(Configuracoes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

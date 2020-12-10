@@ -9,17 +9,18 @@ import model.entidades.enums.UF;
 public class Endereco {
 
     private String logradouro;
-    private Integer numero;
+    private String numero;
     private String complemento;
     private String bairro;
     private String cidade;
     private UF uf;
     private String cep;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores"> 
     public Endereco() {
     }
 
-    public Endereco(String logradouro, Integer numero, String bairro, String cidade, UF uf) {
+    public Endereco(String logradouro, String numero, String bairro, String cidade, UF uf) {
         this.logradouro = logradouro;
         this.numero = numero;
         this.bairro = bairro;
@@ -27,7 +28,7 @@ public class Endereco {
         this.uf = uf;
     }
 
-    public Endereco(String logradouro, Integer numero, String complemento, String bairro, String cidade, UF uf, String cep) {
+    public Endereco(String logradouro, String numero, String complemento, String bairro, String cidade, UF uf, String cep) {
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
@@ -36,7 +37,9 @@ public class Endereco {
         this.uf = uf;
         this.cep = cep;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters"> 
     public String getLogradouro() {
         return logradouro;
     }
@@ -45,11 +48,11 @@ public class Endereco {
         this.logradouro = logradouro;
     }
 
-    public Integer getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Integer numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
@@ -92,6 +95,7 @@ public class Endereco {
     public void setCep(String cep) {
         this.cep = cep;
     }
+    // </editor-fold>
 
     public String toCSV() {
         return logradouro + ";"
@@ -99,7 +103,7 @@ public class Endereco {
                 + complemento + ";"
                 + bairro + ";"
                 + cidade + ";"
-                + uf.toString() + ";"
+                + uf.toCSV() + ";"
                 + cep;
     }
 

@@ -5,13 +5,14 @@ import util.Utilities;
 
 /**
  *
- * @author patrick-ribeiro
+ * @author Patrick-Ribeiro
  */
 public class Desconto {
 
     private String descricao;
     private double valor;
 
+    // <editor-fold defaultstate="collapsed" desc="construtores"> 
     public Desconto() {
     }
 
@@ -19,7 +20,9 @@ public class Desconto {
         this.descricao = descricao;
         this.valor = valor;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="getters e setters"> 
     public String getDescricao() {
         return descricao;
     }
@@ -35,6 +38,7 @@ public class Desconto {
     public void setValor(double valor) {
         this.valor = valor;
     }
+    // </editor-fold>
 
     public static Desconto getDescontoItemVistoria() {
         Double valorDesconto = Utilities.tryParseToDouble(Configuracoes.getProperties().getProperty("desconto.item-vistoria"));

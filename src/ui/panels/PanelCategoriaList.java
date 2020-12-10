@@ -33,7 +33,6 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
             Object[] row = {
                 categoria.getId(),
                 categoria.getDescricao(),
-                categoria.getValorMinimoLocacao(),
                 categoria.getValorDiaria(),
                 categoria.getValorKM()
             };
@@ -166,14 +165,14 @@ public final class PanelCategoriaList extends javax.swing.JPanel implements Data
 
             },
             new String [] {
-                "Id", "Descrição", "Valor mínimo locação", "Valor diária", "Valor KM"
+                "Id", "Descrição", "Valor diária", "Valor KM"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

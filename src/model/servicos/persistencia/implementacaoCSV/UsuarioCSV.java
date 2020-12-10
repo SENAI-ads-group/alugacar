@@ -1,6 +1,6 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Configuracoes;
+import application.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import model.entidades.Usuario;
@@ -16,17 +16,8 @@ import util.Utilities;
  */
 public class UsuarioCSV implements UsuarioDAO {
 
-    private final File ARQUIVO_DB;
-    private final String PASTA_RAIZ;
-    private final CSVConnection CONEXAO;
-
-    public UsuarioCSV() {
-        String caminhoDB = Configuracoes.getProperties().getProperty("db.usuario");
-        PASTA_RAIZ = Configuracoes.getProperties().getProperty("canonicalPath");
-
-        ARQUIVO_DB = new File(PASTA_RAIZ + caminhoDB);
-        CONEXAO = new CSVConnection();
-    }
+    private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "usuarios.csv");
+    private final CSVConnection CONEXAO = new CSVConnection();
 
     @Override
     public void inserir(Usuario usuario) throws DBException {
@@ -34,25 +25,21 @@ public class UsuarioCSV implements UsuarioDAO {
             throw new DBException("O usuário já existe");
         }
         CONEXAO.open(ARQUIVO_DB);
-
         CONEXAO.writer().write(usuario.toCSV());
         CONEXAO.writer().newLine();
-
         CONEXAO.close();
     }
 
     @Override
     public void atualizar(Usuario usuario) {
-        File arquivoDBTemp = new File(PASTA_RAIZ + "\\temp\\usuario-temp.csv");
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-usuarios.csv");
         CSVConnection conexaoTemp = new CSVConnection();
-
         CONEXAO.open(ARQUIVO_DB);
         conexaoTemp.open(arquivoDBTemp);
 
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Usuario usuarioEncontrado = new Usuario(linha.split(";"));
-
             if (usuarioEncontrado.equals(usuario)) {
                 conexaoTemp.writer().write(usuario.toCSV());
             } else {
@@ -61,7 +48,6 @@ public class UsuarioCSV implements UsuarioDAO {
             conexaoTemp.writer().flush();
             conexaoTemp.writer().newLine();
             linha = CONEXAO.reader().readLine();
-
         }
     }
 

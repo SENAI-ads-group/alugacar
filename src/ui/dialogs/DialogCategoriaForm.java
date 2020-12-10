@@ -11,7 +11,7 @@ import model.entidades.Categoria;
 import model.exceptions.ValidacaoException;
 import model.servicos.persistencia.CategoriaDAO;
 import ui.listeners.DataChangeListener;
-import ui.panels.formularios.PanelFormCategoria;
+import ui.panels.formularios.FormularioCategoria;
 import util.PanelUtilities;
 
 /**
@@ -23,7 +23,7 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
     private Categoria categoria;
     private final CategoriaDAO DAO = DAOFactory.createCategoriaDAO();
 
-    private PanelFormCategoria formCategoria;
+    private FormularioCategoria formCategoria;
 
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
     }
 
     private void loadPanels() {
-        formCategoria = new PanelFormCategoria(categoria);
+        formCategoria = new FormularioCategoria(categoria);
         PanelUtilities.loadPanelToPanel(formCategoria, panelCenterTab1);
     }
 
@@ -53,12 +53,12 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
     }
 
     public Categoria getFormData() throws ValidacaoException {
-        categoria = formCategoria.getFormData();
+        categoria = formCategoria.getDadosFormulario();
         return categoria;
     }
 
     public void updateFormData() {
-        formCategoria.updateFormData();
+        formCategoria.atualizarFormulario();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -99,9 +99,9 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(430, 300));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(430, 300));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(430, 300));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -158,9 +158,9 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setMinimumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setPreferredSize(new java.awt.Dimension(400, 50));
+        panelButtons.setMaximumSize(new java.awt.Dimension(430, 50));
+        panelButtons.setMinimumSize(new java.awt.Dimension(430, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(430, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
         panelButtons.setLayout(new java.awt.BorderLayout());
 
@@ -215,7 +215,7 @@ public class DialogCategoriaForm extends javax.swing.JDialog {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
             if (ex.getMessage().equals("PanelFormCategoria")) {
                 tabbedPane.setIconAt(0, iconError);
-                formCategoria.setErrorsMessages(ex.getErrors());
+                formCategoria.exibirMensagensErro(ex.getErrors());
             }
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);

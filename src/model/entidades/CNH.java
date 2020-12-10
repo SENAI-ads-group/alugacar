@@ -15,7 +15,8 @@ public class CNH {
     private Integer numeroRegistro;
     private CategoriaCNH categoria;
     private Date dataValidade;
-    private File foto;
+    private File fotoFrente;
+    private File fotoVerso;
 
     // <editor-fold defaultstate="collapsed" desc="construtores">  
     public CNH() {
@@ -25,7 +26,6 @@ public class CNH {
         numeroRegistro = Integer.parseInt(csv[0]);
         categoria = CategoriaCNH.valueOf(csv[1]);
         dataValidade = DateUtilities.tryParseToDate(csv[2]);
-        foto = new File(csv[3]);
     }
 
     public CNH(Integer numeroRegistro, CategoriaCNH categoria, Date dataValidade) {
@@ -35,7 +35,7 @@ public class CNH {
     }
     // </editor-fold> 
 
-    // <editor-fold defaultstate="collapsed" desc="getters e setter">  
+    // <editor-fold defaultstate="collapsed" desc="getters e setters">  
     public Integer getNumeroRegistro() {
         return numeroRegistro;
     }
@@ -60,22 +60,24 @@ public class CNH {
         this.dataValidade = dataValidade;
     }
 
-    public File getFoto() {
-        return foto;
+    public File getFotoFrente() {
+        return fotoFrente;
     }
 
-    public void setFoto(File foto) {
-        this.foto = foto;
+    public void setFotoFrente(File fotoFrente) {
+        this.fotoFrente = fotoFrente;
     }
 
+    public File getFotoVerso() {
+        return fotoVerso;
+    }
+
+    public void setFotoVerso(File fotoVerso) {
+        this.fotoVerso = fotoVerso;
+    }
     // </editor-fold>
-    public String toCSV() {
-        return "" + numeroRegistro + ";"
-                + categoria.toString() + ";"
-                + DateUtilities.formatData(dataValidade) + ";"
-                + foto.getAbsolutePath();
-    }
 
+    // <editor-fold defaultstate="collapsed" desc="equals e hashCode">  
     @Override
     public int hashCode() {
         int hash = 7;
@@ -95,10 +97,13 @@ public class CNH {
             return false;
         }
         final CNH other = (CNH) obj;
-        if (!Objects.equals(this.numeroRegistro, other.numeroRegistro)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.numeroRegistro, other.numeroRegistro);
     }
+    // </editor-fold>
 
+    public String toCSV() {
+        return "" + numeroRegistro + ";"
+                + categoria.toString() + ";"
+                + DateUtilities.formatData(dataValidade);
+    }
 }

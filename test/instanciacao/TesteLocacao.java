@@ -34,7 +34,6 @@ public class TesteLocacao {
         Categoria categoria = new Categoria();
         categoria.setDescricao("Econômico");
         categoria.setValorDiaria(100.00);
-        categoria.setValorMinimoLocacao(100.00);
         categoria.setValorKM(50.00);
 
         Modelo modelo = new Modelo();

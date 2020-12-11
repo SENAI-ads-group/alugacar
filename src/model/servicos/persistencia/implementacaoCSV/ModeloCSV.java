@@ -24,6 +24,9 @@ public class ModeloCSV implements ModeloDAO {
 
     @Override
     public void inserir(Modelo modelo) throws DBException {
+        if (buscarTodos().contains(modelo)) {
+            throw new DBException("Já existe um modelo com o código FIPE " + modelo.getCodigoFipe() + " combustível " + modelo.getCombustivel().toString() + " ano " + modelo.getAno());
+        }
         if (modelo.getId() == null) {
             modelo.setId(getUltimoID() + 1);
         }

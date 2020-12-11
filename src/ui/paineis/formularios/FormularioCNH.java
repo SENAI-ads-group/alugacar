@@ -18,7 +18,6 @@ import model.entidades.CNH;
 import model.entidades.enums.CategoriaCNH;
 import model.exceptions.ValidacaoException;
 import util.FieldUtilities;
-import util.Utilities;
 
 /**
  *
@@ -42,7 +41,12 @@ public class FormularioCNH extends javax.swing.JPanel {
         if (cnh == null) {
             cnh = new CNH();
         } else {
-            textFieldNumeroRegistro.setText("" + cnh.getNumeroRegistro());
+            textFieldNumeroRegistro.setText(cnh.getNumeroRegistro());
+            if (cnh.getNumeroRegistro() != null || cnh.getNumeroRegistro().trim().length() <= 0) {
+                textFieldNumeroRegistro.setEditable(false);
+            } else {
+                textFieldNumeroRegistro.setEditable(true);
+            }
             comboBoxCategoriaCNH.setSelectedIndex(cnh.getCategoria().ordinal());
             dateChooserValidadeCNH.setDate(cnh.getDataValidade());
             exibirFoto(cnh.getFotoFrente(), labelFoto1);
@@ -55,14 +59,14 @@ public class FormularioCNH extends javax.swing.JPanel {
             cnh = new CNH();
         }
         validarCampos();
-        cnh.setNumeroRegistro(Utilities.tryParseToInteger(textFieldNumeroRegistro.getText()));
+        cnh.setNumeroRegistro(textFieldNumeroRegistro.getText().trim().replaceAll("[^0-9]", ""));
         cnh.setDataValidade(dateChooserValidadeCNH.getDate());
         cnh.setCategoria(comboBoxCategoriaCNH.getItemAt(comboBoxCategoriaCNH.getSelectedIndex()));
         return cnh;
     }
 
     private void validarCampos() throws ValidacaoException {
-        ValidacaoException exception = new ValidacaoException("CNH");
+        ValidacaoException exception = new ValidacaoException(CNH.class.getSimpleName());
         if (FieldUtilities.textFieldIsEmpty(textFieldNumeroRegistro)) {
             exception.addError("numeroRegistro", "Registro não informado");
         }
@@ -94,7 +98,7 @@ public class FormularioCNH extends javax.swing.JPanel {
             labelErroFoto.setText(erros.get("foto"));
         }
         if (fields.contains("validade")) {
-            labelErroValidadeCNH.setText(erros.get("validadeCNH"));
+            labelErroValidadeCNH.setText(erros.get("validade"));
         }
     }
 
@@ -280,8 +284,8 @@ public class FormularioCNH extends javax.swing.JPanel {
     private void labelFoto1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelFoto1MousePressed
         File fileSelected = importarFoto();
         if (fileSelected != null) {
-            exibirFoto(fileSelected, labelFoto1);
             cnh.setFotoFrente(fileSelected);
+            exibirFoto(cnh.getFotoFrente(), labelFoto1);
         }
     }//GEN-LAST:event_labelFoto1MousePressed
 
@@ -289,7 +293,7 @@ public class FormularioCNH extends javax.swing.JPanel {
         File fileSelected = importarFoto();
         if (fileSelected != null) {
             cnh.setFotoVerso(fileSelected);
-            exibirFoto(fileSelected, labelFoto2);
+            exibirFoto(cnh.getFotoVerso(), labelFoto2);
         }
     }//GEN-LAST:event_labelFoto2MousePressed
 

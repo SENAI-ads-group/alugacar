@@ -207,7 +207,7 @@ public class DialogCliente extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Informações", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Informações", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1); // NOI18N
 
         panelTab2.setBackground(new java.awt.Color(153, 153, 153));
         panelTab2.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -258,7 +258,7 @@ public class DialogCliente extends javax.swing.JDialog {
 
         panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab2, "Informações sobre o endereço do motorista"); // NOI18N
+        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab2); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

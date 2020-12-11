@@ -105,6 +105,7 @@ public class DialogCategoria extends javax.swing.JDialog {
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
+        panelTab1.setToolTipText("");
         panelTab1.setMaximumSize(new java.awt.Dimension(400, 280));
         panelTab1.setMinimumSize(new java.awt.Dimension(400, 280));
         panelTab1.setPreferredSize(new java.awt.Dimension(400, 280));
@@ -153,7 +154,7 @@ public class DialogCategoria extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Categoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-24x24.png")), panelTab1, ""); // NOI18N
+        tabbedPane.addTab("Categoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-24x24.png")), panelTab1); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

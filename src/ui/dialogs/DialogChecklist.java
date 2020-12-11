@@ -153,7 +153,7 @@ public class DialogChecklist extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Item do checklist", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Item do checklist", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-24x24.png")), panelTab1); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

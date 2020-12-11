@@ -127,6 +127,9 @@ public class Modelo {
             return false;
         }
         final Modelo other = (Modelo) obj;
+        if (other.getCodigoFipe().equalsIgnoreCase(this.codigoFipe) && other.getAno().equals(ano) && other.getCombustivel().equals(combustivel)) {
+            return true;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

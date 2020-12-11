@@ -90,18 +90,19 @@ public class DialogTaxa extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Formulário de item do checklist");
-        setMinimumSize(new java.awt.Dimension(440, 420));
+        setTitle("Formulário de taxa");
+        setMinimumSize(new java.awt.Dimension(470, 250));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(470, 250));
         setResizable(false);
-        setSize(new java.awt.Dimension(440, 420));
+        setSize(new java.awt.Dimension(470, 250));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(430, 130));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(430, 130));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(430, 130));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -153,14 +154,14 @@ public class DialogTaxa extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Taxa", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Taxa", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-24x24.png")), panelTab1); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setMinimumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setPreferredSize(new java.awt.Dimension(400, 50));
+        panelButtons.setMaximumSize(new java.awt.Dimension(430, 50));
+        panelButtons.setMinimumSize(new java.awt.Dimension(430, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(430, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
         panelButtons.setLayout(new java.awt.BorderLayout());
 
@@ -200,9 +201,7 @@ public class DialogTaxa extends javax.swing.JDialog {
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
-
-        getAccessibleContext().setAccessibleName("Formulário de taxa");
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
 
         pack();
         setLocationRelativeTo(null);

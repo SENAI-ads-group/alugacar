@@ -14,7 +14,9 @@ public interface CnhDAO {
 
     void atualizar(CNH cnh);
 
-    CNH buscar(Integer id);
+    void excluir(String numeroRegistro);
+
+    CNH buscar(String numeroRegistro);
 
     List<CNH> buscarTodos();
 

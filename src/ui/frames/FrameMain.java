@@ -1,13 +1,16 @@
 package ui.frames;
 
 import java.awt.Component;
+import javax.swing.JOptionPane;
+import model.exceptions.DBException;
 import ui.listeners.MouseListenerPanelButtonMenu;
+import ui.paineis.Dashboard;
 import ui.paineis.ListagemChecklist;
 import ui.paineis.ListagemDescontos;
 import ui.paineis.ListagemTaxas;
 import ui.paineis.ListagemCategoria;
 import ui.paineis.ListagemClientes;
-import ui.paineis.PanelLocacoesList;
+import ui.paineis.ListagemLocacoes;
 import ui.paineis.ListagemMarcas;
 import ui.paineis.ListagemModelos;
 import ui.paineis.ListagemMotoristas;
@@ -34,9 +37,6 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelLeft = new javax.swing.JPanel();
         panelMenu = new javax.swing.JPanel();
-        panelMenuItemDashboard = new javax.swing.JPanel();
-        labelIconDashboard = new javax.swing.JLabel();
-        labelMenuDashboard = new javax.swing.JLabel();
         panelMenuItemLocacao = new javax.swing.JPanel();
         labelIconLocacao = new javax.swing.JLabel();
         labelMenuLocacao = new javax.swing.JLabel();
@@ -67,13 +67,15 @@ public class FrameMain extends javax.swing.JFrame {
         panelMenuItemCategorias = new javax.swing.JPanel();
         labelIconCategorias = new javax.swing.JLabel();
         labelMenuCategorias = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         scrollPaneCenter = new javax.swing.JScrollPane();
         panelCenter = new javax.swing.JPanel();
         panelLoader = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Locação de Veículos");
+        setTitle("Gerenciador de locações de veículos");
+        setIconImage(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-sistema-128x128.png")).getImage());
         setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(1366, 768));
@@ -82,27 +84,8 @@ public class FrameMain extends javax.swing.JFrame {
         panelLeft.setPreferredSize(new java.awt.Dimension(150, 768));
         panelLeft.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelMenu.setPreferredSize(new java.awt.Dimension(150, 385));
+        panelMenu.setPreferredSize(new java.awt.Dimension(150, 350));
         panelMenu.setLayout(new javax.swing.BoxLayout(panelMenu, javax.swing.BoxLayout.Y_AXIS));
-
-        panelMenuItemDashboard.setPreferredSize(new java.awt.Dimension(150, 35));
-        panelMenuItemDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                panelMenuItemDashboardMousePressed(evt);
-            }
-        });
-        panelMenuItemDashboard.setLayout(new java.awt.BorderLayout());
-
-        labelIconDashboard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelIconDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-dashboard2-28x28.png"))); // NOI18N
-        labelIconDashboard.setPreferredSize(new java.awt.Dimension(50, 35));
-        panelMenuItemDashboard.add(labelIconDashboard, java.awt.BorderLayout.LINE_START);
-
-        labelMenuDashboard.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelMenuDashboard.setText("Dashboard");
-        panelMenuItemDashboard.add(labelMenuDashboard, java.awt.BorderLayout.CENTER);
-
-        panelMenu.add(panelMenuItemDashboard);
 
         panelMenuItemLocacao.setPreferredSize(new java.awt.Dimension(150, 35));
         panelMenuItemLocacao.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,13 +286,7 @@ public class FrameMain extends javax.swing.JFrame {
 
         panelMenu.add(panelMenuItemCategorias);
 
-        panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
-
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-logo-sistema-130x50.png"))); // NOI18N
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        jLabel1.setPreferredSize(new java.awt.Dimension(150, 50));
-        panelLeft.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, -1, -1));
+        panelLeft.add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, -1, -1));
 
         getContentPane().add(panelLeft, java.awt.BorderLayout.LINE_START);
 
@@ -324,6 +301,17 @@ public class FrameMain extends javax.swing.JFrame {
         panelLoader.setBackground(new java.awt.Color(255, 255, 255));
         panelLoader.setPreferredSize(new java.awt.Dimension(1200, 768));
         panelLoader.setLayout(new javax.swing.BoxLayout(panelLoader, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/images/logomarca.png"))); // NOI18N
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabel2, java.awt.BorderLayout.CENTER);
+
+        panelLoader.add(jPanel1);
+
         panelCenter.add(panelLoader, java.awt.BorderLayout.CENTER);
 
         scrollPaneCenter.setViewportView(panelCenter);
@@ -333,14 +321,14 @@ public class FrameMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void panelMenuItemDashboardMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDashboardMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_panelMenuItemDashboardMousePressed
-
     private void panelMenuItemMotoristasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMousePressed
-        ListagemMotoristas listMotoristas = new ListagemMotoristas();
-        PanelUtilities.loadPanelToPanel(listMotoristas, panelLoader);
-        listMotoristas.atualizarListagem();
+        try {
+            ListagemMotoristas listMotoristas = new ListagemMotoristas();
+            PanelUtilities.loadPanelToPanel(listMotoristas, panelLoader);
+            listMotoristas.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemMotoristasMousePressed
 
     private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed
@@ -350,59 +338,91 @@ public class FrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_panelMenuItemClientesMousePressed
 
     private void panelMenuItemVeiculosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemVeiculosMousePressed
-        ListagemVeiculos listVeiculos = new ListagemVeiculos();
-        PanelUtilities.loadPanelToPanel(listVeiculos, panelLoader);
-        listVeiculos.atualizarListagem();
+        try {
+            ListagemVeiculos listVeiculos = new ListagemVeiculos();
+            PanelUtilities.loadPanelToPanel(listVeiculos, panelLoader);
+            listVeiculos.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemVeiculosMousePressed
 
     private void panelMenuItemModelosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemModelosMousePressed
-        ListagemModelos listModelos = new ListagemModelos();
-        PanelUtilities.loadPanelToPanel(listModelos, panelLoader);
-        listModelos.atualizarListagem();
+        try {
+            ListagemModelos listModelos = new ListagemModelos();
+            PanelUtilities.loadPanelToPanel(listModelos, panelLoader);
+            listModelos.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemModelosMousePressed
 
     private void panelMenuItemMarcasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMarcasMousePressed
-        ListagemMarcas listMarcas = new ListagemMarcas();
-        PanelUtilities.loadPanelToPanel(listMarcas, panelLoader);
-        listMarcas.atualizarListagem();
+        try {
+            ListagemMarcas listMarcas = new ListagemMarcas();
+            PanelUtilities.loadPanelToPanel(listMarcas, panelLoader);
+            listMarcas.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemMarcasMousePressed
 
     private void panelMenuItemCategoriasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemCategoriasMousePressed
-        ListagemCategoria listCategorias = new ListagemCategoria();
-        PanelUtilities.loadPanelToPanel(listCategorias, panelLoader);
-        listCategorias.atualizarListagem();
+        try {
+            ListagemCategoria listCategorias = new ListagemCategoria();
+            PanelUtilities.loadPanelToPanel(listCategorias, panelLoader);
+            listCategorias.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemCategoriasMousePressed
 
     private void panelMenuItemLocacaoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemLocacaoMousePressed
-        PanelLocacoesList listLocacoes = new PanelLocacoesList();
-        PanelUtilities.loadPanelToPanel(listLocacoes, panelLoader);
-        listLocacoes.updateTable();
+        try {
+            ListagemLocacoes listLocacoes = new ListagemLocacoes();
+            PanelUtilities.loadPanelToPanel(listLocacoes, panelLoader);
+            listLocacoes.updateTable();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemLocacaoMousePressed
 
     private void panelMenuItemChecklistMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemChecklistMousePressed
-        ListagemChecklist listagemChecklist = new ListagemChecklist();
-        PanelUtilities.loadPanelToPanel(listagemChecklist, panelLoader);
-        listagemChecklist.atualizarListagem();
+        try {
+            ListagemChecklist listagemChecklist = new ListagemChecklist();
+            PanelUtilities.loadPanelToPanel(listagemChecklist, panelLoader);
+            listagemChecklist.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemChecklistMousePressed
 
     private void panelMenuItemTaxasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemTaxasMousePressed
-        ListagemTaxas listagemTaxas = new ListagemTaxas();
-        PanelUtilities.loadPanelToPanel(listagemTaxas, panelLoader);
-        listagemTaxas.atualizarListagem();
+        try {
+            ListagemTaxas listagemTaxas = new ListagemTaxas();
+            PanelUtilities.loadPanelToPanel(listagemTaxas, panelLoader);
+            listagemTaxas.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemTaxasMousePressed
 
     private void panelMenuItemDescontosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemDescontosMousePressed
-        ListagemDescontos listagemDescontos = new ListagemDescontos();
-        PanelUtilities.loadPanelToPanel(listagemDescontos, panelLoader);
-        listagemDescontos.atualizarListagem();
+        try {
+            ListagemDescontos listagemDescontos = new ListagemDescontos();
+            PanelUtilities.loadPanelToPanel(listagemDescontos, panelLoader);
+            listagemDescontos.atualizarListagem();
+        } catch (DBException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro de conexão com o banco de dados", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_panelMenuItemDescontosMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelIconCategorias;
     private javax.swing.JLabel labelIconChecklist;
     private javax.swing.JLabel labelIconClientes;
-    private javax.swing.JLabel labelIconDashboard;
     private javax.swing.JLabel labelIconDescontos;
     private javax.swing.JLabel labelIconLocacao;
     private javax.swing.JLabel labelIconMarcas;
@@ -413,7 +433,6 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel labelMenuCategorias;
     private javax.swing.JLabel labelMenuChecklist;
     private javax.swing.JLabel labelMenuClientes;
-    private javax.swing.JLabel labelMenuDashboard;
     private javax.swing.JLabel labelMenuDescontos;
     private javax.swing.JLabel labelMenuLocacao;
     private javax.swing.JLabel labelMenuMarcas;
@@ -428,7 +447,6 @@ public class FrameMain extends javax.swing.JFrame {
     private javax.swing.JPanel panelMenuItemCategorias;
     private javax.swing.JPanel panelMenuItemChecklist;
     private javax.swing.JPanel panelMenuItemClientes;
-    private javax.swing.JPanel panelMenuItemDashboard;
     private javax.swing.JPanel panelMenuItemDescontos;
     private javax.swing.JPanel panelMenuItemLocacao;
     private javax.swing.JPanel panelMenuItemMarcas;

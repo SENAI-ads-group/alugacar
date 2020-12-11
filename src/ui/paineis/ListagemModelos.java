@@ -60,7 +60,7 @@ public final class ListagemModelos extends javax.swing.JPanel implements DataCha
     public void exibirFormulario(Modelo modelo) {
         DialogModelo dialogForm = new DialogModelo(FrameLoader.getFrameMain(), true, modelo);
         dialogForm.subscribeListener(this);
-        dialogForm.updateFormData();
+        dialogForm.atualizarFormulario();
         dialogForm.setVisible(true);
     }
 

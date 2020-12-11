@@ -87,18 +87,17 @@ public class DialogLocacao extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de locação");
-        setMinimumSize(new java.awt.Dimension(500, 500));
-        setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setMinimumSize(new java.awt.Dimension(490, 400));
+        setPreferredSize(new java.awt.Dimension(490, 400));
         setResizable(false);
-        setSize(new java.awt.Dimension(500, 500));
+        setSize(new java.awt.Dimension(490, 400));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         tabbedPane.setMaximumSize(new java.awt.Dimension(1000, 500));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(500, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(500, 300));
-        tabbedPane.setRequestFocusEnabled(false);
+        tabbedPane.setMinimumSize(new java.awt.Dimension(450, 280));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(450, 280));
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
         panelTab1.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -122,7 +121,7 @@ public class DialogLocacao extends javax.swing.JDialog {
         );
         panelBorderLeftTab1Layout.setVerticalGroup(
             panelBorderLeftTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 302, Short.MAX_VALUE)
+            .addGap(0, 272, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderLeftTab1, java.awt.BorderLayout.LINE_START);
@@ -144,19 +143,19 @@ public class DialogLocacao extends javax.swing.JDialog {
         );
         panelBorderRightTab1Layout.setVerticalGroup(
             panelBorderRightTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 302, Short.MAX_VALUE)
+            .addGap(0, 272, Short.MAX_VALUE)
         );
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Locação", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Locação", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1); // NOI18N
 
-        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
+        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(440, 50));
-        panelButtons.setMinimumSize(new java.awt.Dimension(440, 50));
-        panelButtons.setPreferredSize(new java.awt.Dimension(440, 50));
+        panelButtons.setMaximumSize(new java.awt.Dimension(450, 50));
+        panelButtons.setMinimumSize(new java.awt.Dimension(450, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(450, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
         panelButtons.setLayout(new java.awt.BorderLayout());
 
@@ -191,12 +190,12 @@ public class DialogLocacao extends javax.swing.JDialog {
         jPanel1.add(buttonConfirmar);
 
         jLabel1.setToolTipText("");
-        jLabel1.setPreferredSize(new java.awt.Dimension(5, 5));
+        jLabel1.setPreferredSize(new java.awt.Dimension(15, 15));
         jPanel1.add(jLabel1);
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 430, -1));
+        getContentPane().add(panelButtons, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, -1, -1));
 
         pack();
         setLocationRelativeTo(null);

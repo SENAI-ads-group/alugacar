@@ -107,9 +107,9 @@ public class FieldUtilities {
     public static void setFieldPlaca(JFormattedTextField field) {
         setFormattedTextFieldMask(field, "UUU-####");
     }
-
-    public static void setFieldRenavam(JFormattedTextField field) {
-        setFormattedTextFieldMask(field, "###########");
+    
+    public static void setFieldCodigoFipe(JFormattedTextField field) {
+        setFormattedTextFieldMask(field, "######-#");
     }
 
     public static boolean textFieldIsEmpty(JTextField textField) {

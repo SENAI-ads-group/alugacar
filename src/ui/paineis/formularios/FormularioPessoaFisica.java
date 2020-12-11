@@ -12,18 +12,18 @@ import util.Validador;
  * @author Patrick-Ribeiro
  */
 public class FormularioPessoaFisica extends javax.swing.JPanel {
-    
+
     private PessoaFisica pessoa;
-    
+
     public FormularioPessoaFisica(PessoaFisica pessoa) {
         initComponents();
         this.pessoa = pessoa;
     }
-    
+
     public void setPessoa(PessoaFisica pessoa) {
         this.pessoa = pessoa;
     }
-    
+
     public void atualizarFormulario() {
         if (pessoa != null) {
             textFieldNome.setText(pessoa.getNome());
@@ -34,7 +34,7 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
             dateChooserNascimento.setDate(pessoa.getDataNascimento());
         }
     }
-    
+
     public PessoaFisica getDadosFormulario() throws ValidacaoException {
         if (pessoa == null) {
             pessoa = new PessoaFisica();
@@ -47,12 +47,12 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         pessoa.setRegistroGeral(formattedTextFieldRG.getText());
         pessoa.setEmail(textFieldEmail.getText());
         pessoa.setDataNascimento(dateChooserNascimento.getDate());
-        
+
         return pessoa;
     }
-    
+
     private void validarCampos() throws ValidacaoException {
-        ValidacaoException exception = new ValidacaoException("PessoaFisica");
+        ValidacaoException exception = new ValidacaoException(PessoaFisica.class.getSimpleName());
         if (FieldUtilities.textFieldIsEmpty(textFieldNome)) {
             exception.addError("nome", "Nome não informado");
         }
@@ -74,15 +74,15 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         if (dateChooserNascimento.getDate() == null) {
             exception.addError("dataNascimento", "Data não informada");
         }
-        
+
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
     }
-    
+
     public void exibirMensagensErro(Map<String, String> erros) {
         Set<String> fields = erros.keySet();
-        
+
         if (fields.contains("nome")) {
             labelErroNome.setText(erros.get("nome"));
         }
@@ -99,7 +99,7 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
             labelErroDataNascimento.setText(erros.get("dataNascimento"));
         }
     }
-    
+
     private void limparErros() {
         labelErroNome.setText("");
         labelErroCPF.setText("");
@@ -108,7 +108,7 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         labelErroDataNascimento.setText("");
         labelErroEmail.setText("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

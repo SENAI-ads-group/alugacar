@@ -219,7 +219,7 @@ public class DialogVistoria extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Vistoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Vistoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-vistoria-24x24.png")), panelTab1); // NOI18N
 
         panelTab2.setBackground(new java.awt.Color(153, 153, 153));
         panelTab2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -403,7 +403,7 @@ public class DialogVistoria extends javax.swing.JDialog {
 
         panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Fotos", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-fotos-24x24.png")), panelTab2, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Fotos", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-fotos-24x24.png")), panelTab2); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
 

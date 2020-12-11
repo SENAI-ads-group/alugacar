@@ -8,6 +8,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.entidades.Veiculo;
+import model.entidades.enums.StatusVeiculo;
 import model.exceptions.ValidacaoException;
 import ui.listeners.DataChangeListener;
 import ui.paineis.formularios.FormularioVeiculo;
@@ -21,7 +22,7 @@ import model.servicos.persistencia.interfaces.VeiculoDAO;
 public class DialogVeiculo extends javax.swing.JDialog {
 
     private Veiculo veiculo;
-    private final VeiculoDAO persistenceService = DAOFactory.createVeiculoDAO();
+    private final VeiculoDAO DAO = DAOFactory.createVeiculoDAO();
 
     private FormularioVeiculo formVeiculo;
 
@@ -44,9 +45,16 @@ public class DialogVeiculo extends javax.swing.JDialog {
     private void persistEntity() throws DBException, ValidacaoException {
         getFormData();
         if (veiculo.getId() == null) {
-            persistenceService.inserir(veiculo);
+            DAO.inserir(veiculo);
+            if (veiculo.getStatusVeiculo() == StatusVeiculo.INDISPONIVEL) {
+                int option = JOptionPane.showConfirmDialog(this, "Deseja disponibilizar o novo veículo para a locação?", "Disponibilização de veículo", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    veiculo.setStatusVeiculo(StatusVeiculo.DISPONIVEL);
+                    DAO.atualizar(veiculo);
+                }
+            }
         } else {
-            persistenceService.atualizar(veiculo);
+            DAO.atualizar(veiculo);
         }
     }
 
@@ -151,7 +159,7 @@ public class DialogVeiculo extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Veículo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-veiculo-28x28.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Veículo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-veiculo-24x24.png")), panelTab1); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 

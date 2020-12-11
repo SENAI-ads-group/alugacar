@@ -25,11 +25,11 @@ import model.servicos.persistencia.implementacaoCSV.TaxaLocacaoCSV;
  *
  * @author patrick-ribeiro
  */
-public final class PanelLocacoesList extends javax.swing.JPanel implements DataChangeListener {
+public final class ListagemLocacoes extends javax.swing.JPanel implements DataChangeListener {
 
     private final LocacaoDAO DAO = DAOFactory.createLocacaoDAO();
 
-    public PanelLocacoesList() {
+    public ListagemLocacoes() {
         initComponents();
         updateTable();
     }

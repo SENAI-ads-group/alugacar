@@ -13,18 +13,18 @@ import util.FieldUtilities;
  * @author usuario
  */
 public class FormularioEndereco extends javax.swing.JPanel {
-
+    
     private Endereco endereco;
-
+    
     public FormularioEndereco(Endereco endereco) {
         initComponents();
         this.endereco = endereco;
     }
-
+    
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-
+    
     public void atualizarFormulario() {
         if (endereco != null) {
             textFieldLogradouro.setText(endereco.getLogradouro());
@@ -36,7 +36,7 @@ public class FormularioEndereco extends javax.swing.JPanel {
             comboBoxUF.setSelectedIndex(endereco.getUf().ordinal());
         }
     }
-
+    
     public Endereco getDadosFormulario() throws ValidacaoException {
         if (endereco == null) {
             endereco = new Endereco();
@@ -49,12 +49,12 @@ public class FormularioEndereco extends javax.swing.JPanel {
         endereco.setCidade(textFieldCidade.getText());
         endereco.setCep(formattedTextFieldCEP.getText());
         endereco.setUf(comboBoxUF.getItemAt(comboBoxUF.getSelectedIndex()));
-
+        
         return endereco;
     }
-
+    
     private void validarCampos() throws ValidacaoException {
-        ValidacaoException exception = new ValidacaoException("Endereco");
+        ValidacaoException exception = new ValidacaoException(Endereco.class.getSimpleName());
         if (FieldUtilities.textFieldIsEmpty(textFieldLogradouro)) {
             exception.addError("logradouro", "Logradouro não informado");
         }
@@ -73,16 +73,16 @@ public class FormularioEndereco extends javax.swing.JPanel {
             exception.addError("numero", "Informe número ou complemento");
             exception.addError("complemento", "Informe número ou complemento");
         }
-
+        
         limparErros();
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
     }
-
+    
     public void exibirMensagensErro(Map<String, String> errors) {
         Set<String> fields = errors.keySet();
-
+        
         if (fields.contains("logradouro")) {
             labelErroLogradouro.setText(errors.get("logradouro"));
         }
@@ -102,15 +102,16 @@ public class FormularioEndereco extends javax.swing.JPanel {
             labelErroComplemento.setText(errors.get("complemento"));
         }
     }
-
+    
     public void limparErros() {
         labelErroLogradouro.setText("");
         labelErroNumero.setText("");
         labelErroCEP.setText("");
         labelErroBairro.setText("");
         labelErroCidade.setText("");
+        labelErroComplemento.setText("");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

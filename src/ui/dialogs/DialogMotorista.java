@@ -62,7 +62,7 @@ public class DialogMotorista extends javax.swing.JDialog {
     public Motorista getEntidade() throws ValidacaoException {
         PessoaFisica pessoa = formularioPessoaFisica.getDadosFormulario();
         if (DateUtilities.getAge(pessoa.getDataNascimento()) < Motorista.IDADE_MINIMA) {
-            ValidacaoException exception = new ValidacaoException("PanelFormPessoaFisica");
+            ValidacaoException exception = new ValidacaoException(PessoaFisica.class.getSimpleName());
             exception.addError("dataNascimento", "Idade mínima " + Motorista.IDADE_MINIMA + " anos");
             throw exception;
         }
@@ -184,7 +184,7 @@ public class DialogMotorista extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Informações Pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Informações Pessoais", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pessoafisica-24x24.png")), panelTab1); // NOI18N
 
         panelTab2.setBackground(new java.awt.Color(153, 153, 153));
         panelTab2.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -235,7 +235,7 @@ public class DialogMotorista extends javax.swing.JDialog {
 
         panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2, "Informaçõoes sobre o motorista e sua CNH"); // NOI18N
+        tabbedPane.addTab("CNH", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-cnh-24x24.png")), panelTab2); // NOI18N
 
         panelTab3.setBackground(new java.awt.Color(153, 153, 153));
         panelTab3.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -286,7 +286,7 @@ public class DialogMotorista extends javax.swing.JDialog {
 
         panelTab3.add(panelBorderRightTab4, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab3, "Informações sobre o endereço do motorista"); // NOI18N
+        tabbedPane.addTab("Endereço", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-endereco-24x24.png")), panelTab3); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -349,15 +349,15 @@ public class DialogMotorista extends javax.swing.JDialog {
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PessoaFisica")) {
+            if (ex.getMessage().equals(PessoaFisica.class.getSimpleName())) {
                 tabbedPane.setIconAt(0, iconError);
                 formularioPessoaFisica.exibirMensagensErro(ex.getErrors());
             }
-            if (ex.getMessage().equals("CNH")) {
+            if (ex.getMessage().equals(CNH.class.getSimpleName())) {
                 tabbedPane.setIconAt(1, iconError);
                 formularioCNH.exibirMensagensErro(ex.getErrors());
             }
-            if (ex.getMessage().equals("Endereco")) {
+            if (ex.getMessage().equals(Endereco.class.getSimpleName())) {
                 tabbedPane.setIconAt(2, iconError);
                 formularioEndereco.exibirMensagensErro(ex.getErrors());
             }

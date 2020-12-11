@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import util.Utilities;
 import model.servicos.persistencia.interfaces.MotoristaDAO;
-import model.servicos.persistencia.interfaces.CnhDAO;
 
 /**
  *
@@ -23,8 +22,7 @@ public class MotoristaCSV implements MotoristaDAO {
 
     @Override
     public void inserir(Motorista motorista) throws DBException {
-        CnhDAO cnhPersistenceService = DAOFactory.createCnhDAO();
-        cnhPersistenceService.inserir(motorista.getCnh());
+        DAOFactory.createCnhDAO().inserir(motorista.getCnh());
         if (motorista.getId() == null) {
             motorista.setId(getUltimoID() + 1);
         }
@@ -78,6 +76,7 @@ public class MotoristaCSV implements MotoristaDAO {
         if (DAOFactory.createLocacaoDAO().buscar(buscar(id)).size() > 0) {
             throw new DBException("O motorista não pode ser excluído pois está associado à uma ou mais locações");
         }
+        DAOFactory.createCnhDAO().excluir(buscar(id).getCnh().getNumeroRegistro());
         File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-modelos.csv");
         CSVConnection conexaoTemp = new CSVConnection();
 

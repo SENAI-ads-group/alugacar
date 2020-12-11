@@ -83,12 +83,11 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Informa&#xe7;&#xf5;es" toolTip="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista">
+              <JTabbedPaneConstraints tabName="Informa&#xe7;&#xf5;es">
                 <Property name="tabTitle" type="java.lang.String" value="Informa&#xe7;&#xf5;es"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/ui/media/icons/icon-pessoafisica-24x24.png"/>
                 </Property>
-                <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;es pessoais b&#xe1;sicas do motorista"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -210,12 +209,11 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Endere&#xe7;o" toolTip="Informa&#xe7;&#xf5;es sobre o endere&#xe7;o do motorista">
+              <JTabbedPaneConstraints tabName="Endere&#xe7;o">
                 <Property name="tabTitle" type="java.lang.String" value="Endere&#xe7;o"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/ui/media/icons/icon-endereco-24x24.png"/>
                 </Property>
-                <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;es sobre o endere&#xe7;o do motorista"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

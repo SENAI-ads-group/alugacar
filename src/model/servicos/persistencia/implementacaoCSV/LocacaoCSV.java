@@ -50,6 +50,9 @@ public class LocacaoCSV implements LocacaoDAO {
         locacao.setVistoriaDevolucao(vistoria);
         locacao.setDataDevolucao(new Date());
         locacao.getVeiculo().setStatusVeiculo(StatusVeiculo.INDISPONIVEL);
+        double kmInicial = locacao.getVistoriaEntrega().getKmVeiculo();
+        double kmFinal = locacao.getVistoriaDevolucao().getKmVeiculo();
+        locacao.getVeiculo().addKM(kmFinal - kmInicial);
         locacao.setStatus(StatusLocacao.FINALIZADA);
         DAOFactory.createVeiculoDAO().atualizar(locacao.getVeiculo());
         locacao.checarVistorias();

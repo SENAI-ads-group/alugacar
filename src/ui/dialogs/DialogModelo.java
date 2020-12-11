@@ -23,7 +23,7 @@ public class DialogModelo extends javax.swing.JDialog {
     private Modelo modelo;
     private final ModeloDAO DAO = DAOFactory.createModeloDAO();
 
-    private FormularioModelo formModelo;
+    private FormularioModelo formulario;
 
     private final List<DataChangeListener> listeners = new ArrayList<>();
 
@@ -31,20 +31,20 @@ public class DialogModelo extends javax.swing.JDialog {
         super(parent, modal);
         this.modelo = modelo;
         initComponents();
-        loadPanels();
+        carregarPaineis();
     }
 
     public void setModelo(Modelo modelo) {
         this.modelo = modelo;
     }
 
-    private void loadPanels() {
-        formModelo = new FormularioModelo(modelo);
-        PanelUtilities.loadPanelToPanel(formModelo, panelCenterTab1);
+    private void carregarPaineis() {
+        formulario = new FormularioModelo(modelo);
+        PanelUtilities.loadPanelToPanel(formulario, panelCenterTab1);
     }
 
-    private void persistEntity() throws DBException, ValidacaoException {
-        getFormData();
+    private void persistirEntidade() throws DBException, ValidacaoException {
+        getDadosFormulario();
         if (modelo.getId() == null) {
             DAO.inserir(modelo);
         } else {
@@ -52,13 +52,13 @@ public class DialogModelo extends javax.swing.JDialog {
         }
     }
 
-    public Modelo getFormData() throws ValidacaoException {
-        modelo = formModelo.getDadosFormulario();
+    public Modelo getDadosFormulario() throws ValidacaoException {
+        modelo = formulario.getDadosFormulario();
         return modelo;
     }
 
-    public void updateFormData() {
-        formModelo.atualizarFormulario();
+    public void atualizarFormulario() {
+        formulario.atualizarFormulario();
     }
 
     public void subscribeListener(DataChangeListener listener) {
@@ -91,17 +91,18 @@ public class DialogModelo extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Formulário de modelo de veículo");
-        setMinimumSize(new java.awt.Dimension(440, 420));
+        setMinimumSize(new java.awt.Dimension(470, 420));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(470, 420));
         setResizable(false);
-        setSize(new java.awt.Dimension(440, 420));
+        setSize(new java.awt.Dimension(470, 420));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabbedPane.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        tabbedPane.setMaximumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setMinimumSize(new java.awt.Dimension(400, 300));
-        tabbedPane.setPreferredSize(new java.awt.Dimension(400, 300));
+        tabbedPane.setMaximumSize(new java.awt.Dimension(440, 300));
+        tabbedPane.setMinimumSize(new java.awt.Dimension(440, 300));
+        tabbedPane.setPreferredSize(new java.awt.Dimension(440, 300));
         tabbedPane.setRequestFocusEnabled(false);
 
         panelTab1.setBackground(new java.awt.Color(153, 153, 153));
@@ -153,14 +154,14 @@ public class DialogModelo extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Modelo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Modelo", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-modelos-24x24.png")), panelTab1); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         panelButtons.setBackground(new java.awt.Color(255, 255, 255));
-        panelButtons.setMaximumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setMinimumSize(new java.awt.Dimension(400, 50));
-        panelButtons.setPreferredSize(new java.awt.Dimension(400, 50));
+        panelButtons.setMaximumSize(new java.awt.Dimension(440, 50));
+        panelButtons.setMinimumSize(new java.awt.Dimension(440, 50));
+        panelButtons.setPreferredSize(new java.awt.Dimension(440, 50));
         panelButtons.setVerifyInputWhenFocusTarget(false);
         panelButtons.setLayout(new java.awt.BorderLayout());
 
@@ -195,7 +196,7 @@ public class DialogModelo extends javax.swing.JDialog {
         jPanel1.add(buttonConfirmar);
 
         jLabel1.setToolTipText("");
-        jLabel1.setPreferredSize(new java.awt.Dimension(5, 5));
+        jLabel1.setPreferredSize(new java.awt.Dimension(15, 15));
         jPanel1.add(jLabel1);
 
         panelButtons.add(jPanel1, java.awt.BorderLayout.LINE_END);
@@ -208,17 +209,17 @@ public class DialogModelo extends javax.swing.JDialog {
 
     private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
         try {
-            persistEntity();
+            persistirEntidade();
             this.dispose();
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormModelo")) {
+            if (ex.getMessage().equals(Modelo.class.getSimpleName())) {
                 tabbedPane.setIconAt(0, iconError);
-                formModelo.exibirMensagensErro(ex.getErrors());
+                formulario.exibirMensagensErro(ex.getErrors());
             }
         } catch (DBException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Erro ao persistir motorista", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir modelo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonConfirmarActionPerformed
 

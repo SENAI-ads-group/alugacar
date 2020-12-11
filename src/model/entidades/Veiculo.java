@@ -14,7 +14,6 @@ public class Veiculo {
     private Integer id;
     private String placa;
     private String renavam;
-    private Double precoCompra = 0.0;
     private Modelo modelo;
     private Integer anoFabricacao;
     private Double KMRodado;
@@ -24,11 +23,10 @@ public class Veiculo {
     public Veiculo() {
     }
 
-    public Veiculo(Integer id, String placa, String renavam, Double precoCompra, Modelo modelo, Integer anoFabricacao, Double KMRodado) {
+    public Veiculo(Integer id, String placa, String renavam, Modelo modelo, Integer anoFabricacao, Double KMRodado) {
         this.id = id;
         this.placa = placa;
         this.renavam = renavam;
-        this.precoCompra = precoCompra;
         this.modelo = modelo;
         this.anoFabricacao = anoFabricacao;
         this.KMRodado = KMRodado;
@@ -38,12 +36,11 @@ public class Veiculo {
         id = Integer.parseInt(csv[0]);
         placa = csv[1];
         renavam = csv[2];
-        precoCompra = Utilities.tryParseToDouble(csv[3]);
-        Integer idModelo = Utilities.tryParseToInteger(csv[4]);
+        Integer idModelo = Utilities.tryParseToInteger(csv[3]);
         modelo = DAOFactory.createModeloDAO().buscar(idModelo);
-        anoFabricacao = Utilities.tryParseToInteger(csv[5]);
-        KMRodado = Utilities.tryParseToDouble(csv[6]);
-        statusVeiculo = StatusVeiculo.valueOf(csv[7]);
+        anoFabricacao = Utilities.tryParseToInteger(csv[4]);
+        KMRodado = Utilities.tryParseToDouble(csv[5]);
+        statusVeiculo = StatusVeiculo.valueOf(csv[6]);
     }
     // </editor-fold>
 
@@ -70,14 +67,6 @@ public class Veiculo {
 
     public void setRenavam(String renavam) {
         this.renavam = renavam;
-    }
-
-    public Double getPrecoCompra() {
-        return precoCompra;
-    }
-
-    public void setPrecoCompra(Double precoCompra) {
-        this.precoCompra = precoCompra;
     }
 
     public Modelo getModelo() {
@@ -148,7 +137,6 @@ public class Veiculo {
         return "" + id + ";"
                 + placa + ";"
                 + renavam + ";"
-                + precoCompra + ";"
                 + modelo.getId() + ";"
                 + anoFabricacao + ";"
                 + KMRodado + ";"

@@ -319,7 +319,7 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Locação", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Locação", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-locacao-24x24.png")), panelTab1); // NOI18N
 
         panelTab2.setBackground(new java.awt.Color(153, 153, 153));
         panelTab2.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -392,7 +392,7 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
 
         panelTab2.add(panelBorderRightTab2, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Taxas", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-24x24.png")), panelTab2, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Taxas", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-taxa-24x24.png")), panelTab2); // NOI18N
 
         panelTab3.setBackground(new java.awt.Color(153, 153, 153));
         panelTab3.setMaximumSize(new java.awt.Dimension(400, 280));
@@ -465,7 +465,7 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
 
         panelTab3.add(panelBorderRightTab3, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Descontos", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-desconto-24x24.png")), panelTab3, "Informações pessoais básicas do motorista"); // NOI18N
+        tabbedPane.addTab("Descontos", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-desconto-24x24.png")), panelTab3); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 350));
 

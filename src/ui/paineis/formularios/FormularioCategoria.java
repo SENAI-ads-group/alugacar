@@ -100,7 +100,6 @@ public final class FormularioCategoria extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(390, 260));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        textFieldDescricao.setToolTipText("");
         textFieldDescricao.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldDescricao.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldDescricao.setPreferredSize(new java.awt.Dimension(190, 25));

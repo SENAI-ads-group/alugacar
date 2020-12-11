@@ -63,19 +63,51 @@ public class CnhCSV implements CnhDAO {
     }
     
     @Override
-    public CNH buscar(Integer numeroRegistro) {
+    public void excluir(String numeroRegistro) {
+        CNH cnhExcluida = buscar(numeroRegistro);
+        if (cnhExcluida == null) {
+            throw new DBException("A CNH não existe");
+        }
+        cnhExcluida.getFotoFrente().delete();
+        cnhExcluida.getFotoVerso().delete();
+        
+        File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-cnh.csv");
+        CSVConnection conexaoTemp = new CSVConnection();
+        
+        CONEXAO.open(ARQUIVO_DB);
+        conexaoTemp.open(arquivoDBTemp);
+        
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            CNH cnhEncontrada = new CNH(linha.split(";"));
+            if (!cnhEncontrada.getNumeroRegistro().equals(numeroRegistro)) {
+                conexaoTemp.writer().write(cnhEncontrada.toCSV());
+                conexaoTemp.writer().flush();
+                conexaoTemp.writer().newLine();
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+        
+        conexaoTemp.close();
+        CONEXAO.close();
+        ARQUIVO_DB.delete();
+        arquivoDBTemp.renameTo(ARQUIVO_DB);
+    }
+    
+    @Override
+    public CNH buscar(String numeroRegistro) {
         if (numeroRegistro == null) {
             throw new IllegalStateException("numeroRegistro está nulo");
         }
+        numeroRegistro = numeroRegistro.trim().replaceAll("[^0-9]", "");
         CONEXAO.open(ARQUIVO_DB);
         
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             CNH cnhEncontrada = new CNH(linha.split(";"));
-            
+            IMAGEM_DAO.importar(cnhEncontrada);
             if (cnhEncontrada.getNumeroRegistro().equals(numeroRegistro)) {
                 CONEXAO.close();
-                IMAGEM_DAO.importar(cnhEncontrada);
                 return cnhEncontrada;
             }
             linha = CONEXAO.reader().readLine();
@@ -95,7 +127,7 @@ public class CnhCSV implements CnhDAO {
             IMAGEM_DAO.importar(cnhEncontrada);
             cnhList.add(cnhEncontrada);
             linha = CONEXAO.reader().readLine();
-        }        
+        }
         CONEXAO.close();
         return cnhList;
     }

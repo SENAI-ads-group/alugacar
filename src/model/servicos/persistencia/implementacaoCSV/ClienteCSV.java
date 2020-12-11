@@ -1,14 +1,17 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Cliente;
+import model.entidades.Pessoa;
+import model.entidades.PessoaFisica;
+import model.entidades.PessoaJuridica;
 import model.exceptions.DBException;
 import util.Utilities;
-import model.servicos.persistencia.ClienteDAO;
+import model.servicos.persistencia.interfaces.ClienteDAO;
 import model.servicos.persistencia.DAOFactory;
 
 /**
@@ -116,6 +119,31 @@ public class ClienteCSV implements ClienteDAO {
     }
 
     @Override
+    public List<Cliente> buscar(String filtro) {
+        if (filtro == null) {
+            throw new IllegalStateException("Filtro de pesquisa vazio");
+        }
+        List<Cliente> clientes = new ArrayList<>();
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Cliente cliente = new Cliente(linha.split(";"));
+            if (("" + cliente.getId()).contains(filtro) || filtrosPessoaFisica(cliente.getPessoa(), filtro) || filtrosPessoaJuridica(cliente.getPessoa(), filtro)) {
+                clientes.add(cliente);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        if (clientes.size() > 0) {
+            return clientes;
+        } else {
+            return buscarTodos();
+        }
+    }
+
+    @Override
     public List<Cliente> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
 
@@ -149,4 +177,21 @@ public class ClienteCSV implements ClienteDAO {
         return ultimoID;
     }
 
+    private boolean filtrosPessoaFisica(Pessoa pessoa, String filtro) {
+        if (pessoa instanceof PessoaFisica) {
+            PessoaFisica pf = (PessoaFisica) pessoa;
+            return pf.getCpf().contains(filtro) || pf.getRegistroGeral().contains(filtro) || pf.getEmail().contains(filtro);
+        } else {
+            return false;
+        }
+    }
+
+    private boolean filtrosPessoaJuridica(Pessoa pessoa, String filtro) {
+        if (pessoa instanceof PessoaJuridica) {
+            PessoaJuridica pj = (PessoaJuridica) pessoa;
+            return pj.getCnpj().contains(filtro) || pj.getInscricaoEstadual().contains(filtro) || pj.getRazaoSocial().contains(filtro);
+        } else {
+            return false;
+        }
+    }
 }

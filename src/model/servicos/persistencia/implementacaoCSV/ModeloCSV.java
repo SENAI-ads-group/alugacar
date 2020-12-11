@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import model.entidades.Marca;
 import model.entidades.Modelo;
 import model.exceptions.DBException;
@@ -11,7 +11,7 @@ import java.util.List;
 import model.entidades.Categoria;
 import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
-import model.servicos.persistencia.ModeloDAO;
+import model.servicos.persistencia.interfaces.ModeloDAO;
 
 /**
  *
@@ -24,6 +24,9 @@ public class ModeloCSV implements ModeloDAO {
 
     @Override
     public void inserir(Modelo modelo) throws DBException {
+        if (buscarTodos().contains(modelo)) {
+            throw new DBException("Já existe um modelo com o código FIPE " + modelo.getCodigoFipe() + " combustível " + modelo.getCombustivel().toString() + " ano " + modelo.getAno());
+        }
         if (modelo.getId() == null) {
             modelo.setId(getUltimoID() + 1);
         }
@@ -82,9 +85,9 @@ public class ModeloCSV implements ModeloDAO {
 
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
-            Categoria categoriaEncontrada = new Categoria(linha.split(";"));
-            if (!categoriaEncontrada.getId().equals(id)) {
-                conexaoTemp.writer().write(categoriaEncontrada.toCSV());
+            Modelo modeloEncontraado = new Modelo(linha.split(";"));
+            if (!modeloEncontraado.getId().equals(id)) {
+                conexaoTemp.writer().write(modeloEncontraado.toCSV());
                 conexaoTemp.writer().flush();
                 conexaoTemp.writer().newLine();
             }
@@ -151,6 +154,33 @@ public class ModeloCSV implements ModeloDAO {
 
         CONEXAO.close();
         return modelos;
+    }
+
+    @Override
+    public List<Modelo> buscar(String filtro) {
+        if (filtro == null) {
+            throw new IllegalStateException("Filtro de pesquisa vazio");
+        }
+        List<Modelo> modelos = new ArrayList<>();
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Modelo modelo = new Modelo(linha.split(";"));
+            if (modelo.getDescricao().contains(filtro) || ("" + modelo.getId()).contains(filtro)
+                    || modelo.getCodigoFipe().contains(filtro) || modelo.getCategoria().getDescricao().contains(filtro)
+                    || modelo.getMarca().getDescricao().contains(filtro)) {
+                modelos.add(modelo);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        if (modelos.size() > 0) {
+            return modelos;
+        } else {
+            return buscarTodos();
+        }
     }
 
     @Override

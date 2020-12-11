@@ -1,13 +1,12 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import com.alee.utils.FileUtils;
 import java.io.File;
-import java.util.List;
 import model.entidades.CNH;
 import model.entidades.Vistoria;
 import model.exceptions.DBException;
-import model.servicos.persistencia.ImagemDAO;
+import model.servicos.persistencia.interfaces.ImagemDAO;
 import util.Utilities;
 
 /**
@@ -75,8 +74,8 @@ public class ImagemCSV implements ImagemDAO {
         for (int i = 0; i < arrayFiles.length; i++) {
             File file = arrayFiles[i];
             String nomeArquivo = file.getName();
-            Integer idFile = Utilities.tryParseToInteger(nomeArquivo.split(";")[0]);
-            if (idFile.equals(cnh.getNumeroRegistro())) {
+            String idCNH = nomeArquivo.split(";")[0];
+            if (idCNH.equals(cnh.getNumeroRegistro())) {
                 boolean fotoFrente = nomeArquivo.contains("frente");
                 if (fotoFrente) {
                     cnh.setFotoFrente(file);

@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import model.entidades.Veiculo;
 import model.entidades.enums.StatusVeiculo;
 import model.exceptions.DBException;
 import util.Utilities;
-import model.servicos.persistencia.VeiculoDAO;
+import model.servicos.persistencia.interfaces.VeiculoDAO;
 
 /**
  *

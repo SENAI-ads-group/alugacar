@@ -12,7 +12,7 @@ import util.DateUtilities;
  */
 public class CNH {
 
-    private Integer numeroRegistro;
+    private String numeroRegistro;
     private CategoriaCNH categoria;
     private Date dataValidade;
     private File fotoFrente;
@@ -23,12 +23,12 @@ public class CNH {
     }
 
     public CNH(String[] csv) {
-        numeroRegistro = Integer.parseInt(csv[0]);
+        numeroRegistro = csv[0];
         categoria = CategoriaCNH.valueOf(csv[1]);
         dataValidade = DateUtilities.tryParseToDate(csv[2]);
     }
 
-    public CNH(Integer numeroRegistro, CategoriaCNH categoria, Date dataValidade) {
+    public CNH(String numeroRegistro, CategoriaCNH categoria, Date dataValidade) {
         this.numeroRegistro = numeroRegistro;
         this.categoria = categoria;
         this.dataValidade = dataValidade;
@@ -36,11 +36,11 @@ public class CNH {
     // </editor-fold> 
 
     // <editor-fold defaultstate="collapsed" desc="getters e setters">  
-    public Integer getNumeroRegistro() {
+    public String getNumeroRegistro() {
         return numeroRegistro;
     }
 
-    public void setNumeroRegistro(Integer numeroRegistro) {
+    public void setNumeroRegistro(String numeroRegistro) {
         this.numeroRegistro = numeroRegistro;
     }
 

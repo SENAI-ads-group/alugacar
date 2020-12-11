@@ -1,7 +1,7 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import model.entidades.Marca;
 import java.io.File;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import model.exceptions.DBException;
 import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
-import model.servicos.persistencia.MarcaDAO;
+import model.servicos.persistencia.interfaces.MarcaDAO;
 
 /**
  *
@@ -25,8 +25,11 @@ public class MarcaCSV implements MarcaDAO {
         if (marca.getId() == null) {
             marca.setId(getUltimoID() + 1);
         }
-        if (buscar(marca.getId()) != null) {
+        if (buscarById(marca.getId()) != null) {
             throw new DBException("A marca já existe");
+        }
+        if (buscarTodos().contains(marca)) {
+            throw new DBException("Já existe uma marca com a descrição " + marca.getDescricao());
         }
         CONEXAO.open(ARQUIVO_DB);
         CONEXAO.writer().write(marca.toCSV());
@@ -64,11 +67,11 @@ public class MarcaCSV implements MarcaDAO {
 
     @Override
     public void excluir(int id) throws DBException {
-        if (buscar(id) == null) {
+        if (buscarById(id) == null) {
             throw new DBException("A marca não existe");
         }
-        if (DAOFactory.createModeloDAO().buscar(buscar(id)).size() > 0) {
-            throw new DBException("A marca não pode ser excluída pois está associada a uma ou mais modelos");
+        if (DAOFactory.createModeloDAO().buscar(buscarById(id)).size() > 0) {
+            throw new DBException("A marca não pode ser excluída pois está associada a um ou mais modelos");
         }
         File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-marca.csv");
         CSVConnection conexaoTemp = new CSVConnection();
@@ -94,7 +97,7 @@ public class MarcaCSV implements MarcaDAO {
     }
 
     @Override
-    public Marca buscar(Integer id) {
+    public Marca buscarById(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
@@ -112,6 +115,32 @@ public class MarcaCSV implements MarcaDAO {
         }
         CONEXAO.close();
         return null;
+    }
+
+    @Override
+    public List<Marca> buscar(String filtro) {
+        if (filtro == null) {
+            throw new IllegalStateException("Filtro de pesquisa vazio");
+        }
+        filtro = filtro.toLowerCase();
+        List<Marca> marcas = new ArrayList<>();
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Marca marca = new Marca(linha.split(";"));
+            if (marca.getDescricao().toLowerCase().contains(filtro) || ("" + marca.getId()).contains(filtro)) {
+                marcas.add(marca);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        if (marcas.size() > 0) {
+            return marcas;
+        } else {
+            return buscarTodos();
+        }
     }
 
     @Override

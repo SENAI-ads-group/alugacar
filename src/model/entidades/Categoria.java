@@ -80,6 +80,9 @@ public class Categoria {
             return false;
         }
         final Categoria other = (Categoria) obj;
+        if (Objects.equals(this.descricao.toLowerCase(), other.descricao.toLowerCase())) {
+            return true;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -92,7 +95,6 @@ public class Categoria {
         hash = 19 * hash + Objects.hashCode(this.id);
         return hash;
     }
-
     // </editor-fold>
     
     public String toCSV() {

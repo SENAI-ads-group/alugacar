@@ -1,14 +1,14 @@
 package model.servicos.persistencia.implementacaoCSV;
 
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
-import application.Programa;
+import aplicacao.Programa;
 import model.entidades.Categoria;
 import model.exceptions.DBException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import util.Utilities;
-import model.servicos.persistencia.CategoriaDAO;
+import model.servicos.persistencia.interfaces.CategoriaDAO;
 import model.servicos.persistencia.DAOFactory;
 
 /**
@@ -26,7 +26,10 @@ public class CategoriaCSV implements CategoriaDAO {
             categoria.setId(getUltimoID() + 1);
         }
         if (buscar(categoria.getId()) != null) {
-            throw new DBException("A categoria já  existe !");
+            throw new DBException("A categoria já  existe!");
+        }
+        if (buscarTodos().contains(categoria)) {
+            throw new DBException("Já existe uma categoria com a descrição " + categoria.getDescricao());
         }
         CONEXAO.open(ARQUIVO_DB);
 
@@ -116,6 +119,28 @@ public class CategoriaCSV implements CategoriaDAO {
     }
 
     @Override
+    public List<Categoria> buscar(String filtro) {
+        List<Categoria> categorias = new ArrayList<>();
+        if (filtro == null) {
+            return categorias;
+        }
+        filtro = filtro.toLowerCase();
+        CONEXAO.open(ARQUIVO_DB);
+
+        String linha = CONEXAO.reader().readLine();
+        while (linha != null) {
+            Categoria categoria = new Categoria(linha.split(";"));
+            if (categoria.getDescricao().toLowerCase().contains(filtro) || ("" + categoria.getId()).contains(filtro)) {
+                categorias.add(categoria);
+            }
+            linha = CONEXAO.reader().readLine();
+        }
+
+        CONEXAO.close();
+        return categorias;
+    }
+
+    @Override
     public List<Categoria> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
 
@@ -134,14 +159,14 @@ public class CategoriaCSV implements CategoriaDAO {
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
 
-        Integer ultimoID = 1;
+        Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             ultimoID = Utilities.tryParseToInteger(linha.split(";")[0]);
             linha = CONEXAO.reader().readLine();
         }
         if (ultimoID == null) {
-            ultimoID = 1;
+            ultimoID = 0;
         }
 
         CONEXAO.close();

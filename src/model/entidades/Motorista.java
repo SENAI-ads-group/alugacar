@@ -35,8 +35,7 @@ public class Motorista {
     public Motorista(String[] csv) {
         id = Utilities.tryParseToInteger(csv[0]);
         ativo = Boolean.parseBoolean(csv[1]);
-        Integer numeroRegistroCNH = Utilities.tryParseToInteger(csv[2]);
-        cnh = DAOFactory.createCnhDAO().buscar(numeroRegistroCNH);
+        cnh = DAOFactory.createCnhDAO().buscar(csv[2]);
         pessoa = instanciarPessoa(csv);
     }
 

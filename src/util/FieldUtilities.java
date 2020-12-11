@@ -1,13 +1,11 @@
 package util;
 
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 import javax.swing.text.PlainDocument;
 
 /**
@@ -34,7 +32,20 @@ public class FieldUtilities {
         textField.setDocument(new PlainDocument() {
             @Override
             public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws BadLocationException {
-                str = str.replaceAll("[^a-zA-Z ]", "");
+                str = str.replaceAll("[^a-z|^A-Z|Â|Ã|Ê|Ô|Õ|~|ç|Ç|Á|À|É|ã|â|ê|õ|ô|á|à|é|^ ]", "");
+                if (limit <= 0) {
+                    super.insertString(offset, str, attr);
+                } else if (getLength() + str.length() <= limit) {
+                    super.insertString(offset, str, attr);
+                }
+            }
+        });
+    }
+
+    public static void setFieldLimit(JTextField textField, int limit) {
+        textField.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws BadLocationException {
                 if (limit <= 0) {
                     super.insertString(offset, str, attr);
                 } else if (getLength() + str.length() <= limit) {
@@ -78,7 +89,27 @@ public class FieldUtilities {
     }
 
     public static void setFieldMoeda(JFormattedTextField field) {
-        field.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat("#,###.00"))));
+        field.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
+        field.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offset, String str, javax.swing.text.AttributeSet attr) throws BadLocationException {
+                str = str.replaceAll("[^0-9,]", "");
+                if (offset < 1) {
+                    remove(0, getLength());
+                    super.insertString(offset, "R$ " + str, attr);
+                } else {
+                    super.insertString(offset, str, attr);
+                }
+            }
+        });
+    }
+
+    public static void setFieldPlaca(JFormattedTextField field) {
+        setFormattedTextFieldMask(field, "UUU-####");
+    }
+    
+    public static void setFieldCodigoFipe(JFormattedTextField field) {
+        setFormattedTextFieldMask(field, "######-#");
     }
 
     public static boolean textFieldIsEmpty(JTextField textField) {

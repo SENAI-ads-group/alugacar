@@ -1,7 +1,8 @@
 package model.entidades;
 
-import application.Configuracoes;
+import aplicacao.Configuracoes;
 import java.util.Objects;
+import model.servicos.persistencia.DAOFactory;
 import util.Utilities;
 
 /**
@@ -96,9 +97,7 @@ public class Taxa {
     }
 
     public static Taxa getTaxaItemVistoria() {
-        Double valorTaxa = Utilities.tryParseToDouble(Configuracoes.getProperties().getProperty("taxa.item-vistoria"));
-        //"Taxa de item da vistoria", valorTaxa
-        return new Taxa();
+        return DAOFactory.createTaxaDAO().buscar(1);
     }
 
 }

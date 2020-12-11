@@ -1,13 +1,13 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.entidades.Marca;
 import model.entidades.Taxa;
 import model.exceptions.DBException;
-import model.servicos.persistencia.TaxaDAO;
+import model.servicos.persistencia.interfaces.TaxaDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import util.Utilities;
 

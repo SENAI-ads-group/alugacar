@@ -38,7 +38,7 @@ public class Modelo {
         codigoFipe = csv[1];
         descricao = csv[2];
         Integer idMarca = Utilities.tryParseToInteger(csv[3]);
-        marca = DAOFactory.createMarcaDAO().buscar(idMarca);
+        marca = DAOFactory.createMarcaDAO().buscarById(idMarca);
         Integer idCategoria = Utilities.tryParseToInteger(csv[4]);
         categoria = DAOFactory.createCategoriaDAO().buscar(idCategoria);
         ano = Utilities.tryParseToInteger(csv[5]);
@@ -127,6 +127,9 @@ public class Modelo {
             return false;
         }
         final Modelo other = (Modelo) obj;
+        if (other.getCodigoFipe().equalsIgnoreCase(this.codigoFipe) && other.getAno().equals(ano) && other.getCombustivel().equals(combustivel)) {
+            return true;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

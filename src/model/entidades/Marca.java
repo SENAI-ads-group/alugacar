@@ -58,6 +58,9 @@ public class Marca {
             return false;
         }
         final Marca other = (Marca) obj;
+        if (Objects.equals(this.descricao.toLowerCase(), other.descricao.toLowerCase())) {
+            return true;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

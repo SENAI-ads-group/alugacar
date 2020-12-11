@@ -1,11 +1,11 @@
 package model.servicos.persistencia.implementacaoCSV;
 
-import application.Programa;
+import aplicacao.Programa;
 import java.io.File;
 import java.util.ArrayList;
 import model.entidades.Usuario;
 import java.util.List;
-import model.servicos.persistencia.UsuarioDAO;
+import model.servicos.persistencia.interfaces.UsuarioDAO;
 import model.servicos.persistencia.implementacaoCSV.conectores.CSVConnection;
 import model.exceptions.DBException;
 import util.Utilities;

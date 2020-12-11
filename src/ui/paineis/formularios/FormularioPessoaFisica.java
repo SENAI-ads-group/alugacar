@@ -5,24 +5,25 @@ import java.util.Set;
 import model.entidades.PessoaFisica;
 import model.exceptions.ValidacaoException;
 import util.FieldUtilities;
+import util.Validador;
 
 /**
  *
  * @author Patrick-Ribeiro
  */
 public class FormularioPessoaFisica extends javax.swing.JPanel {
-
+    
     private PessoaFisica pessoa;
-
+    
     public FormularioPessoaFisica(PessoaFisica pessoa) {
         initComponents();
         this.pessoa = pessoa;
     }
-
+    
     public void setPessoa(PessoaFisica pessoa) {
         this.pessoa = pessoa;
     }
-
+    
     public void atualizarFormulario() {
         if (pessoa != null) {
             textFieldNome.setText(pessoa.getNome());
@@ -33,23 +34,23 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
             dateChooserNascimento.setDate(pessoa.getDataNascimento());
         }
     }
-
+    
     public PessoaFisica getDadosFormulario() throws ValidacaoException {
         if (pessoa == null) {
             pessoa = new PessoaFisica();
         }
-        validarCampos();
         limparErros();
+        validarCampos();
         pessoa.setNome(textFieldNome.getText());
         pessoa.setCpf(formattedTextFieldCPF.getText());
         pessoa.setTelefone(formattedTextFieldTelefone.getText());
         pessoa.setRegistroGeral(formattedTextFieldRG.getText());
         pessoa.setEmail(textFieldEmail.getText());
         pessoa.setDataNascimento(dateChooserNascimento.getDate());
-
+        
         return pessoa;
     }
-
+    
     private void validarCampos() throws ValidacaoException {
         ValidacaoException exception = new ValidacaoException("PessoaFisica");
         if (FieldUtilities.textFieldIsEmpty(textFieldNome)) {
@@ -57,7 +58,7 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         }
         if (FieldUtilities.formattedTextFieldIsEmpty(formattedTextFieldCPF)) {
             exception.addError("CPF", "CPF não informado");
-        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldCPF)) {
+        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldCPF) || !Validador.cpfIsValido(formattedTextFieldCPF.getText())) {
             exception.addError("CPF", "CPF inválido");
         }
         if (FieldUtilities.formattedTextFieldIsEmpty(formattedTextFieldRG)) {
@@ -73,15 +74,15 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         if (dateChooserNascimento.getDate() == null) {
             exception.addError("dataNascimento", "Data não informada");
         }
-
+        
         if (exception.getErrors().size() > 0) {
             throw exception;
         }
     }
-
+    
     public void exibirMensagensErro(Map<String, String> erros) {
         Set<String> fields = erros.keySet();
-
+        
         if (fields.contains("nome")) {
             labelErroNome.setText(erros.get("nome"));
         }
@@ -98,15 +99,16 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
             labelErroDataNascimento.setText(erros.get("dataNascimento"));
         }
     }
-
+    
     private void limparErros() {
         labelErroNome.setText("");
         labelErroCPF.setText("");
         labelErroRG.setText("");
         labelErroTelefone.setText("");
         labelErroDataNascimento.setText("");
+        labelErroEmail.setText("");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -147,34 +149,39 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         textFieldEmail.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldEmail.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldEmail.setPreferredSize(new java.awt.Dimension(190, 25));
-        add(textFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
+        add(textFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
         labelEmail.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelEmail.setText("Email");
-        add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
+        add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, -1, -1));
 
         labelCPF.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        labelCPF.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         labelCPF.setText("CPF");
-        add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 65, -1, -1));
+        labelCPF.setToolTipText("");
+        labelCPF.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
         labelDataNascimento.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelDataNascimento.setText("Data de nascimento");
-        add(labelDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, -1, -1));
+        add(labelDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, -1, -1));
 
         labelRG.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelRG.setText("RG");
-        add(labelRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 65, -1, -1));
+        labelRG.setToolTipText("");
+        labelRG.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        add(labelRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
         dateChooserNascimento.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         dateChooserNascimento.setPreferredSize(new java.awt.Dimension(190, 25));
-        add(dateChooserNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, -1, -1));
+        add(dateChooserNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, -1, -1));
 
         labelErroDataNascimento.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroDataNascimento.setForeground(java.awt.Color.red);
         labelErroDataNascimento.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroDataNascimento.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroDataNascimento.setPreferredSize(new java.awt.Dimension(190, 15));
-        add(labelErroDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 175, -1, -1));
+        add(labelErroDataNascimento, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 165, -1, -1));
 
         labelErroNome.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroNome.setForeground(java.awt.Color.red);
@@ -188,7 +195,7 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         labelErroCPF.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroCPF.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroCPF.setPreferredSize(new java.awt.Dimension(190, 15));
-        add(labelErroCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, -1, -1));
+        add(labelErroCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
         labelErroTelefone.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroTelefone.setForeground(java.awt.Color.red);
@@ -202,14 +209,14 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
         labelErroRG.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroRG.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroRG.setPreferredSize(new java.awt.Dimension(190, 15));
-        add(labelErroRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, -1, -1));
+        add(labelErroRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 105, -1, -1));
 
         labelErroEmail.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroEmail.setForeground(java.awt.Color.red);
         labelErroEmail.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroEmail.setMinimumSize(new java.awt.Dimension(150, 15));
         labelErroEmail.setPreferredSize(new java.awt.Dimension(190, 15));
-        add(labelErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 175, -1, -1));
+        add(labelErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 165, -1, -1));
 
         textFieldNome.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldNome.setMinimumSize(new java.awt.Dimension(170, 25));
@@ -224,12 +231,12 @@ public class FormularioPessoaFisica extends javax.swing.JPanel {
 
         formattedTextFieldRG.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         formattedTextFieldRG.setPreferredSize(new java.awt.Dimension(190, 25));
-        add(formattedTextFieldRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 85, -1, -1));
+        add(formattedTextFieldRG, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, -1));
         util.FieldUtilities.setFieldRG(formattedTextFieldRG);
 
         formattedTextFieldCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         formattedTextFieldCPF.setPreferredSize(new java.awt.Dimension(190, 25));
-        add(formattedTextFieldCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
+        add(formattedTextFieldCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
         util.FieldUtilities.setFieldCPF(formattedTextFieldCPF);
     }// </editor-fold>//GEN-END:initComponents
 

@@ -6,6 +6,7 @@ import model.entidades.PessoaJuridica;
 import model.exceptions.ValidacaoException;
 import util.FieldUtilities;
 import util.Utilities;
+import util.Validador;
 
 /**
  *
@@ -39,13 +40,13 @@ public class FormularioPessoaJuridica extends javax.swing.JPanel {
         if (pessoa == null) {
             pessoa = new PessoaJuridica();
         }
-        ValidacaoException exception = new ValidacaoException(getClass().getSimpleName());
+        ValidacaoException exception = new ValidacaoException("PessoaJuridica");
         if (FieldUtilities.textFieldIsEmpty(textFieldNome)) {
             exception.addError("nome", "Nome fantasia não informado");
         }
         if (FieldUtilities.formattedTextFieldIsEmpty(formattedTextFieldCNPJ)) {
             exception.addError("CNPJ", "CNPJ não informado");
-        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldCNPJ)) {
+        } else if (!FieldUtilities.formattedTextFieldIsValid(formattedTextFieldCNPJ) || !Validador.cnpjIsValido(formattedTextFieldCNPJ.getText())) {
             exception.addError("CNPJ", "CNPJ inválido");
         }
         if (FieldUtilities.textFieldIsEmpty(textFieldInscricaoEstadual)) {
@@ -125,109 +126,112 @@ public class FormularioPessoaJuridica extends javax.swing.JPanel {
         labelErroEmail = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(360, 280));
-        setMinimumSize(new java.awt.Dimension(360, 280));
-        setPreferredSize(new java.awt.Dimension(360, 280));
+        setMaximumSize(new java.awt.Dimension(390, 280));
+        setMinimumSize(new java.awt.Dimension(390, 280));
+        setPreferredSize(new java.awt.Dimension(390, 280));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textFieldNome.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldNome.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldNome.setPreferredSize(new java.awt.Dimension(170, 25));
+        textFieldNome.setPreferredSize(new java.awt.Dimension(190, 25));
         add(textFieldNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, -1, -1));
+        FieldUtilities.setFieldLimit(textFieldNome, 30);
 
         formattedTextFieldCNPJ.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        formattedTextFieldCNPJ.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(formattedTextFieldCNPJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
+        formattedTextFieldCNPJ.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(formattedTextFieldCNPJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
         util.FieldUtilities.setFieldCNPJ(formattedTextFieldCNPJ);
 
-        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelNome.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelNome.setText("Nome Fantasia");
         add(labelNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         formattedTextFieldTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        formattedTextFieldTelefone.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(formattedTextFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, -1, -1));
+        formattedTextFieldTelefone.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(formattedTextFieldTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, -1, -1));
         util.FieldUtilities.setFieldTelefone(formattedTextFieldTelefone);
 
         textFieldRazaoSocial.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldRazaoSocial.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldRazaoSocial.setName(""); // NOI18N
-        textFieldRazaoSocial.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldRazaoSocial, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, -1, -1));
+        textFieldRazaoSocial.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldRazaoSocial, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
+        FieldUtilities.setFieldLimit(textFieldRazaoSocial, 30);
 
-        labelRazaoSocial.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelRazaoSocial.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelRazaoSocial.setText("Razão Social");
-        add(labelRazaoSocial, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, -1, -1));
+        add(labelRazaoSocial, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
         textFieldEmail.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldEmail.setMinimumSize(new java.awt.Dimension(170, 25));
-        textFieldEmail.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
+        textFieldEmail.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
+        FieldUtilities.setFieldLimit(textFieldEmail, 40);
 
-        labelEmail.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelEmail.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelEmail.setText("Email");
-        add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, -1, -1));
+        add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, -1, -1));
 
-        labelCPF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelCPF.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelCPF.setText("CNPJ");
-        add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 65, -1, -1));
+        add(labelCPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
-        labelTelefone.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelTelefone.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelTelefone.setText("Telefone");
-        add(labelTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, -1, -1));
+        add(labelTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, -1, -1));
 
         textFieldInscricaoEstadual.setMaximumSize(new java.awt.Dimension(170, 25));
         textFieldInscricaoEstadual.setMinimumSize(new java.awt.Dimension(170, 25));
         textFieldInscricaoEstadual.setName(""); // NOI18N
-        textFieldInscricaoEstadual.setPreferredSize(new java.awt.Dimension(170, 25));
-        add(textFieldInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 85, -1, -1));
+        textFieldInscricaoEstadual.setPreferredSize(new java.awt.Dimension(190, 25));
+        add(textFieldInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, -1));
         util.FieldUtilities.setFieldOnlyInteger(textFieldInscricaoEstadual, 9);
 
-        labelInscricaoEstadual.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        labelInscricaoEstadual.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelInscricaoEstadual.setText("Inscrição Estadual");
-        add(labelInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 65, -1, -1));
+        add(labelInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
         labelErroTelefone.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroTelefone.setForeground(java.awt.Color.red);
         labelErroTelefone.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroTelefone.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroTelefone.setPreferredSize(new java.awt.Dimension(170, 15));
-        add(labelErroTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 175, -1, -1));
+        labelErroTelefone.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroTelefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 165, -1, -1));
 
         labelErroNome.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroNome.setForeground(java.awt.Color.red);
         labelErroNome.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroNome.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroNome.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, 170, -1));
+        labelErroNome.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroNome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
 
         labelErroCNPJ.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroCNPJ.setForeground(java.awt.Color.red);
         labelErroCNPJ.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroCNPJ.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroCNPJ.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroCNPJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 170, -1));
+        labelErroCNPJ.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroCNPJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
         labelErroRazaoSocial.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroRazaoSocial.setForeground(java.awt.Color.red);
         labelErroRazaoSocial.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroRazaoSocial.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroRazaoSocial.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroRazaoSocial, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 45, 170, -1));
+        labelErroRazaoSocial.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroRazaoSocial, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 45, -1, -1));
 
         labelErroInscricaoEstadual.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroInscricaoEstadual.setForeground(java.awt.Color.red);
         labelErroInscricaoEstadual.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroInscricaoEstadual.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroInscricaoEstadual.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 170, -1));
+        labelErroInscricaoEstadual.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroInscricaoEstadual, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 105, -1, -1));
 
         labelErroEmail.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroEmail.setForeground(java.awt.Color.red);
         labelErroEmail.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroEmail.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroEmail.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 175, 170, -1));
+        labelErroEmail.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 165, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 

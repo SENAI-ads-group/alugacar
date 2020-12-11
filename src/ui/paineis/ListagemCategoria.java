@@ -18,18 +18,17 @@ import util.Utilities;
  * @author patrick-ribeiro
  */
 public final class ListagemCategoria extends javax.swing.JPanel implements DataChangeListener {
-    
+
     private final CategoriaDAO DAO = DAOFactory.createCategoriaDAO();
-    
+
     public ListagemCategoria() {
         initComponents();
-        atualizarListagem();
     }
-    
+
     public void atualizarListagem() {
         atualizarListagem(DAO.buscarTodos());
     }
-    
+
     public void atualizarListagem(List<Categoria> categorias) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.setNumRows(0);
@@ -37,13 +36,14 @@ public final class ListagemCategoria extends javax.swing.JPanel implements DataC
             Object[] row = {
                 categoria.getId(),
                 categoria.getDescricao(),
-                categoria.getValorDiaria(),
-                categoria.getValorKM()
+                ("R$ " + categoria.getValorDiaria()).replace(".", ","),
+                ("R$ " + categoria.getValorKM()).replace(".", ",")
             };
             tableModel.addRow(row);
         }
+
         table.setModel(tableModel);
-        
+
         if (tableModel.getRowCount()
                 > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
@@ -54,28 +54,31 @@ public final class ListagemCategoria extends javax.swing.JPanel implements DataC
             buttonEditar.setEnabled(false);
         }
     }
-    
-    public void criarForumulario(Categoria categoria) {
-        DialogCategoria dialogForm = new DialogCategoria(FrameLoader.getFrameMain(), true, categoria);
-        dialogForm.subscribeListener(this);
-        dialogForm.updateFormData();
-        dialogForm.setVisible(true);
+
+    public void exibirFormulario(Categoria categoria) {
+        DialogCategoria dialog = new DialogCategoria(FrameLoader.getFrameMain(), true, categoria);
+        dialog.subscribeListener(this);
+        dialog.atualizarFormulario();
+        dialog.setVisible(true);
     }
-    
+
     @Override
     public void onDataChanged() {
         atualizarListagem();
     }
-    
+
     private void pesquisar(String filtro) {
-        if (filtro != null && filtro.trim().length() > 0) {
-            atualizarListagem(DAO.buscar(textFieldPesquisa.getText()));
+        List<Categoria> listaResultado = DAO.buscar(filtro);
+
+        if (listaResultado.size() > 0) {
+            atualizarListagem(listaResultado);
         } else {
+            JOptionPane.showMessageDialog(this, "Nenhum resultado encontrado para a pesquisa atual", "Resultados da pesquisa", JOptionPane.WARNING_MESSAGE);
             textFieldPesquisa.setText("");
             atualizarListagem(DAO.buscarTodos());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -243,12 +246,12 @@ public final class ListagemCategoria extends javax.swing.JPanel implements DataC
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        criarForumulario(new Categoria());
+        exibirFormulario(new Categoria());
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        criarForumulario(DAO.buscar(idSelecionado));
+        exibirFormulario(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed

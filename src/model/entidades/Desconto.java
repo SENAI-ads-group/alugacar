@@ -1,6 +1,5 @@
 package model.entidades;
 
-import aplicacao.Configuracoes;
 import java.util.Objects;
 import util.Utilities;
 
@@ -34,8 +33,8 @@ public class Desconto {
         descricao = csv[1];
         valor = Utilities.tryParseToDouble(csv[2]);
     }
-
     // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="getters e setters"> 
     public Integer getId() {
         return id;
@@ -101,7 +100,9 @@ public class Desconto {
     }
 
     public static Desconto getDescontoItemVistoria() {
-        Double valorDesconto = Utilities.tryParseToDouble(Configuracoes.getProperties().getProperty("desconto.item-vistoria"));
-        return new Desconto("Desconto de item da vistoria", valorDesconto);
+        Desconto descontoItemVistoria = new Desconto();
+        descontoItemVistoria.setDescricao("Desconto de item da vistoria");
+        descontoItemVistoria.setValor(90.0);
+        return descontoItemVistoria;
     }
 }

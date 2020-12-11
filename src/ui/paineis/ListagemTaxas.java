@@ -22,7 +22,6 @@ public final class ListagemTaxas extends javax.swing.JPanel implements DataChang
 
     public ListagemTaxas() {
         initComponents();
-        atualizarListagem();
     }
 
     public void atualizarListagem() {
@@ -44,14 +43,6 @@ public final class ListagemTaxas extends javax.swing.JPanel implements DataChang
             buttonEditar.setEnabled(true);
         } else {
             buttonEditar.setEnabled(false);
-        }
-    }
-
-    public void persistirItem(Taxa taxa) throws DBException {
-        if (taxa.getId() == null) {
-            DAO.inserir(taxa);
-        } else {
-            DAO.atualizar(taxa);
         }
     }
 

@@ -22,7 +22,6 @@ public final class ListagemDescontos extends javax.swing.JPanel implements DataC
 
     public ListagemDescontos() {
         initComponents();
-        atualizarListagem();
     }
 
     public void atualizarListagem() {

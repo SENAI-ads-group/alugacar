@@ -57,7 +57,7 @@ public final class ListagemModelos extends javax.swing.JPanel implements DataCha
         }
     }
 
-    public void createModeloForm(Modelo modelo) {
+    public void exibirFormulario(Modelo modelo) {
         DialogModelo dialogForm = new DialogModelo(FrameLoader.getFrameMain(), true, modelo);
         dialogForm.subscribeListener(this);
         dialogForm.updateFormData();
@@ -246,12 +246,12 @@ public final class ListagemModelos extends javax.swing.JPanel implements DataCha
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
-        createModeloForm(new Modelo());
+        exibirFormulario(new Modelo());
     }//GEN-LAST:event_buttonNovoActionPerformed
 
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
-        createModeloForm(DAO.buscar(idSelecionado));
+        exibirFormulario(DAO.buscar(idSelecionado));
     }//GEN-LAST:event_buttonEditarActionPerformed
 
     private void buttonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirActionPerformed

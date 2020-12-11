@@ -96,9 +96,10 @@ public class Taxa {
     }
 
     public static Taxa getTaxaItemVistoria() {
-        Double valorTaxa = Utilities.tryParseToDouble(Configuracoes.getProperties().getProperty("taxa.item-vistoria"));
-        //"Taxa de item da vistoria", valorTaxa
-        return new Taxa();
+        Taxa taxaItemVistoria = new Taxa();
+        taxaItemVistoria.setDescricao("Taxa de item da vistoria");
+        taxaItemVistoria.setValor(90.0);
+        return taxaItemVistoria;
     }
 
 }

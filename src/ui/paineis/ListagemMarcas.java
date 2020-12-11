@@ -49,7 +49,7 @@ public final class ListagemMarcas extends javax.swing.JPanel implements DataChan
         }
     }
 
-    public void persistEntity(Marca marca) throws DBException {
+    private void persistirEntidade(Marca marca) throws DBException {
         if (marca.getId() == null) {
             DAO.inserir(marca);
         } else {
@@ -57,11 +57,11 @@ public final class ListagemMarcas extends javax.swing.JPanel implements DataChan
         }
     }
 
-    public void createMarcaForm(Marca marca) throws DBException {
+    public void exibirFormulario(Marca marca) throws DBException {
         String descricao = String.valueOf(JOptionPane.showInputDialog(this, "Descrição", "Formulário de marcas", JOptionPane.QUESTION_MESSAGE, null, null, marca.getDescricao()));
         if (descricao != null && descricao.trim().length() > 0 && !descricao.equals("null")) {
             marca.setDescricao(descricao);
-            persistEntity(marca);
+            persistirEntidade(marca);
         }
     }
 
@@ -248,7 +248,7 @@ public final class ListagemMarcas extends javax.swing.JPanel implements DataChan
 
     private void buttonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovoActionPerformed
         try {
-            createMarcaForm(new Marca());
+            exibirFormulario(new Marca());
             atualizarListagem(DAO.buscarTodos());
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);
@@ -258,7 +258,7 @@ public final class ListagemMarcas extends javax.swing.JPanel implements DataChan
     private void buttonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEditarActionPerformed
         Integer idSelecionado = Utilities.tryParseToInteger(table.getValueAt(table.getSelectedRow(), 0).toString());
         try {
-            createMarcaForm(DAO.buscar(idSelecionado));
+            exibirFormulario(DAO.buscarById(idSelecionado));
             atualizarListagem(DAO.buscarTodos());
         } catch (DBException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro ao persistir marca", JOptionPane.ERROR_MESSAGE);

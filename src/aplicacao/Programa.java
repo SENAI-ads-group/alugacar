@@ -1,5 +1,6 @@
 package aplicacao;
 
+import java.util.Locale;
 import java.util.Properties;
 import ui.FrameLoader;
 
@@ -12,6 +13,7 @@ public class Programa {
     private static Properties propriedades;
 
     public static void main(String[] args) {
+        Locale.setDefault(new Locale("pt", "BR"));
         propriedades = Configuracoes.getProperties();
         FrameLoader.load();
     }

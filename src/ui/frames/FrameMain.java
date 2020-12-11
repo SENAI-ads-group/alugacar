@@ -340,7 +340,7 @@ public class FrameMain extends javax.swing.JFrame {
     private void panelMenuItemMotoristasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemMotoristasMousePressed
         ListagemMotoristas listMotoristas = new ListagemMotoristas();
         PanelUtilities.loadPanelToPanel(listMotoristas, panelLoader);
-        listMotoristas.updateTable();
+        listMotoristas.atualizarListagem();
     }//GEN-LAST:event_panelMenuItemMotoristasMousePressed
 
     private void panelMenuItemClientesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMenuItemClientesMousePressed

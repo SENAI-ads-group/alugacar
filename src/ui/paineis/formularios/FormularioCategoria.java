@@ -29,8 +29,8 @@ public final class FormularioCategoria extends javax.swing.JPanel {
             throw new IllegalStateException("A categoria está nulo");
         }
         textFieldDescricao.setText(categoria.getDescricao());
-        formattedTextFieldValorDiaria.setText(String.valueOf(categoria.getValorDiaria()));
-        formattedTextFieldValorKM.setText(String.valueOf(categoria.getValorKM()));
+        formattedTextFieldValorDiaria.setText("R$ " + (String.valueOf(categoria.getValorDiaria())).replace(".", ","));
+        formattedTextFieldValorKM.setText("R$ " + (String.valueOf(categoria.getValorKM())).replace(".", ","));
     }
 
     public Categoria getDadosFormulario() throws ValidacaoException {
@@ -115,27 +115,27 @@ public final class FormularioCategoria extends javax.swing.JPanel {
         labelErroDescricao.setForeground(java.awt.Color.red);
         labelErroDescricao.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroDescricao.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroDescricao.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, 170, -1));
+        labelErroDescricao.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroDescricao, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 45, -1, -1));
 
         labelErroValorDiaria.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         labelErroValorDiaria.setForeground(java.awt.Color.red);
         labelErroValorDiaria.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroValorDiaria.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroValorDiaria.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 115, 170, -1));
+        labelErroValorDiaria.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 105, -1, -1));
 
         labelValorDiaria.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelValorDiaria.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         labelValorDiaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-info-12x12.png"))); // NOI18N
-        labelValorDiaria.setText("Valor da diária (R$)");
+        labelValorDiaria.setText("Valor da diária");
         labelValorDiaria.setToolTipText("Valor em reais (R$) para cada dia de locação na modalidade por diária");
         labelValorDiaria.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        add(labelValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 65, -1, -1));
+        add(labelValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, -1, -1));
 
         labelValorKM.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         labelValorKM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-info-12x12.png"))); // NOI18N
-        labelValorKM.setText("Valor KM (R$)");
+        labelValorKM.setText("Valor KM");
         labelValorKM.setToolTipText("Valor em reais (R$) para cada quillômetro percorrido pelo veículo na modalidade de locação por quilômetro");
         labelValorKM.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         add(labelValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
@@ -144,17 +144,17 @@ public final class FormularioCategoria extends javax.swing.JPanel {
         labelErroValorKM.setForeground(java.awt.Color.red);
         labelErroValorKM.setMaximumSize(new java.awt.Dimension(150, 15));
         labelErroValorKM.setMinimumSize(new java.awt.Dimension(150, 15));
-        labelErroValorKM.setPreferredSize(new java.awt.Dimension(150, 15));
-        add(labelErroValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 45, 170, -1));
+        labelErroValorKM.setPreferredSize(new java.awt.Dimension(190, 15));
+        add(labelErroValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 45, -1, -1));
 
-        formattedTextFieldValorDiaria.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        formattedTextFieldValorDiaria.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
         formattedTextFieldValorDiaria.setPreferredSize(new java.awt.Dimension(190, 25));
-        add(formattedTextFieldValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 85, -1, -1));
+        add(formattedTextFieldValorDiaria, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, -1));
         FieldUtilities.setFieldMoeda(formattedTextFieldValorDiaria);
 
-        formattedTextFieldValorKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         formattedTextFieldValorKM.setPreferredSize(new java.awt.Dimension(190, 25));
         add(formattedTextFieldValorKM, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, -1, -1));
+        FieldUtilities.setFieldMoeda(formattedTextFieldValorKM);
     }// </editor-fold>//GEN-END:initComponents
 
 

@@ -79,12 +79,12 @@
           <Dimension value="[150, 15]"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[150, 15]"/>
+          <Dimension value="[190, 15]"/>
         </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="45" width="170" height="-1"/>
+          <AbsoluteConstraints x="0" y="45" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -103,12 +103,12 @@
           <Dimension value="[150, 15]"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[150, 15]"/>
+          <Dimension value="[190, 15]"/>
         </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="115" width="170" height="-1"/>
+          <AbsoluteConstraints x="0" y="105" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -121,13 +121,13 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/ui/media/icons/icon-info-12x12.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Valor da di&#xe1;ria (R$)"/>
+        <Property name="text" type="java.lang.String" value="Valor da di&#xe1;ria"/>
         <Property name="toolTipText" type="java.lang.String" value="Valor em reais (R$) para cada dia de loca&#xe7;&#xe3;o na modalidade por di&#xe1;ria"/>
         <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="65" width="-1" height="-1"/>
+          <AbsoluteConstraints x="0" y="60" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -139,7 +139,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/ui/media/icons/icon-info-12x12.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Valor KM (R$)"/>
+        <Property name="text" type="java.lang.String" value="Valor KM"/>
         <Property name="toolTipText" type="java.lang.String" value="Valor em reais (R$) para cada quill&#xf4;metro percorrido pelo ve&#xed;culo na modalidade de loca&#xe7;&#xe3;o por quil&#xf4;metro"/>
         <Property name="horizontalTextPosition" type="int" value="2"/>
       </Properties>
@@ -164,19 +164,19 @@
           <Dimension value="[150, 15]"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[150, 15]"/>
+          <Dimension value="[190, 15]"/>
         </Property>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="200" y="45" width="170" height="-1"/>
+          <AbsoluteConstraints x="200" y="45" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="formattedTextFieldValorDiaria">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="0" type="0"/>
+          <Format subtype="0" type="4"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[190, 25]"/>
@@ -187,19 +187,19 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="85" width="-1" height="-1"/>
+          <AbsoluteConstraints x="0" y="80" width="-1" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="formattedTextFieldValorKM">
       <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="0" type="0"/>
-        </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[190, 25]"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="FieldUtilities.setFieldMoeda(formattedTextFieldValorKM);"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="200" y="20" width="-1" height="-1"/>

@@ -31,20 +31,20 @@ public class DialogCategoria extends javax.swing.JDialog {
         super(parent, modal);
         this.categoria = categoria;
         initComponents();
-        loadPanels();
+        carregarPaineis();
     }
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    private void loadPanels() {
+    private void carregarPaineis() {
         formCategoria = new FormularioCategoria(categoria);
         PanelUtilities.loadPanelToPanel(formCategoria, panelCenterTab1);
     }
 
-    private void persistEntity() throws DBException, ValidacaoException {
-        getFormData();
+    private void persistirEntidade() throws DBException, ValidacaoException {
+        getDados();
         if (categoria.getId() == null) {
             DAO.inserir(categoria);
         } else {
@@ -52,12 +52,12 @@ public class DialogCategoria extends javax.swing.JDialog {
         }
     }
 
-    public Categoria getFormData() throws ValidacaoException {
+    public Categoria getDados() throws ValidacaoException {
         categoria = formCategoria.getDadosFormulario();
         return categoria;
     }
 
-    public void updateFormData() {
+    public void atualizarFormulario() {
         formCategoria.atualizarFormulario();
     }
 
@@ -153,7 +153,7 @@ public class DialogCategoria extends javax.swing.JDialog {
 
         panelTab1.add(panelBorderRightTab1, java.awt.BorderLayout.LINE_END);
 
-        tabbedPane.addTab("Categoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-24x24.png")), panelTab1, "Informações sobre a categoria"); // NOI18N
+        tabbedPane.addTab("Categoria", new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-categorias-24x24.png")), panelTab1, ""); // NOI18N
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -208,12 +208,12 @@ public class DialogCategoria extends javax.swing.JDialog {
 
     private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
         try {
-            persistEntity();
+            persistirEntidade();
             this.dispose();
             notifyListeners();
         } catch (ValidacaoException ex) {
             Icon iconError = new ImageIcon(getClass().getResource("/ui/media/icons/icon-erro-24x24.png"));
-            if (ex.getMessage().equals("PanelFormCategoria")) {
+            if (ex.getMessage().equals("Categoria")) {
                 tabbedPane.setIconAt(0, iconError);
                 formCategoria.exibirMensagensErro(ex.getErrors());
             }

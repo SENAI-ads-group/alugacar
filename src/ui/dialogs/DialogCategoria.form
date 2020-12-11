@@ -80,12 +80,12 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Categoria" toolTip="Informa&#xe7;&#xf5;es sobre a categoria">
+              <JTabbedPaneConstraints tabName="Categoria" toolTip="">
                 <Property name="tabTitle" type="java.lang.String" value="Categoria"/>
                 <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/ui/media/icons/icon-categorias-24x24.png"/>
                 </Property>
-                <Property name="tabToolTip" type="java.lang.String" value="Informa&#xe7;&#xf5;es sobre a categoria"/>
+                <Property name="tabToolTip" type="java.lang.String" value=""/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

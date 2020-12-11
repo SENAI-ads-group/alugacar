@@ -22,7 +22,6 @@ public final class ListagemChecklist extends javax.swing.JPanel implements DataC
 
     public ListagemChecklist() {
         initComponents();
-        atualizarListagem();
     }
 
     public void atualizarListagem() {
@@ -46,14 +45,6 @@ public final class ListagemChecklist extends javax.swing.JPanel implements DataC
         } else {
             buttonExcluir.setEnabled(false);
             buttonEditar.setEnabled(false);
-        }
-    }
-
-    public void persistirItem(ItemVistoria item) throws DBException {
-        if (item.getId() == null) {
-            DAO.inserir(item);
-        } else {
-            DAO.atualizar(item);
         }
     }
 

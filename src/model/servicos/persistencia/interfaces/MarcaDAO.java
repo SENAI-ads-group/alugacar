@@ -16,7 +16,7 @@ public interface MarcaDAO {
 
     void excluir(int id) throws DBException;
 
-    Marca buscar(Integer id);
+    Marca buscarById(Integer id);
 
     List<Marca> buscar(String filtro);
 

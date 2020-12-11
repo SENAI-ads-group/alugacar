@@ -77,7 +77,7 @@ public final class ListagemClientes extends javax.swing.JPanel implements DataCh
 
     public void createClienteForm(Cliente cliente) {
         DialogCliente dialogForm = new DialogCliente(FrameLoader.getFrameMain(), true, cliente);
-        dialogForm.updateFormData();
+        dialogForm.atualizarFormulario();
         dialogForm.subscribeListener(this);
         dialogForm.setVisible(true);
     }

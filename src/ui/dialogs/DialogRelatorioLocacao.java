@@ -1,13 +1,14 @@
 package ui.dialogs;
 
 import aplicacao.Configuracoes;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.entidades.Desconto;
 import model.entidades.Locacao;
 import model.entidades.Taxa;
+import model.entidades.enums.StatusLocacao;
 import model.entidades.enums.TipoLocacao;
 import model.servicos.pdf.GeradorPDF;
-import ui.paineis.ListagemTaxasVistoria;
 import util.DateUtilities;
 
 /**
@@ -35,10 +36,17 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
             textFieldModalidade.setText(tipo.toString() + " - R$ " + locacao.getVeiculo().getModelo().getCategoria().getValorKM());
         }
         textFieldMotorista.setText(locacao.getMotorista().toString());
-        textFieldValorBruto.setText("R$ " + locacao.getValorBruto());
+        if (locacao.getTipo() == TipoLocacao.KM && locacao.getStatus() != StatusLocacao.FINALIZADA) {
+            JOptionPane.showMessageDialog(this, "Não é possível calcular o valor bruto e o valor total da locação para a modalidade " + locacao.getTipo().toString()
+                    + " no status " + locacao.getStatus().toString(), "Cálculo do valor bruto e valor total", JOptionPane.WARNING_MESSAGE);
+            buttonPDF.setEnabled(false);
+        } else {
+            textFieldValorBruto.setText("R$ " + locacao.getValorBruto());
+            textFieldValorTotal.setText("R$ " + locacao.getValorTotal());
+            buttonPDF.setEnabled(true);
+        }
         textFieldValorDescontos.setText("R$ " + locacao.getValorDescontos());
         textFieldValorTaxas.setText("R$ " + locacao.getValorTaxas());
-        textFieldValorTotal.setText("R$ " + locacao.getValorTotal());
         textFieldVeiculo.setText(locacao.getVeiculo().toString());
         atualizarListagemTaxas();
         atualizarListagemDescontos();
@@ -120,7 +128,7 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
         panelBorderRightTab3 = new javax.swing.JPanel();
         panelButtons = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        buttonConfirmar = new javax.swing.JButton();
+        buttonPDF = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -470,19 +478,19 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        buttonConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonConfirmar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pdf-24x24.png"))); // NOI18N
-        buttonConfirmar.setText("PDF");
-        buttonConfirmar.setBorderPainted(false);
-        buttonConfirmar.setFocusPainted(false);
-        buttonConfirmar.setFocusable(false);
-        buttonConfirmar.setPreferredSize(new java.awt.Dimension(115, 35));
-        buttonConfirmar.addActionListener(new java.awt.event.ActionListener() {
+        buttonPDF.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        buttonPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-pdf-24x24.png"))); // NOI18N
+        buttonPDF.setText("PDF");
+        buttonPDF.setBorderPainted(false);
+        buttonPDF.setFocusPainted(false);
+        buttonPDF.setFocusable(false);
+        buttonPDF.setPreferredSize(new java.awt.Dimension(115, 35));
+        buttonPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonConfirmarActionPerformed(evt);
+                buttonPDFActionPerformed(evt);
             }
         });
-        jPanel1.add(buttonConfirmar);
+        jPanel1.add(buttonPDF);
 
         jLabel1.setToolTipText("");
         jLabel1.setPreferredSize(new java.awt.Dimension(15, 5));
@@ -496,13 +504,13 @@ public class DialogRelatorioLocacao extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConfirmarActionPerformed
+    private void buttonPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPDFActionPerformed
         GeradorPDF.gerarContratoPDF(locacao, Configuracoes.getProperties().getProperty("pasta-raiz"));
-    }//GEN-LAST:event_buttonConfirmarActionPerformed
+    }//GEN-LAST:event_buttonPDFActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonConfirmar;
+    private javax.swing.JButton buttonPDF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

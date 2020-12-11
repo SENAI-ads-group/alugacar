@@ -16,38 +16,41 @@ import model.servicos.persistencia.DAOFactory;
  * @author Alexsander
  */
 public class CategoriaCSV implements CategoriaDAO {
-    
+
     private final File ARQUIVO_DB = new File(Programa.getPropriedade("absoluteDatabasePath") + "categorias.csv");
     private final CSVConnection CONEXAO = new CSVConnection();
-    
+
     @Override
     public void inserir(Categoria categoria) throws DBException {
         if (categoria.getId() == null) {
             categoria.setId(getUltimoID() + 1);
         }
-        if (buscar(categoria.getId()) != null || buscarTodos().contains(categoria)) {
-            throw new DBException("A categoria já  existe !");
+        if (buscar(categoria.getId()) != null) {
+            throw new DBException("A categoria já  existe!");
+        }
+        if (buscarTodos().contains(categoria)) {
+            throw new DBException("Já existe uma categoria com a descrição " + categoria.getDescricao());
         }
         CONEXAO.open(ARQUIVO_DB);
-        
+
         CONEXAO.writer().write(categoria.toCSV());
         CONEXAO.writer().newLine();
-        
+
         CONEXAO.close();
     }
-    
+
     @Override
     public void atualizar(Categoria categoria) {
         File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-categorias.csv");
         CSVConnection conexaoTemp = new CSVConnection();
-        
+
         CONEXAO.open(ARQUIVO_DB);
         conexaoTemp.open(arquivoDBTemp);
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Categoria categoriaEncontrada = new Categoria(linha.split(";"));
-            
+
             if (categoriaEncontrada.equals(categoria)) {
                 conexaoTemp.writer().write(categoria.toCSV());
             } else {
@@ -57,13 +60,13 @@ public class CategoriaCSV implements CategoriaDAO {
             conexaoTemp.writer().newLine();
             linha = CONEXAO.reader().readLine();
         }
-        
+
         conexaoTemp.close();
         CONEXAO.close();
         ARQUIVO_DB.delete();
         arquivoDBTemp.renameTo(ARQUIVO_DB);
     }
-    
+
     @Override
     public void excluir(Integer id) throws DBException {
         if (buscar(id) == null) {
@@ -74,10 +77,10 @@ public class CategoriaCSV implements CategoriaDAO {
         }
         File arquivoDBTemp = new File(Programa.getPropriedade("absoluteDatabasePath") + "temp-categorias.csv");
         CSVConnection conexaoTemp = new CSVConnection();
-        
+
         CONEXAO.open(ARQUIVO_DB);
         conexaoTemp.open(arquivoDBTemp);
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Categoria categoriaEncontrada = new Categoria(linha.split(";"));
@@ -88,20 +91,20 @@ public class CategoriaCSV implements CategoriaDAO {
             }
             linha = CONEXAO.reader().readLine();
         }
-        
+
         conexaoTemp.close();
         CONEXAO.close();
         ARQUIVO_DB.delete();
         arquivoDBTemp.renameTo(ARQUIVO_DB);
     }
-    
+
     @Override
     public Categoria buscar(Integer id) {
         if (id == null) {
             throw new IllegalStateException("id está nulo");
         }
         CONEXAO.open(ARQUIVO_DB);
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Categoria categoriaEncontrada = new Categoria(linha.split(";"));
@@ -114,36 +117,33 @@ public class CategoriaCSV implements CategoriaDAO {
         CONEXAO.close();
         return null;
     }
-    
+
     @Override
     public List<Categoria> buscar(String filtro) {
-        if (filtro == null) {
-            throw new IllegalStateException("Filtro de pesquisa vazio");
-        }
         List<Categoria> categorias = new ArrayList<>();
+        if (filtro == null) {
+            return categorias;
+        }
+        filtro = filtro.toLowerCase();
         CONEXAO.open(ARQUIVO_DB);
-        
+
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
             Categoria categoria = new Categoria(linha.split(";"));
-            if (categoria.getDescricao().contains(filtro) || ("" + categoria.getId()).contains(filtro)) {
+            if (categoria.getDescricao().toLowerCase().contains(filtro) || ("" + categoria.getId()).contains(filtro)) {
                 categorias.add(categoria);
             }
             linha = CONEXAO.reader().readLine();
         }
-        
+
         CONEXAO.close();
-        if (categorias.size() > 0) {
-            return categorias;
-        } else {
-            return buscarTodos();
-        }
+        return categorias;
     }
-    
+
     @Override
     public List<Categoria> buscarTodos() {
         CONEXAO.open(ARQUIVO_DB);
-        
+
         List<Categoria> categoriasEncontradas = new ArrayList<>();
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
@@ -151,14 +151,14 @@ public class CategoriaCSV implements CategoriaDAO {
             categoriasEncontradas.add(categoriaEncontrada);
             linha = CONEXAO.reader().readLine();
         }
-        
+
         CONEXAO.close();
         return categoriasEncontradas;
     }
-    
+
     private Integer getUltimoID() {
         CONEXAO.open(ARQUIVO_DB);
-        
+
         Integer ultimoID = 0;
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
@@ -168,9 +168,9 @@ public class CategoriaCSV implements CategoriaDAO {
         if (ultimoID == null) {
             ultimoID = 0;
         }
-        
+
         CONEXAO.close();
         return ultimoID;
     }
-    
+
 }

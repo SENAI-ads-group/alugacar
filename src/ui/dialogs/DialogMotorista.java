@@ -123,6 +123,7 @@ public class DialogMotorista extends javax.swing.JDialog {
         setTitle("Formulário de motorista");
         setMinimumSize(new java.awt.Dimension(470, 445));
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        setPreferredSize(new java.awt.Dimension(470, 445));
         setResizable(false);
         setSize(new java.awt.Dimension(470, 445));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

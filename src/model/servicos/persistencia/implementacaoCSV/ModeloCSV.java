@@ -82,9 +82,9 @@ public class ModeloCSV implements ModeloDAO {
 
         String linha = CONEXAO.reader().readLine();
         while (linha != null) {
-            Categoria categoriaEncontrada = new Categoria(linha.split(";"));
-            if (!categoriaEncontrada.getId().equals(id)) {
-                conexaoTemp.writer().write(categoriaEncontrada.toCSV());
+            Modelo modeloEncontraado = new Modelo(linha.split(";"));
+            if (!modeloEncontraado.getId().equals(id)) {
+                conexaoTemp.writer().write(modeloEncontraado.toCSV());
                 conexaoTemp.writer().flush();
                 conexaoTemp.writer().newLine();
             }

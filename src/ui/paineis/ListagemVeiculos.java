@@ -49,10 +49,8 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
         table.setModel(tableModel);
         if (tableModel.getRowCount() > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
-            buttonExcluir.setEnabled(true);
             buttonEditar.setEnabled(true);
         } else {
-            buttonExcluir.setEnabled(false);
             buttonEditar.setEnabled(false);
         }
     }
@@ -85,7 +83,6 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
         panelHeader = new javax.swing.JPanel();
         buttonNovo = new javax.swing.JButton();
         buttonEditar = new javax.swing.JButton();
-        buttonExcluir = new javax.swing.JButton();
         labelTitleList = new javax.swing.JLabel();
         buttonDisponibilizarIndisponibilizar = new javax.swing.JButton();
         panelPesquisa = new javax.swing.JPanel();
@@ -127,14 +124,6 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
                 buttonEditarActionPerformed(evt);
             }
         });
-
-        buttonExcluir.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        buttonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-excluir-24x24.png"))); // NOI18N
-        buttonExcluir.setText("Excluir");
-        buttonExcluir.setBorderPainted(false);
-        buttonExcluir.setFocusPainted(false);
-        buttonExcluir.setFocusable(false);
-        buttonExcluir.setPreferredSize(new java.awt.Dimension(95, 35));
 
         labelTitleList.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         labelTitleList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/media/icons/icon-veiculo-28x28.png"))); // NOI18N
@@ -190,10 +179,8 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
                 .addComponent(labelTitleList)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 319, Short.MAX_VALUE)
                 .addComponent(buttonDisponibilizarIndisponibilizar, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -209,8 +196,7 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
                     .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonNovo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(buttonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(buttonDisponibilizarIndisponibilizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonDisponibilizarIndisponibilizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(panelPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -307,7 +293,6 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonDisponibilizarIndisponibilizar;
     private javax.swing.JButton buttonEditar;
-    private javax.swing.JButton buttonExcluir;
     private javax.swing.JButton buttonNovo;
     private javax.swing.JButton buttonPesquisar;
     private javax.swing.JLabel labelTitleList;

@@ -4,7 +4,6 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 import model.exceptions.DBException;
 import ui.listeners.MouseListenerPanelButtonMenu;
-import ui.paineis.Dashboard;
 import ui.paineis.ListagemChecklist;
 import ui.paineis.ListagemDescontos;
 import ui.paineis.ListagemTaxas;

@@ -50,8 +50,10 @@ public final class ListagemVeiculos extends javax.swing.JPanel implements DataCh
         if (tableModel.getRowCount() > 0) {
             table.getSelectionModel().setSelectionInterval(0, 0);
             buttonEditar.setEnabled(true);
+            buttonDisponibilizarIndisponibilizar.setEnabled(true);
         } else {
             buttonEditar.setEnabled(false);
+            buttonDisponibilizarIndisponibilizar.setEnabled(false);
         }
     }
 
